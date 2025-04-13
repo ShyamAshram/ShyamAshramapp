@@ -26,7 +26,7 @@ const Lunes1 = () => {
 
   const fetchClassSchedules = async () => {
     try {
-      const response = await axios.get(`http://10.0.2.2:3001/api/classes/${dayOfWeek}`);
+      const response = await axios.get(`https://yapp-production.up.railway.app/api/classes/${dayOfWeek}`);
       console.log('Horarios:', response.data);
       setClassSchedules(response.data);
     } catch (error) {
@@ -41,7 +41,7 @@ const Lunes1 = () => {
     try {
       const token = await AsyncStorage.getItem('token');
       const response = await axios.post(
-        'http://10.0.2.2:3001/api/classes/registerClass',
+        'https://yapp-production.up.railway.app/api/classes/registerClass',
         { classId, dayOfWeek },
         { headers: { Authorization: `Bearer ${token}` } }
       );

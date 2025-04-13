@@ -12,6 +12,9 @@ import { Alerts } from "../screens/notifications/Notification";
 import Plan3 from "../screens/plans/Plan3";
 import Plan2 from "../screens/plans/Plan2";
 import Plans from "../screens/plans/Plans";
+import Plan4 from "../screens/plans/Plan4";
+import Plan5 from "../screens/plans/Plan5";
+import Plan6 from "../screens/plans/Plan6";
 import { Profile } from "../screens/profile/Profile";
 import Lunes1 from "../screens/horario/Lunes";
 import Martes1 from "../screens/horario/Martes";
@@ -22,13 +25,19 @@ import Sabado1 from "../screens/horario/Sabado";
 import { Sub } from "../screens/sub/Sub";
 import { Dates } from "../screens/calendar/Calendar";
 import Profe from "../screens/profe/Profe";
+import RecuperarContrasena from "../components/RecuperarContrasena";
+import AttendanceListScreen from "../components/ui/Asistencia";
+import Excel from "../components/ui/Excel";
+import CheckLogin from "../components/CheckLogin";
+
 
 const Stack = createStackNavigator();
 
 function Navigator() {
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="CheckLogin" screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Landing" component={Landing} />
+            <Stack.Screen name="CheckLogin" component={CheckLogin} />
             <Stack.Screen name="Signin" component={Signin} />
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="HomeScreen" component={HomeScreen} />
@@ -40,6 +49,9 @@ function Navigator() {
             <Stack.Screen name='Plan3' component={Plan3} />
             <Stack.Screen name='Plan2' component={Plan2} />
             <Stack.Screen name='Plans' component={Plans} />
+            <Stack.Screen name='Plan4' component={Plan4} />
+            <Stack.Screen name='Plan5' component={Plan5} />
+            <Stack.Screen name='Plan6' component={Plan6} />
             <Stack.Screen name='Sub' component={Sub} />
             <Stack.Screen name="Calendar" component={Dates} />
             <Stack.Screen name="Profile" component={Profile} />
@@ -50,6 +62,9 @@ function Navigator() {
             <Stack.Screen name='Viernes1' component={Viernes1} />
             <Stack.Screen name='Sabado1' component={Sabado1} />
             <Stack.Screen name='Prof' component={Profe} />
+            <Stack.Screen name="RecuperarContrasena" component={RecuperarContrasena} />
+            <Stack.Screen name="AttendanceListScreen" component={AttendanceListScreen} />
+            <Stack.Screen name="Excel" component={Excel} />
 
         </Stack.Navigator>
     )

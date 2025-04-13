@@ -80,19 +80,22 @@ export const globalStyles = StyleSheet.create({
   },
   header2: {
     flexDirection: 'row',
+
     alignItems: 'center',
     height: 60,
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     backgroundColor: '#5a215e'
   },
   profileImageContainer: {
     width: 50,
     height: 50,
-
+    justifyContent: 'center',
+    alignContent: 'center'
 
 
   },
   profileImage: {
+    color: '#333',
     width: '100%',
     height: '100%',
     marginTop: 30,
@@ -330,14 +333,12 @@ export const globalStyles = StyleSheet.create({
     borderRadius: 20,
     opacity: 0.9,
 
-
-
   },
   buttonsPlans: {
     flexDirection: 'column',
     direction: 'inherit',
     width: '100%',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
 

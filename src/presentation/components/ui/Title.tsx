@@ -17,7 +17,7 @@ export const Title = ({ text, safe = false, white = false }: Props) => {
             marginTop: safe ? top : 0,
             marginBottom: 20,
             marginLeft: 15,
-            color: white ? 'white' : colors.text,
+            color: '#fff'
 
         }}>{text}</Text>
     )

@@ -4,6 +4,10 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { globalStyles } from "../../../config/theme/Theme";
+import { Download } from '../../icons/Icons';
+import StudentRegistrationModal from '../../components/ui/AddU';
+import FloatingActionButton from '../../components/ui/FloatingButton';
+import { Book, Notification, Set } from '../../icons/Icons';
 
 
 interface User {
@@ -19,12 +23,14 @@ export const AdminScreen = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
-        const response = await axios.get('http://10.0.2.2:3001/api/users/users', {
+        // const response = await axios.get('http://192.168.128.15:3001/api/users/users', {
+        const response = await axios.get('https://yapp-production.up.railway.app/api/users/users', {
           headers: { 'Authorization': 'Bearer ' + token }
         });
         setUsers(response.data);
@@ -49,11 +55,39 @@ export const AdminScreen = () => {
 
 
 
+  function fetchStudents(): void {
+    throw new Error('Function not implemented.');
+  }
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem('token');
+      await AsyncStorage.removeItem('role');
+      // console.log('Token REMOVE')
+      navigation.navigate('Landing');
+    } catch (error) {
+      // console.error('Error al cerrar sesión:', error);
+    }
+  };
+
   return (
     <SafeAreaView style={globalStyles.mainContainer2}>
       <View style={globalStyles.header2}>
-        <Text style={styles.title2}>YAPP</Text>
+        <View style={{ marginLeft: 100 }}>
+          <Text style={styles.title2}>YAPP</Text>
+        </View>
+        <View style={globalStyles.profileImageContainer}>
+          <TouchableOpacity onPress={handleLogout} style={globalStyles.profileImage}>
+            <Set />
+          </TouchableOpacity>
+        </View>
       </View>
+
+      <FloatingActionButton onPress={() => setModalVisible(true)} />
+
+      <StudentRegistrationModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+      />
       <View style={styles.container}>
         <View style={styles.overlay}>
           <Image style={styles.logo} source={require('../../assets/Logo1.png')} />
@@ -64,8 +98,12 @@ export const AdminScreen = () => {
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Activación')}>
           <Text style={styles.buttonText}>Usuarios Activos</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Asistencia')}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("AttendanceListScreen")}>
           <Text style={styles.buttonText}>Listas de Asistencia</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate("Excel")}>
+          <Download />
+          <Text style={styles.buttonText}>EXCEL</Text>
         </TouchableOpacity>
 
 
@@ -85,6 +123,18 @@ const styles = StyleSheet.create({
   button: {
     width: '90%',
     backgroundColor: '#5a215e',
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    borderRadius: 15,
+    marginBottom: 35,
+    opacity: 1,
+  },
+
+  button2: {
+    width: '90%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    backgroundColor: '#1D6F42',
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderRadius: 15,
@@ -112,7 +162,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: 'white',
     fontFamily: 'Cochin',
-    textAlign: 'center',
+    textAlign: 'left',
     justifyContent: 'center',
     alignContent: 'center',
     alignItems: 'center'

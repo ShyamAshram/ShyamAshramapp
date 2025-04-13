@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Image, TouchableOpacity, TextInput, Text, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { Alert, Image, TouchableOpacity, TextInput, Text, StyleSheet, KeyboardAvoidingView, Platform, View } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -8,6 +8,7 @@ export const Inicio = () => {
   const navigation = useNavigation<any>();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // Estado para mostrar u ocultar contraseña
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -26,7 +27,7 @@ export const Inicio = () => {
     }
 
     try {
-      const response = await axios.post('http://192.168.128.15:3001/api/users/login', { email, password });
+      const response = await axios.post('https://yapp-production.up.railway.app/api/users/login', { email, password });
       const { token, user } = response.data;
       const role = user.role;
 
@@ -64,7 +65,7 @@ export const Inicio = () => {
 
   const validateEmail = (email: string) => {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
+    return re.test(String(email).toLocaleUpperCase());
   };
 
   return (
@@ -73,23 +74,38 @@ export const Inicio = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <Image style={style.logo} source={require('../../assets/Logo1.png')} />
+
       <TextInput
         value={email}
-        onChangeText={setEmail}
+        onChangeText={(text) => setEmail(text.toLowerCase())}
         style={style.input}
         placeholder='Correo Electrónico'
         keyboardType='email-address'
         autoCapitalize='none'
         placeholderTextColor={'#5A215E'}
       />
-      <TextInput
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        style={style.input}
-        placeholder='Contraseña'
-        placeholderTextColor={'#5A215E'}
-      />
+
+      {/* Contenedor de contraseña con botón de mostrar */}
+      <View style={style.passwordContainer}>
+        <TextInput
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={!showPassword}
+          style={style.inputPassword}
+          placeholder='Contraseña'
+          placeholderTextColor={'#5A215E'}
+        />
+        <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={style.showPasswordButton}>
+          <Text style={{ color: '#5A215E', fontWeight: 'bold' }}>
+            {showPassword ? '👁️' : '👁️‍🗨️'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <TouchableOpacity onPress={() => navigation.navigate('RecuperarContrasena')}>
+        <Text style={style.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
+      </TouchableOpacity>
+
+
       <TouchableOpacity style={style.button2} onPress={handleLogin}>
         <Text style={style.buttonText}>Entrar</Text>
       </TouchableOpacity>
@@ -104,6 +120,12 @@ const style = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  forgotPasswordText: {
+    color: '#5A215E',
+    fontSize: 14,
+    marginTop: 10,
+    textDecorationLine: 'underline',
   },
   logo: {
     width: 250,
@@ -120,6 +142,26 @@ const style = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: 'white',
     color: 'black'
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '90%',
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 25,
+    backgroundColor: 'white',
+    marginBottom: 10,
+  },
+  inputPassword: {
+    flex: 1,
+    height: 40,
+    paddingHorizontal: 10,
+    color: 'black',
+  },
+  showPasswordButton: {
+    padding: 10,
+    borderRadius: 25,
   },
   button2: {
     marginTop: 20,

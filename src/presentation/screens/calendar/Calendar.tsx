@@ -31,7 +31,7 @@ export const Dates = () => {
         throw new Error('Token not found');
       }
 
-      const response = await axios.get('http://10.0.2.2:3001/api/users/date', {
+      const response = await axios.get('https://yapp-production.up.railway.app/api/users/date', {
         headers: {
           'Authorization': 'Bearer ' + token
 

@@ -14,7 +14,6 @@ export const Class = () => {
 
       <View style={style.globalMargin}>
         <Image style={style.imageBoton} source={require("../../assets/Top.png")} />
-
         <ScrollView>
           <ClassSchedule />
           <Footer />
@@ -42,11 +41,11 @@ const style = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
 
-    marginBottom: 10,
+    marginBottom: 50,
 
   },
   imageBoton: {
-    height: 150,
+    height: 120,
     width: 150
   }
 })

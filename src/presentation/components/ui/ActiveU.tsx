@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator, TextInput, Linking } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import Icon from 'react-native-vector-icons/FontAwesome'; // Importa íconos
+import Communications from 'react-native-communications'; // Para enviar correos
+import { WhatsApp } from '../../icons/Icons';
+import { Email } from '../../icons/Icons';
 interface User {
   _id: string;
   name: string;
@@ -10,6 +13,7 @@ interface User {
   plan: string;
   planDuration: number;
   phonenumber: string;
+  role: string;
 }
 
 const ActiveU = () => {
@@ -23,13 +27,16 @@ const ActiveU = () => {
     const fetchUsers = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
-        const response = await axios.get('http://10.0.2.2:3001/api/users/users', {
+        const response = await axios.get('https://yapp-production.up.railway.app/api/users/users', {
           headers: { 'Authorization': 'Bearer ' + token }
         });
-        setUsers(response.data);
-        setFilteredUsers(response.data);
+
+        // Filtrar usuarios con rol 'user'
+        const usersWithRoleUser = response.data.filter((user: User) => user.role === 'user');
+
+        setUsers(usersWithRoleUser);
+        setFilteredUsers(usersWithRoleUser);
         setLoading(false);
-        console.log(response.data)
 
         const userRole = await AsyncStorage.getItem('role');
         if (userRole === 'admin') {
@@ -64,12 +71,23 @@ const ActiveU = () => {
     );
   }
 
-  const sendMessage = (phonenumber: string) => {
+  const sendWhatsAppMessage = (phonenumber: string) => {
     const message = "Hola, te invitamos a activar un plan de clases en nuestra plataforma.";
     const url = `whatsapp://send?phone=${phonenumber}&text=${encodeURIComponent(message)}`;
     Linking.openURL(url).catch(() => {
       alert("Asegúrate de tener WhatsApp instalado");
     });
+  };
+
+  const sendEmail = (email: string) => {
+    const subject = "Activa tu plan de clases";
+    const body = "Hola, te invitamos a activar un plan de clases en nuestra plataforma.";
+    const url = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    Linking.openURL(url)
+      .catch(() => {
+        alert("No se pudo abrir la aplicación de correo. Asegúrate de tener una aplicación de correo configurada.");
+      });
   };
 
   return (
@@ -93,9 +111,14 @@ const ActiveU = () => {
             <Text style={styles.userText}>Plan: {item.plan}</Text>
             <Text style={styles.userText}>Duración del Plan: {item.planDuration} días</Text>
             {item.plan === 'No tienes un plan' && (
-              <TouchableOpacity style={styles.whatsappButton} onPress={() => sendMessage(item.phonenumber)}>
+              <><TouchableOpacity style={styles.whatsappButton} onPress={() => sendWhatsAppMessage(item.phonenumber)}>
+                <WhatsApp />
                 <Text style={styles.buttonText}>Enviar mensaje por WhatsApp</Text>
-              </TouchableOpacity>
+              </TouchableOpacity><TouchableOpacity style={styles.whatsappButton2} onPress={() => sendEmail(item.email)}>
+                  <Email />
+                  <Text style={styles.buttonText}>Enviar mensaje por Email</Text>
+                </TouchableOpacity></>
+
             )}
           </View>
         )}
@@ -118,6 +141,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 10,
     backgroundColor: 'white',
+    color: '#5a215e'
   },
   userContainer: {
     marginBottom: 20,
@@ -151,16 +175,36 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
-  whatsappButton: {
+  buttonsContainer: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     marginTop: 10,
+  },
+  whatsappButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#25D366',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 15,
+    marginRight: 10,
+  },
+  whatsappButton2: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    backgroundColor: '#D44638',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 15,
+    marginRight: 10,
   },
   buttonText: {
     color: '#ffffff',
     textAlign: 'center',
+    marginLeft: 10,
   },
   errorText: {
     color: 'red',
@@ -175,7 +219,7 @@ const styles = StyleSheet.create({
 });
 
 export default ActiveU;
+
 function alert(arg0: string) {
   throw new Error('Function not implemented.');
 }
-

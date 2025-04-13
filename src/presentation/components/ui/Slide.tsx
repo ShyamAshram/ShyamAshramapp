@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     borderRadius: 20,
-    width: 200,
-    marginRight: 200
+    width: '105%',
+    marginRight: 0
   },
   scrollView: {
     width: screenWidth,
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   image: {
     width: screenWidth,
     height: 200,
-    borderRadius: 30
+    borderRadius: 20
   },
 });
 

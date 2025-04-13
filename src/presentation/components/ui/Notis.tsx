@@ -26,7 +26,7 @@ const NotificationUi = () => {
       const token = await AsyncStorage.getItem('token');
       if (!token) throw new Error('Token not found');
 
-      const response = await axios.get(`http://10.0.2.2:3001/api/notifications/me`, {
+      const response = await axios.get(`https://yapp-production.up.railway.app/api/notifications/me`, {
         headers: {
           'Authorization': 'Bearer ' + token
         }
@@ -46,7 +46,7 @@ const NotificationUi = () => {
       if (!token) throw new Error('Token not found');
 
       console.log(`Deleting notification with ID: ${id}`);
-      const response = await axios.delete(`http://10.0.2.2:3001/api/notifications/${id}`, {
+      const response = await axios.delete(`https://yapp-production.up.railway.app/api/notifications/${id}`, {
         headers: {
           Authorization: 'Bearer ' + token
         }
@@ -87,6 +87,11 @@ const NotificationUi = () => {
         renderItem={renderNotificationItem}
         keyExtractor={item => item._id}
         style={styles.notificationList}
+        ListEmptyComponent={
+          <View style={styles.notificationContainer}>
+            <Text style={styles.NonotificationTitle}>No hay notificaciones de momento</Text>
+          </View>
+        }
       />
 
     </View>
@@ -126,6 +131,13 @@ const styles = StyleSheet.create({
   },
   notificationTitle: {
     fontSize: 15,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color: '#D9A404'
+  },
+  NonotificationTitle: {
+    fontSize: 15,
+    textAlign: 'center',
     fontWeight: 'bold',
     marginBottom: 5,
     color: '#D9A404'

@@ -23,7 +23,7 @@ export const Registro = () => {
     }
 
     try {
-      const response = await axios.post('http://10.0.2.2:3001/api/users/register', {
+      const response = await axios.post('https://yapp-production.up.railway.app/api/users/register', {
         name,
         email,
         password,

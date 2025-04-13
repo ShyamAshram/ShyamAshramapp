@@ -9,6 +9,7 @@ interface User {
   email: string;
   plan: string;
   planDuration: number;
+  role: string; // Asegúrate de que el campo 'role' esté incluido en la interfaz
 }
 
 const Asignacion = () => {
@@ -22,11 +23,15 @@ const Asignacion = () => {
     const fetchUsers = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
-        const response = await axios.get('http://10.0.2.2:3001/api/users/users', {
+        const response = await axios.get('https://yapp-production.up.railway.app/api/users/users', {
           headers: { 'Authorization': 'Bearer ' + token }
         });
-        setUsers(response.data);
-        setFilteredUsers(response.data);
+
+        // Filtrar usuarios con rol 'user' en el frontend (opcional)
+        const usersWithRoleUser = response.data.filter((user: { role: string; }) => user.role === 'user');
+
+        setUsers(usersWithRoleUser);
+        setFilteredUsers(usersWithRoleUser);
         setLoading(false);
 
         const userRole = await AsyncStorage.getItem('role');
@@ -43,7 +48,6 @@ const Asignacion = () => {
   }, []);
 
   useEffect(() => {
-
     const filtered = users.filter(user =>
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       user.email.toLowerCase().includes(searchQuery.toLowerCase())
@@ -58,7 +62,7 @@ const Asignacion = () => {
   const updateUserPlan = async (userId: string, newPlan: string, newDuration: number) => {
     try {
       const token = await AsyncStorage.getItem('token');
-      const response = await axios.put(`http://10.0.2.2:3001/api/users/${userId}`, {
+      const response = await axios.put(`https://yapp-production.up.railway.app/api/users/${userId}`, {
         plan: newPlan,
         planDuration: newDuration
       }, {
@@ -108,6 +112,9 @@ const Asignacion = () => {
             <Text style={styles.userText}>Correo: {item.email}</Text>
             <Text style={styles.userText}>Plan: {item.plan}</Text>
             <Text style={styles.userText}>Duración del Plan: {item.planDuration} días</Text>
+            <TouchableOpacity style={styles.button} onPress={() => updateUserPlan(item._id, 'Anualidad', 365)}>
+              <Text style={styles.buttonText}>Asignar Plan Anualidad</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => updateUserPlan(item._id, 'Ilimitado', 30)}>
               <Text style={styles.buttonText}>Asignar Plan Ilimitado</Text>
             </TouchableOpacity>
@@ -117,6 +124,10 @@ const Asignacion = () => {
             <TouchableOpacity style={styles.button} onPress={() => updateUserPlan(item._id, '1 clase', 1)}>
               <Text style={styles.buttonText}>Asignar Plan 1 clase</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.button2} onPress={() => updateUserPlan(item._id, 'No tienes un plan', 0)}>
+              <Text style={styles.buttonText}>Quitar plan</Text>
+            </TouchableOpacity>
+
           </View>
         )}
       />
@@ -128,7 +139,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f0f0f0', // Fondo general de la pantalla
+    backgroundColor: '#f0f0f0',
   },
   searchInput: {
     height: 40,
@@ -138,12 +149,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 10,
     backgroundColor: 'white',
+    color: '#5a215e'
   },
   userContainer: {
     marginBottom: 20,
     padding: 20,
     borderRadius: 10,
-    backgroundColor: '#ffffff', // Fondo de cada tarjeta de usuario
+    backgroundColor: '#ffffff',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -152,18 +164,25 @@ const styles = StyleSheet.create({
   },
   userText: {
     fontSize: 16,
-    color: '#333333', // Color del texto
+    color: '#333333',
     marginBottom: 5,
   },
   button: {
     marginTop: 10,
-    backgroundColor: '#5a215e', // Color del botón
+    backgroundColor: '#5a215e',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 15,
+  },
+  button2: {
+    marginTop: 10,
+    backgroundColor: 'red',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 15,
   },
   buttonText: {
-    color: '#ffffff', // Color del texto del botón
+    color: '#ffffff',
     textAlign: 'center',
   },
   errorText: {

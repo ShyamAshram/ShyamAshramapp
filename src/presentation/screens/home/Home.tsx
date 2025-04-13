@@ -18,6 +18,9 @@ import Plan3 from "../plans/Plan3";
 import { Class } from "../class/Class";
 import { Alerts } from "../notifications/Notification";
 import Footer from "../../components/ui/Foot";
+import Plan4 from "../plans/Plan4";
+import Plan5 from "../plans/Plan5";
+import Plan6 from "../plans/Plan6";
 
 export const HomeScreen = () => {
   const navigation = useNavigation<any>();
@@ -44,13 +47,14 @@ export const HomeScreen = () => {
         throw new Error('Token not found');
       }
 
-      const response = await axios.get('http://10.0.2.2:3001/api/users/me', {
+      const response = await axios.get('https://yapp-production.up.railway.app/api/users/me', {
         headers: {
           'Authorization': 'Bearer ' + token
         }
       });
 
       const userData = response.data;
+
 
       setUserName(userData.name);
       setPlan(userData.plan);
@@ -60,6 +64,7 @@ export const HomeScreen = () => {
 
       const startDate = new Date(userData.planStartDate);
       const currentDate = new Date();
+
 
       // Si el plan es ilimitado, calcula el progreso basado en días restantes
       if (userData.plan === 'Ilimitado') {
@@ -99,13 +104,23 @@ export const HomeScreen = () => {
         return 30;
     }
   };
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem('token');
+      await AsyncStorage.removeItem('role');
+      // console.log('Token REMOVE')
+      navigation.navigate('Landing');
+    } catch (error) {
+      // console.error('Error al cerrar sesión:', error);
+    }
+  };
 
   return (
     <SafeAreaView style={globalStyles.mainContainer}>
       <View style={globalStyles.header}>
         <Title text={`Bienvenido, ${userName}`} />
         <View style={globalStyles.profileImageContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate(Profile)} style={globalStyles.profileImage}>
+          <TouchableOpacity onPress={handleLogout} style={globalStyles.profileImage}>
             <Set />
           </TouchableOpacity>
         </View>
@@ -126,8 +141,8 @@ export const HomeScreen = () => {
             borderWidth={0}
           />
           <View style={globalStyles.progText}>
-            <Text style={globalStyles.progressText}>Plan:<Text style={{ color: '#D9A404' }}> {plan} </Text></Text>
-            <Text style={globalStyles.progressText}>Días restantes: <Text style={{ color: '#D9A404' }}>{daysLeft} días</Text></Text>
+            <Text style={globalStyles.progressText}>Plan:<Text style={{ color: '#D9A404', fontSize: 11 }}> {plan} </Text></Text>
+            <Text style={globalStyles.progressText}>Días restantes: <Text style={{ color: '#D9A404', fontSize: 11 }}>{daysLeft} días</Text></Text>
           </View>
         </View>
         <View style={globalStyles.intoEnd}>
@@ -148,41 +163,43 @@ export const HomeScreen = () => {
         </Pressable>
         <View style={globalStyles.menu}>
           <View style={globalStyles.containerplans}>
-            <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plans)}>
+            <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan4)}>
               <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo1.png")} />
+              <Text style={globalStyles.textPlan}>ANUALIDAD</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={globalStyles.containerplans}>
+            <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan5)}>
+              <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo8.png")} />
+              <Text style={globalStyles.textPlan}>6 MESES</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={globalStyles.containerplans}>
+            <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan6)}>
+              <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo5.png")} />
+              <Text style={globalStyles.textPlan}>3 MESES</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={globalStyles.containerplans}>
+            <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plans)}>
+              <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo7.png")} />
               <Text style={globalStyles.textPlan}>ILIMITADO</Text>
             </TouchableOpacity>
           </View>
           <View style={globalStyles.containerplans}>
             <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan2)}>
-              <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo2.png")} />
+              <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo4.png")} />
               <Text style={globalStyles.textPlan}>4 CLASES</Text>
             </TouchableOpacity>
           </View>
           <View style={globalStyles.containerplans}>
             <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan3)}>
-              <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo3.png")} />
-              <Text style={globalStyles.textPlan}>ESTUDIANTES</Text>
+              <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo6.png")} />
+              <Text style={globalStyles.textPlan}>1 Clase</Text>
             </TouchableOpacity>
           </View>
-          <View style={globalStyles.containerplans}>
-            <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan3)}>
-              <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo3.png")} />
-              <Text style={globalStyles.textPlan}>ANUALIDAD</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={globalStyles.containerplans}>
-            <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan3)}>
-              <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo3.png")} />
-              <Text style={globalStyles.textPlan}>6 MESES</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={globalStyles.containerplans}>
-            <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan3)}>
-              <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo3.png")} />
-              <Text style={globalStyles.textPlan}>3 MESES</Text>
-            </TouchableOpacity>
-          </View>
+
+
         </View>
         <Footer />
       </ScrollView>

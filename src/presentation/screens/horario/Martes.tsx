@@ -26,7 +26,7 @@ const Martes1 = () => {
 
   const fetchClassSchedules = async () => {
     try {
-      const response = await axios.get(`http://10.0.2.2:3001/api/classes/${dayOfWeek}`);
+      const response = await axios.get(`https://nuevapruebaapp.fly.dev/api/classes/${dayOfWeek}`);
       console.log('Horarios:', response.data);
       setClassSchedules(response.data); // Almacena los horarios
     } catch (error) {
@@ -35,12 +35,10 @@ const Martes1 = () => {
       setLoading(false);
     }
   };
-
-  // Función para inscribir a la clase
   const fetchUserRegistrations = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
-      const response = await axios.get('http://10.0.2.2:3001/api/teach/all-registrations', {
+      const response = await axios.get('https://yapp-production.up.railway.app/api/teach/all-registrations', {
         headers: { Authorization: `Bearer ${token}` },
       });
       const registeredClassIds = response.data.map((registration: { classId: string }) => registration.classId);
@@ -59,7 +57,7 @@ const Martes1 = () => {
     try {
       const token = await AsyncStorage.getItem('token');
       const response = await axios.post(
-        'http://10.0.2.2:3001/api/classes/registerClass',
+        'https://yapp-production.up.railway.app/api/classes/registerClass',
         { classId, dayOfWeek },
         { headers: { Authorization: `Bearer ${token}` } }
       );

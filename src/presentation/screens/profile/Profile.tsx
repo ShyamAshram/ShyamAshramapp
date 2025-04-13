@@ -26,7 +26,7 @@ export const Profile = () => {
         throw new Error('Token not found');
       }
 
-      const response = await axios.get('http://10.0.2.2:3001/api/users/me', {
+      const response = await axios.get('https://yapp-production.up.railway.app/api/users/me', {
         headers: {
           'Authorization': 'Bearer ' + token
         }

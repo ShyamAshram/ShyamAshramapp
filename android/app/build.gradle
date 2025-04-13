@@ -1,10 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
-<<<<<<< HEAD
 apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
-=======
->>>>>>> 4dbfdc0 (TODO OK)
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -97,7 +94,6 @@ android {
             keyPassword 'android'
         }
     }
-<<<<<<< HEAD
     signingConfigs {
     release {
       if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
@@ -108,8 +104,6 @@ android {
       }
     }
   }
-=======
->>>>>>> 4dbfdc0 (TODO OK)
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
@@ -134,12 +128,9 @@ dependencies {
         implementation jscFlavor
     }
 }
-<<<<<<< HEAD
 
 project.ext.vectoricons = [
     iconFontNames: [ 'Ionicons.ttf', 'EvilIcons.ttf' ] // Specify font files
 ]
 
 
-=======
->>>>>>> 4dbfdc0 (TODO OK)

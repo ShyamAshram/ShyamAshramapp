@@ -90,7 +90,7 @@ export const globalStyles = StyleSheet.create({
     width: 50,
     height: 50,
     justifyContent: 'center',
-    alignContent: 'center'
+    alignContent: 'space-between'
 
 
   },
@@ -99,7 +99,7 @@ export const globalStyles = StyleSheet.create({
     width: '100%',
     height: '100%',
     marginTop: 30,
-    marginLeft: 2
+    marginLeft: 100
 
   },
   SetProfileImageContainer: {
@@ -338,16 +338,15 @@ export const globalStyles = StyleSheet.create({
     flexDirection: 'column',
     direction: 'inherit',
     width: '100%',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     position: 'relative',
-
-
-
+    marginRight:20,
+    paddingLeft:10,
   },
   textPlan: {
-    color: '#FFF',
-    fontSize: 30,
+    color: '#fdffff',
+    fontSize: 22,
     fontWeight: 'bold',
     fontFamily: 'Times New Roman',
     textAlign: 'center',
@@ -362,17 +361,11 @@ export const globalStyles = StyleSheet.create({
     borderRadius: 20,
     flex: 1,
     position: 'relative',
-
-
   },
 
 
   menu: {
-    flexDirection: 'column',
+    flexDirection: 'row',
     position: 'relative',
-
-
-
-
   },
 });

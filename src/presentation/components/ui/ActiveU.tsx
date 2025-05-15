@@ -105,21 +105,21 @@ const ActiveU = () => {
           <View style={styles.userContainer}>
             <View style={styles.header}>
               <View style={[styles.statusDot, { backgroundColor: item.plan === 'No tienes un plan' ? 'gray' : 'green' }]} />
-              <Text style={styles.userName}>Nombre: {item.name}</Text>
+              <Text style={[styles.userName, {color: item.plan === 'No tienes un plan' ? 'gray': 'green'}]}>Nombre: {item.name}</Text>
             </View>
             <Text style={styles.userText}>Correo: {item.email}</Text>
             <Text style={styles.userText}>Plan: {item.plan}</Text>
             <Text style={styles.userText}>Duración del Plan: {item.planDuration} días</Text>
-            {item.plan === 'No tienes un plan' && (
-              <><TouchableOpacity style={styles.whatsappButton} onPress={() => sendWhatsAppMessage(item.phonenumber)}>
+            <>
+              <TouchableOpacity style={styles.whatsappButton} onPress={() => sendWhatsAppMessage(item.phonenumber)}>
                 <WhatsApp />
                 <Text style={styles.buttonText}>Enviar mensaje por WhatsApp</Text>
               </TouchableOpacity><TouchableOpacity style={styles.whatsappButton2} onPress={() => sendEmail(item.email)}>
                   <Email />
                   <Text style={styles.buttonText}>Enviar mensaje por Email</Text>
-                </TouchableOpacity></>
+                </TouchableOpacity>
+            </>
 
-            )}
           </View>
         )}
       />
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     paddingHorizontal: 10,
     marginBottom: 10,
-    backgroundColor: 'white',
+    backgroundColor: '#333',
     color: '#5a215e'
   },
   userContainer: {

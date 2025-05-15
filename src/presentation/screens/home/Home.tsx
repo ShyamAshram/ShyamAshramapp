@@ -86,7 +86,7 @@ export const HomeScreen = () => {
       setUnreadNotifications(unreadNotificationsCount);
 
     } catch (error) {
-      console.error('Error al obtener los detalles del usuario:', error);
+      console.log('Error al obtener los detalles del usuario:', error);
     }
   };
 
@@ -161,44 +161,49 @@ export const HomeScreen = () => {
         <Pressable style={globalStyles.buttonOver}>
           <Text style={globalStyles.planText}>PLANES</Text>
         </Pressable>
-        <View style={globalStyles.menu}>
-          <View style={globalStyles.containerplans}>
-            <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan4)}>
-              <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo1.png")} />
-              <Text style={globalStyles.textPlan}>ANUALIDAD</Text>
-            </TouchableOpacity>
+        <View style={{ flexDirection: 'column' }}>
+          <View style={globalStyles.menu}>
+            <View style={globalStyles.containerplans}>
+              <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan4)}>
+                <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo1.png")} />
+                <Text style={globalStyles.textPlan}>ANUALIDAD</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={globalStyles.containerplans}>
+              <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan5)}>
+                <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo6.png")} />
+                <Text style={globalStyles.textPlan}>6 MESES</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={globalStyles.containerplans}>
-            <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan5)}>
-              <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo8.png")} />
-              <Text style={globalStyles.textPlan}>6 MESES</Text>
-            </TouchableOpacity>
+          <View style={globalStyles.menu}>
+            <View style={globalStyles.containerplans}>
+              <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan6)}>
+                <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo5.png")} />
+                <Text style={globalStyles.textPlan}>3 MESES</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={globalStyles.containerplans}>
+              <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plans)}>
+                <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo7.png")} />
+                <Text style={globalStyles.textPlan}>ILIMITADO</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={globalStyles.containerplans}>
-            <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan6)}>
-              <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo5.png")} />
-              <Text style={globalStyles.textPlan}>3 MESES</Text>
-            </TouchableOpacity>
+          <View style={globalStyles.menu}>
+            <View style={globalStyles.containerplans}>
+              <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan2)}>
+                <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo4.png")} />
+                <Text style={globalStyles.textPlan}>4 CLASES</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={globalStyles.containerplans}>
+              <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan3)}>
+                <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo8.png")} />
+                <Text style={globalStyles.textPlan}>1 Clase</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={globalStyles.containerplans}>
-            <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plans)}>
-              <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo7.png")} />
-              <Text style={globalStyles.textPlan}>ILIMITADO</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={globalStyles.containerplans}>
-            <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan2)}>
-              <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo4.png")} />
-              <Text style={globalStyles.textPlan}>4 CLASES</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={globalStyles.containerplans}>
-            <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan3)}>
-              <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo6.png")} />
-              <Text style={globalStyles.textPlan}>1 Clase</Text>
-            </TouchableOpacity>
-          </View>
-
 
         </View>
         <Footer />

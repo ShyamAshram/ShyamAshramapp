@@ -112,6 +112,11 @@ const StudentRegistrationModal: React.FC<Props> = ({ visible, onClose }) => {
                             <Text style={styles.buttonText}>Inscribir</Text>
                         </TouchableOpacity>
                     </View>
+                    <View style={styles.buttonContainer2}>
+                        <TouchableOpacity style={styles.registerButton}>
+                            <Text style={styles.buttonText}>Añadir a la clase</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         </Modal>
@@ -148,6 +153,11 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+     buttonContainer2: {
+        flexDirection: 'row',
+        marginTop:2,
         justifyContent: 'space-between',
     },
     cancelButton: {

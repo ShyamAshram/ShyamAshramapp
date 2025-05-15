@@ -35,7 +35,7 @@ const Stack = createStackNavigator();
 
 function Navigator() {
     return (
-        <Stack.Navigator initialRouteName="CheckLogin" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="Landing" screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Landing" component={Landing} />
             <Stack.Screen name="CheckLogin" component={CheckLogin} />
             <Stack.Screen name="Signin" component={Signin} />

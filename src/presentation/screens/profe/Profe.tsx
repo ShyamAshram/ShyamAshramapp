@@ -21,8 +21,9 @@ import { useNavigation } from '@react-navigation/native';
 import styles from './style';
 
 interface Student {
-  _id: string;
+  _id: any;
   userName: string;
+  userId:any;
   userEmail: string;
   instructorName: string;
   date: string;
@@ -55,10 +56,7 @@ const Profe = () => {
         headers: { Authorization: 'Bearer ' + token },
       });
 
-      // Filtrar estudiantes cuyos días no estén en `savedDays`
-      const filteredStudents = response.data.filter((student: { dayOfWeek: string; }) => !savedDays.has(student.dayOfWeek));
-
-      setStudents(filteredStudents);
+      setStudents(response.data); // Ya viene filtrado desde el backend
     } catch (error) {
       console.error('Error fetching registrations:', error);
       Alert.alert('Error', 'No se pudieron cargar las inscripciones');
@@ -66,6 +64,7 @@ const Profe = () => {
       setLoading(false);
     }
   };
+
 
 
 
@@ -122,14 +121,15 @@ const Profe = () => {
 
 
 const saveAttendanceList = async () => {
+  console.log('students', JSON.stringify(students, null, 2))
   const attendedStudents = students
     .filter(student => student.attended && student.dayOfWeek === selectedDay)
     .map(student => ({
-      _id: student._id,
+      _id: student?.userId?._id,
       userName: student.userName,
       userEmail: student.userEmail
     }));
-
+    console.log('lista', JSON.stringify(attendedStudents, null, 2))
   if (attendedStudents.length === 0) {
     Alert.alert('Aviso', 'No hay estudiantes con asistencia marcada.');
     return;
@@ -137,14 +137,13 @@ const saveAttendanceList = async () => {
 
   try {
     const token = await AsyncStorage.getItem('token');
-    await axios.post(
+    const response = await axios.post(
       'https://yapp-production.up.railway.app/api/list/save-attendance',
-      { attendedStudents },
+      { attendedStudents, instructorId: 2  },
       { headers: { Authorization: 'Bearer ' + token } }
     );
-
+    console.log(response)
     Alert.alert('Lista guardada', 'La lista de estudiantes que asistieron fue guardada con éxito.');
-
     setSavedDays(prevSavedDays => new Set([...prevSavedDays, selectedDay]));
 
     setStudents(prevStudents =>
@@ -156,9 +155,6 @@ const saveAttendanceList = async () => {
 }
 
 };
-
-
-
 
   useEffect(() => {
     const loadSavedDays = async () => {
@@ -173,9 +169,6 @@ const saveAttendanceList = async () => {
   useEffect(() => {
     AsyncStorage.setItem('savedDays', JSON.stringify(Array.from(savedDays)));
   }, [savedDays]);
-
-
-
 
   useEffect(() => {
     getUserDetails();

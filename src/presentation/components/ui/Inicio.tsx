@@ -3,6 +3,7 @@ import { Alert, Image, TouchableOpacity, TextInput, Text, StyleSheet, KeyboardAv
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { HOST_URL } from '../../../../utils/envconfig';
 
 export const Inicio = () => {
   const navigation = useNavigation<any>();
@@ -27,7 +28,7 @@ export const Inicio = () => {
     }
 
     try {
-      const response = await axios.post('https://yapp-production.up.railway.app/api/users/login', { email, password });
+      const response = await axios.post(`${HOST_URL}/api/users/login`, { email, password });
       const { token, user } = response.data;
       const role = user.role;
 
@@ -101,14 +102,17 @@ export const Inicio = () => {
           </Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate('RecuperarContrasena')}>
-        <Text style={style.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
-      </TouchableOpacity>
+      <View style={style.recoverPass}>
+        <TouchableOpacity onPress={() => navigation.navigate('RecuperarContrasena')}>
+          <Text style={style.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
+        </TouchableOpacity>
+      </View>
 
-
+    <View style={{width:'100%', justifyContent:'center',alignItems:'center'}}>
       <TouchableOpacity style={style.button2} onPress={handleLogin}>
         <Text style={style.buttonText}>Entrar</Text>
       </TouchableOpacity>
+    </View>
     </KeyboardAvoidingView>
   );
 };
@@ -123,7 +127,7 @@ const style = StyleSheet.create({
   },
   forgotPasswordText: {
     color: '#5A215E',
-    fontSize: 14,
+    fontSize: 12,
     marginTop: 10,
     textDecorationLine: 'underline',
   },
@@ -177,6 +181,11 @@ const style = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  recoverPass:{
+    width:'100%',
+    marginLeft:200,
+    padding: 5,
+  }
 });
 
 export default Inicio;

@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { Inicio } from '../../components/ui/Inicio';
 import Footer from '../../components/ui/Foot';
+import { HOST_URL } from '../../../../utils/envconfig';
 
 export const Signin = () => {
+
+  useEffect(()=>{
+    console.log('HOSTTTTT', HOST_URL)
+  })
+
+
   return (
     <KeyboardAvoidingView
       style={style.containerMain}

@@ -4,20 +4,58 @@ import axios from 'axios';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { HOST_URL } from '../../../../utils/envconfig';
 
 interface Props {
     visible: boolean;
+    data:any
     onClose: () => void;
 
 }
 
-const StudentRegistrationModal: React.FC<Props> = ({ visible, onClose }) => {
+const StudentRegistrationModal: React.FC<Props> = ({data,  visible, onClose }) => {
+    console.log('data desde modal', data);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [phonenumber, setPhoneNumber] = useState('');
     const [birthDate, setBirthDate] = useState<Date | null>(null);
     const [showDatePicker, setShowDatePicker] = useState(false);
+    const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    const hoy = new Date();
+    const diaActual = diasSemana[hoy.getDay()];
+    const [newStudentId, setNewStudentId] = useState<string | null>(null);
+    console.log('Día actual:', diaActual);
+    console.log('id del nuevo estudiante:', newStudentId);
+
+  const handleAddStudentToClass = async (classId: string) => {
+  if (!newStudentId) {
+    Alert.alert('Error', 'Debes registrar al estudiante primero');
+    return;
+  }
+
+  try {
+    const token = await AsyncStorage.getItem('token');
+
+    const response = await axios.post(`${HOST_URL}/api/classes/registerClass`, {
+      classId,
+      dayOfWeek:diaActual,
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    console.log('Respuesta de inscripción:', response.data);
+
+    Alert.alert('Inscrito', `El estudiante fue inscrito a la clase del ${data.dayOfWeek}`);
+    setNewStudentId(null);
+    onClose();
+  } catch (error) {
+    console.error('Error al inscribir al estudiante:', error);
+    Alert.alert('Error', 'No se pudo inscribir el estudiante a la clase');
+  }
+};
+
 
     const [role] = useState('');
 
@@ -29,7 +67,7 @@ const StudentRegistrationModal: React.FC<Props> = ({ visible, onClose }) => {
         }
 
         try {
-            const response = await axios.post('https://yapp-production.up.railway.app/api/users/register', {
+            const response = await axios.post(`${HOST_URL}/api/users/register`, {
                 name,
                 email,
                 password,
@@ -38,6 +76,8 @@ const StudentRegistrationModal: React.FC<Props> = ({ visible, onClose }) => {
                 role
             });
 
+            const studentId = response.data._id;
+            setNewStudentId(studentId);
             console.log('Usuario registrado:', response.data);
             Alert.alert('Éxito', 'Usuario registrado correctamente');
             setName('');
@@ -113,7 +153,7 @@ const StudentRegistrationModal: React.FC<Props> = ({ visible, onClose }) => {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.buttonContainer2}>
-                        <TouchableOpacity style={styles.registerButton}>
+                        <TouchableOpacity style={[styles.registerButton, { opacity: newStudentId ? 1 : 0.5 }]} onPress={() => handleAddStudentToClass(data.classId)} disabled={!newStudentId}>
                             <Text style={styles.buttonText}>Añadir a la clase</Text>
                         </TouchableOpacity>
                     </View>

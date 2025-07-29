@@ -15,9 +15,8 @@ export const Title = ({ text, safe = false, white = false }: Props) => {
         <Text style={{
             ...globalStyles.title,
             marginTop: safe ? top : 0,
-            marginBottom: 20,
             marginLeft: 15,
-            color: '#fff'
+            color: '#fff',
 
         }}>{text}</Text>
     )
@@ -33,8 +32,8 @@ export const SubTitle = ({ text, safe = false, white = false }: Props) => {
             marginBottom: 0,
             color: white ? 'white' : colors.text,
             alignItems: 'center',
-            textAlign: 'center'
-
+            textAlign: 'center',
+            fontFamily:'Pacifico-Regular'
 
         }}>
 

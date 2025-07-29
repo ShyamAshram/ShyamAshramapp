@@ -5,6 +5,7 @@ import { globalStyles } from "../../../config/theme/Theme";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { HOST_URL } from "../../../../utils/envconfig";
 
 export const Profile = () => {
   const navigation = useNavigation<any>();
@@ -26,7 +27,7 @@ export const Profile = () => {
         throw new Error('Token not found');
       }
 
-      const response = await axios.get('https://yapp-production.up.railway.app/api/users/me', {
+      const response = await axios.get(`${HOST_URL}/api/users/me`, {
         headers: {
           'Authorization': 'Bearer ' + token
         }

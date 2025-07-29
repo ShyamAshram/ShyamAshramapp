@@ -20,9 +20,8 @@ export const colors: ThemeColors = {
 export const globalStyles = StyleSheet.create({
   title: {
     fontSize: 28,
-    fontWeight: "bold",
     color: colors.text,
-    fontFamily: 'Cochin',
+    fontFamily: 'Quicksand-Bold',
   },
 
   subTitle: {
@@ -71,12 +70,13 @@ export const globalStyles = StyleSheet.create({
 
   header: {
     flexDirection: 'row',
-    alignItems: 'baseline',
-    height: 90,
+    alignItems: 'center',
+    height: 70,
+    borderBottomRightRadius:10,
+    borderBottomLeftRadius:10,
+    elevation:5,
     justifyContent: 'space-between',
     backgroundColor: '#5a215e'
-
-
   },
   header2: {
     flexDirection: 'row',
@@ -90,16 +90,18 @@ export const globalStyles = StyleSheet.create({
     width: 50,
     height: 50,
     justifyContent: 'center',
-    alignContent: 'space-between'
+    alignContent: 'center'
 
 
   },
   profileImage: {
-    color: '#333',
-    width: '100%',
+    width: '10%',
     height: '100%',
-    marginTop: 30,
-    marginLeft: 100
+    paddingVertical:5, 
+    justifyContent: 'center',
+    alignContent: 'center',
+    marginTop: 0,
+    marginLeft: 0
 
   },
   SetProfileImageContainer: {
@@ -129,6 +131,7 @@ export const globalStyles = StyleSheet.create({
 
   },
   progText: {
+    
     width: '100%',
     flexDirection: 'row'
   },
@@ -171,7 +174,7 @@ export const globalStyles = StyleSheet.create({
     marginTop: 10,
     width: 90,
     padding: 6,
-    borderRadius: 20,
+    borderRadius: 10,
     backgroundColor: '#1e90ff',
     marginBottom: 10,
     alignContent: 'space-between',
@@ -181,10 +184,17 @@ export const globalStyles = StyleSheet.create({
   progressContainer: {
     width: '100%',
     flex: 1,
-    padding: 25,
+    padding: 10,
+    borderWidth:1,
+    elevation:10,
+    shadowColor:'#333',
+    shadowOffset:{width:0, height:1},
+    shadowRadius:6,
+    shadowOpacity:0.35,
     justifyContent: 'flex-start',
     borderRadius: 15,
-    backgroundColor: '#333',
+    backgroundColor: '#FFF',
+    marginTop:20,
     marginBottom: 10,
     alignContent: 'flex-start',
   },
@@ -195,8 +205,9 @@ export const globalStyles = StyleSheet.create({
     shadowRadius: 5,
   },
   progressText: {
-    color: '#FFF',
-    fontSize: 16,
+    color: '#333',
+    fontSize: 15,
+    fontFamily:'Quicksand-Bold',
     padding: 5
   },
   progressBar: {
@@ -215,8 +226,7 @@ export const globalStyles = StyleSheet.create({
   intoEnd: {
     flexDirection: 'row',
     width: '100%',
-    height: '100%',
-    flex: 1,
+    height: 50,
 
   },
 
@@ -224,6 +234,7 @@ export const globalStyles = StyleSheet.create({
     width: '45%',
     height: '100%',
     padding: 5,
+    elevation:10,
     margin: '2%',
     alignItems: 'center',
     position: 'relative',
@@ -234,6 +245,7 @@ export const globalStyles = StyleSheet.create({
   },
   containerIconsA: {
     width: '45%',
+    elevation:10,
     height: '100%',
     padding: 5,
     position: 'relative',
@@ -249,13 +261,13 @@ export const globalStyles = StyleSheet.create({
   optionText: {
     color: '#FFF',
     fontSize: 15,
-    fontFamily: 'Times New Roman',
+    fontFamily: 'Quicksand-Bold',
     textAlign: 'left',
   },
   planText: {
     color: '#FFF',
     fontSize: 14,
-    fontFamily: 'Times New Roman',
+    fontFamily: 'Quicksand-Bold',
     textAlign: 'center',
   },
   notification: {
@@ -345,10 +357,9 @@ export const globalStyles = StyleSheet.create({
     paddingLeft:10,
   },
   textPlan: {
-    color: '#fdffff',
-    fontSize: 22,
-    fontWeight: 'bold',
-    fontFamily: 'Times New Roman',
+    color: '#D9A404',
+    fontSize: 16,
+    fontFamily: 'Quicksand-Bold',
     textAlign: 'center',
     justifyContent: 'center',
     position: 'absolute',
@@ -356,16 +367,19 @@ export const globalStyles = StyleSheet.create({
   },
   containerplans: {
     width: '100%',
-    height: 80,
+    height: 70,
     marginBottom: 10,
-    borderRadius: 20,
+    borderRadius: 20, 
+    justifyContent:'center',
+    alignItems:'center',
     flex: 1,
-    position: 'relative',
   },
 
 
   menu: {
     flexDirection: 'row',
-    position: 'relative',
+    justifyContent:'center',
+    alignItems:'center',
+    height:100,
   },
 });

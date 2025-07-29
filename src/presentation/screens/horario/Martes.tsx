@@ -4,7 +4,8 @@ import axios from 'axios';
 import { Card } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { HOST_URL } from '../../../../utils/envconfig';
+import styles from './styles';
 // Define la interfaz para el horario de clases
 interface ClassSchedule {
   _id: string;
@@ -26,7 +27,7 @@ const Martes1 = () => {
 
   const fetchClassSchedules = async () => {
     try {
-      const response = await axios.get(`https://nuevapruebaapp.fly.dev/api/classes/${dayOfWeek}`);
+      const response = await axios.get(`${HOST_URL}/api/classes/${dayOfWeek}`);
       console.log('Horarios:', response.data);
       setClassSchedules(response.data); // Almacena los horarios
     } catch (error) {
@@ -38,7 +39,7 @@ const Martes1 = () => {
   const fetchUserRegistrations = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
-      const response = await axios.get('https://yapp-production.up.railway.app/api/teach/all-registrations', {
+      const response = await axios.get(`${HOST_URL}/api/teach/all-registrations`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const registeredClassIds = response.data.map((registration: { classId: string }) => registration.classId);
@@ -57,7 +58,7 @@ const Martes1 = () => {
     try {
       const token = await AsyncStorage.getItem('token');
       const response = await axios.post(
-        'https://yapp-production.up.railway.app/api/classes/registerClass',
+        `${HOST_URL}/api/classes/registerClass`,
         { classId, dayOfWeek },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -98,56 +99,5 @@ const Martes1 = () => {
     </ScrollView>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-    marginTop: 50
 
-  },
-  card: {
-    marginBottom: 20,
-    padding: 60,
-  },
-  header: {
-    color: '#5a215e',
-    fontSize: 30,
-    fontWeight: 'bold',
-    textAlign: 'center'
-
-  },
-  label: {
-    color: '#1C495E',
-    fontSize: 16,
-    marginVertical: 5,
-    fontWeight: 'bold'
-  },
-  info: {
-    fontSize: 16,
-    marginVertical: 5,
-    fontWeight: 'bold',
-    color: '#FFC71F'
-  },
-  buttonday: {
-    width: "70%",
-    borderRadius: 20,
-    height: 50,
-    backgroundColor: '#D9A404',
-    alignContent: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    marginBottom: 30,
-  },
-  day: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    marginLeft: 10,
-    color: '#FFFF'
-
-
-  },
-});
 export default Martes1;

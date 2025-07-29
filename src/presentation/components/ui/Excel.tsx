@@ -14,6 +14,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as XLSX from 'xlsx';
 import RNFS from 'react-native-fs';
+import { HOST_URL } from '../../../../utils/envconfig';
 
 interface User {
     _id: string;
@@ -37,7 +38,7 @@ const Excel = () => {
         const fetchUsers = async () => {
             try {
                 const token = await AsyncStorage.getItem('token');
-                const response = await axios.get('https://yapp-production.up.railway.app/api/users/users', {
+                const response = await axios.get(`${HOST_URL}/api/users/users`, {
                     headers: { 'Authorization': 'Bearer ' + token }
                 });
 

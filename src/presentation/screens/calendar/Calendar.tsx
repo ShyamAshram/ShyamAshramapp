@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import { globalStyles } from "../../../config/theme/Theme";
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { HOST_URL } from "../../../../utils/envconfig";
 
 export const Dates = () => {
   const [userName, setUserName] = useState('');
@@ -31,7 +32,7 @@ export const Dates = () => {
         throw new Error('Token not found');
       }
 
-      const response = await axios.get('https://yapp-production.up.railway.app/api/users/date', {
+      const response = await axios.get(`${HOST_URL}/api/users/date`, {
         headers: {
           'Authorization': 'Bearer ' + token
 

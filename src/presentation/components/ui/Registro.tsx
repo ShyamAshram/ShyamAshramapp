@@ -4,6 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
+import { HOST_URL } from '../../../../utils/envconfig';
 
 export const Registro = () => {
   const navigation = useNavigation<any>();
@@ -23,7 +24,7 @@ export const Registro = () => {
     }
 
     try {
-      const response = await axios.post('https://yapp-production.up.railway.app/api/users/register', {
+      const response = await axios.post(`${HOST_URL}/api/users/register`, {
         name,
         email,
         password,

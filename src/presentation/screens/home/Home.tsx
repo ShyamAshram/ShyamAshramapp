@@ -21,6 +21,7 @@ import Footer from "../../components/ui/Foot";
 import Plan4 from "../plans/Plan4";
 import Plan5 from "../plans/Plan5";
 import Plan6 from "../plans/Plan6";
+import { HOST_URL } from "../../../../utils/envconfig";
 
 export const HomeScreen = () => {
   const navigation = useNavigation<any>();
@@ -47,7 +48,7 @@ export const HomeScreen = () => {
         throw new Error('Token not found');
       }
 
-      const response = await axios.get('https://yapp-production.up.railway.app/api/users/me', {
+      const response = await axios.get(`${HOST_URL}/api/users/me`, {
         headers: {
           'Authorization': 'Bearer ' + token
         }
@@ -118,7 +119,9 @@ export const HomeScreen = () => {
   return (
     <SafeAreaView style={globalStyles.mainContainer}>
       <View style={globalStyles.header}>
+        <View style={{ justifyContent:'center', alignItems:'center'}}>
         <Title text={`Bienvenido, ${userName}`} />
+        </View>
         <View style={globalStyles.profileImageContainer}>
           <TouchableOpacity onPress={handleLogout} style={globalStyles.profileImage}>
             <Set />
@@ -126,14 +129,12 @@ export const HomeScreen = () => {
         </View>
       </View>
       <ScrollView style={globalStyles.globalMargin}>
-        <Pressable style={globalStyles.buttonOver}>
-          <Text style={globalStyles.planText}>ESTADO</Text>
-        </Pressable>
         <View style={[globalStyles.progressContainer, globalStyles.shadowProp]}>
-          <Text style={globalStyles.progressText}>Progreso de tu suscripción:</Text>
+          <Text style={globalStyles.progressText}>Progreso de tu suscripción: %{progress*100}</Text>
           <Progress.Bar
             progress={progress}
             width={null}
+            style={{ elevation:10,}}
             height={10}
             color='#26834e'
             unfilledColor='#e0e0e0'
@@ -141,8 +142,8 @@ export const HomeScreen = () => {
             borderWidth={0}
           />
           <View style={globalStyles.progText}>
-            <Text style={globalStyles.progressText}>Plan:<Text style={{ color: '#D9A404', fontSize: 11 }}> {plan} </Text></Text>
-            <Text style={globalStyles.progressText}>Días restantes: <Text style={{ color: '#D9A404', fontSize: 11 }}>{daysLeft} días</Text></Text>
+            <Text style={globalStyles.progressText}>Plan:<Text style={{fontFamily:'Quicksand-Bold', color: '#D9A404', fontSize: 15 }}> {plan} </Text></Text>
+            <Text style={globalStyles.progressText}>Días restantes: <Text style={{ fontFamily:'Quicksand-Bold',color: '#D9A404', fontSize: 15 }}>{daysLeft} días</Text></Text>
           </View>
         </View>
         <View style={globalStyles.intoEnd}>
@@ -164,43 +165,55 @@ export const HomeScreen = () => {
         <View style={{ flexDirection: 'column' }}>
           <View style={globalStyles.menu}>
             <View style={globalStyles.containerplans}>
+              <View style={{ height:25, width:'100%', justifyContent:'center', alignItems:'center'}}>
+                <Text style={globalStyles.textPlan}>ANUALIDAD</Text>
+              </View>
               <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan4)}>
                 <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo1.png")} />
-                <Text style={globalStyles.textPlan}>ANUALIDAD</Text>
               </TouchableOpacity>
             </View>
             <View style={globalStyles.containerplans}>
+              <View style={{ height:25, width:'100%', justifyContent:'center', alignItems:'center'}}>
+                <Text style={globalStyles.textPlan}>6 MESES</Text>
+              </View>
               <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan5)}>
                 <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo6.png")} />
-                <Text style={globalStyles.textPlan}>6 MESES</Text>
               </TouchableOpacity>
             </View>
           </View>
           <View style={globalStyles.menu}>
             <View style={globalStyles.containerplans}>
+              <View style={{ height:25, width:'100%', justifyContent:'center', alignItems:'center'}}>
+                <Text style={globalStyles.textPlan}>3 MESES</Text>
+              </View>
               <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan6)}>
                 <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo5.png")} />
-                <Text style={globalStyles.textPlan}>3 MESES</Text>
               </TouchableOpacity>
             </View>
             <View style={globalStyles.containerplans}>
+              <View style={{ height:25, width:'100%', justifyContent:'center', alignItems:'center'}}>
+                <Text style={globalStyles.textPlan}>ILIMITADO</Text>
+              </View>
               <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plans)}>
                 <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo7.png")} />
-                <Text style={globalStyles.textPlan}>ILIMITADO</Text>
               </TouchableOpacity>
             </View>
           </View>
           <View style={globalStyles.menu}>
             <View style={globalStyles.containerplans}>
+              <View style={{ height:25, width:'100%', justifyContent:'center', alignItems:'center'}}>
+                <Text style={globalStyles.textPlan}>4 CLASES</Text>
+              </View>
               <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan2)}>
                 <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo4.png")} />
-                <Text style={globalStyles.textPlan}>4 CLASES</Text>
               </TouchableOpacity>
             </View>
             <View style={globalStyles.containerplans}>
+              <View style={{ height:25, width:'100%', justifyContent:'center', alignItems:'center'}}>
+                <Text style={globalStyles.textPlan}>1 Clase</Text>
+              </View>
               <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan3)}>
                 <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo8.png")} />
-                <Text style={globalStyles.textPlan}>1 Clase</Text>
               </TouchableOpacity>
             </View>
           </View>

@@ -3,6 +3,7 @@ import { View, Text, SectionList, StyleSheet, SafeAreaView } from 'react-native'
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { globalStyles } from '../../../config/theme/Theme';
+import { HOST_URL } from '../../../../utils/envconfig';
 
 interface AttendanceGroup {
     title: string;
@@ -18,7 +19,7 @@ const AttendanceListScreen = () => {
             try {
                 const token = await AsyncStorage.getItem('token');
                 const response = await axios.get(
-                    'https://yapp-production.up.railway.app/api/list/attendance-lists',
+                    `${HOST_URL}/api/list/attendance-lists`,
                     {
                         headers: { Authorization: `Bearer ${token}` },
                     }

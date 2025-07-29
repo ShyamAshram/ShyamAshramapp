@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import axios from 'axios';
+import { HOST_URL } from '../../../utils/envconfig';
 
 const RecuperarContrasena = ({ navigation }: any) => {
     const [email, setEmail] = useState('');
@@ -12,9 +13,8 @@ const RecuperarContrasena = ({ navigation }: any) => {
         }
 
         try {
-            // Enviar solicitud al servidor para recuperar la contraseña
-            const response = await axios.post('https://yapp-production.up.railway.app/api/users/recover-password', { email });
-
+            const response = await axios.post(`${HOST_URL}/api/users/recover-password`, { email });
+            console.log('RECUPERAR CONTRASEÑA', response)
             Alert.alert('Éxito', 'Se ha enviado un enlace de recuperación a tu correo.');
             navigation.goBack();
         } catch (error: any) {
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
-        fontWeight: 'bold',
+        fontWeight: '800',
         color: '#5A215E',
         marginBottom: 20,
     },

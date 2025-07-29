@@ -2,15 +2,19 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height:'100%',
+    borderWidth:1,
+    marginLeft:1,
+    width:'100%',
     padding: 20,
     backgroundColor: '#f9f9f9',
   },
   containerHeader: {
+    height:'10%',
+    width:'100%',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems:'center',
-    alignContent: 'space-evenly'
   },
   TxtBtn: {
     color: 'white'
@@ -41,6 +45,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     height: 40,
+    marginTop: 10,
     marginHorizontal: 10,
     paddingHorizontal: 20
   },
@@ -63,12 +68,11 @@ const styles = StyleSheet.create({
   },
   daySelector: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 5,
-    marginBottom: 15,
+    height: 50,
+    justifyContent: 'center',
   },
   dayButton: {
-    height: 50,
+    height: 30,
     width: 90,
     textAlign: 'center',
     justifyContent: 'center',
@@ -80,6 +84,8 @@ const styles = StyleSheet.create({
   },
   selectedDayButton: {
     backgroundColor: '#530460',
+    height: 30,
+    width: 90,
   },
   dayText: {
     color: '#FFF',
@@ -93,7 +99,15 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignContent: 'flex-start',
     backgroundColor: '#fff',
-    borderRadius: 8,
+    borderRadius: 20,
+    elevation: 3,
+    shadowColor: '#000', 
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
     marginBottom: 10,
     padding: 10,
   },

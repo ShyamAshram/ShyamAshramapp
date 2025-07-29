@@ -130,7 +130,7 @@ dependencies {
 }
 
 project.ext.vectoricons = [
-    iconFontNames: [ 'Ionicons.ttf', 'EvilIcons.ttf' ] // Specify font files
+    iconFontNames: [ 'Ionicons.ttf', 'EvilIcons.ttf', 'FontAwsome', 'FontAwesome5' ] // Specify font files
 ]
 
 

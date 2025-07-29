@@ -19,6 +19,8 @@ import StudentRegistrationModal from '../../components/ui/AddU';
 import { globalStyles } from '../../../config/theme/Theme';
 import { useNavigation } from '@react-navigation/native';
 import styles from './style';
+import { HOST_URL } from '../../../../utils/envconfig';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface Student {
   _id: any;
@@ -52,7 +54,7 @@ const Profe = () => {
   const fetchStudents = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
-      const response = await axios.get('https://yapp-production.up.railway.app/api/teach/all-registrations', {
+      const response = await axios.get(`${HOST_URL}/api/teach/all-registrations`, {
         headers: { Authorization: 'Bearer ' + token },
       });
 
@@ -72,7 +74,7 @@ const Profe = () => {
     try {
       const token = await AsyncStorage.getItem('token');
       await axios.put(
-        `https://yapp-production.up.railway.app/api/teach/update-attendance/${studentId}`,
+        `${HOST_URL}/api/teach/update-attendance/${studentId}`,
         { attended },
         { headers: { Authorization: 'Bearer ' + token } }
       );
@@ -94,7 +96,7 @@ const Profe = () => {
         throw new Error('Token not found');
       }
 
-      const response = await axios.get('https://yapp-production.up.railway.app/api/users/me', {
+      const response = await axios.get(`${HOST_URL}/api/users/me`, {
         headers: { Authorization: 'Bearer ' + token },
       });
 
@@ -108,7 +110,7 @@ const Profe = () => {
   const clearStudentList = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
-      await axios.delete('https://yapp-production.up.railway.app/api/teach/clear-registrations', {
+      await axios.delete(`${HOST_URL}/api/teach/clear-registrations`, {
         headers: { Authorization: 'Bearer ' + token },
       });
       setStudents([]);
@@ -138,7 +140,7 @@ const saveAttendanceList = async () => {
   try {
     const token = await AsyncStorage.getItem('token');
     const response = await axios.post(
-      'https://yapp-production.up.railway.app/api/list/save-attendance',
+      `${HOST_URL}/api/list/save-attendance`,
       { attendedStudents, instructorId: 2  },
       { headers: { Authorization: 'Bearer ' + token } }
     );
@@ -203,10 +205,14 @@ const saveAttendanceList = async () => {
   return (
     <View style={styles.container}>
       <View style={styles.containerHeader}>
-        <Text style={styles.header}>Hola, {userName}</Text>
+        <View style={{ flexDirection:'row', width:'100%', alignItems:'center', justifyContent:'space-between'}}>
+        <View style={{ height:'100%', justifyContent:'center', alignItems:'center'}}>
+          <Text style={styles.header}>Hola, {userName}</Text>
+        </View>
         <TouchableOpacity onPress={handleLogout} style={globalStyles.profileImage}>
-          <Seti />
+          <Seti color={'#1C495E'}/>
         </TouchableOpacity> 
+        </View>
       </View>
 
       <TextInput
@@ -215,7 +221,7 @@ const saveAttendanceList = async () => {
         value={searchQuery}
         onChangeText={setSearchQuery}
       />
-
+      <View style={{height:50, width:'100%'}}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.daySelector}>
         {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'].map((day) => (
           <TouchableOpacity
@@ -227,9 +233,9 @@ const saveAttendanceList = async () => {
           </TouchableOpacity>
         ))}
       </ScrollView>
-
+      </View>
       {filteredStudents.length === 0 ? (
-        <View style={{ height: 200 }}>
+        <View style={{ height: 500 }}>
           <Text style={styles.noStudentsText}>No hay estudiantes inscritos para {selectedDay}</Text>
         </View>
 
@@ -237,7 +243,10 @@ const saveAttendanceList = async () => {
         <FlatList
           data={filteredStudents}
           keyExtractor={(item) => item._id}
+          contentContainerStyle={{ padding: 10 }}
+          style={{  height: 500}}
           renderItem={({ item }) => (
+            console.log('item desde profe', item),
             <View style={styles.card}>
               <Text style={styles.studentName}>{item.userName}</Text>
               <Text style={styles.studentEmail}>{item.userEmail}</Text>
@@ -257,6 +266,7 @@ const saveAttendanceList = async () => {
 
       <StudentRegistrationModal
         visible={modalVisible}
+        data={filteredStudents}
         onClose={() => setModalVisible(false)}
       />
       <View style={styles.ContainerBtnFoot}>

@@ -4,6 +4,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Picker} from '@react-native-picker/picker';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { HOST_URL } from '../../../../utils/envconfig';
 
 interface User {
   _id: string;
@@ -52,7 +53,7 @@ const planesConDuracion: Record<PlanNombre, number> = {
     const fetchUsers = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
-        const response = await axios.get('https://yapp-production.up.railway.app/api/users/users', {
+        const response = await axios.get(`${HOST_URL}/api/users/users`, {
           headers: { 'Authorization': 'Bearer ' + token }
         });
 
@@ -91,7 +92,7 @@ const planesConDuracion: Record<PlanNombre, number> = {
   const updateUserPlan = async (userId: string, newPlan: string, newDuration: number) => {
     try {
       const token = await AsyncStorage.getItem('token');
-      const response = await axios.put(`https://yapp-production.up.railway.app/api/users/${userId}`, {
+      const response = await axios.put(`${HOST_URL}/api/users/${userId}`, {
         plan: newPlan,
         planDuration: newDuration
       }, {

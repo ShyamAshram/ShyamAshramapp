@@ -4,6 +4,7 @@ import axios from 'axios';
 import { globalStyles } from '../../../config/theme/Theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RectButton, Swipeable } from 'react-native-gesture-handler';
+import { HOST_URL } from '../../../../utils/envconfig';
 
 interface Notifications {
   _id: string;
@@ -26,7 +27,7 @@ const NotificationUi = () => {
       const token = await AsyncStorage.getItem('token');
       if (!token) throw new Error('Token not found');
 
-      const response = await axios.get(`https://yapp-production.up.railway.app/api/notifications/me`, {
+      const response = await axios.get(`${HOST_URL}/api/notifications/me`, {
         headers: {
           'Authorization': 'Bearer ' + token
         }
@@ -46,7 +47,7 @@ const NotificationUi = () => {
       if (!token) throw new Error('Token not found');
 
       console.log(`Deleting notification with ID: ${id}`);
-      const response = await axios.delete(`https://yapp-production.up.railway.app/api/notifications/${id}`, {
+      const response = await axios.delete(`${HOST_URL}/api/notifications/${id}`, {
         headers: {
           Authorization: 'Bearer ' + token
         }

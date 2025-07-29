@@ -8,6 +8,7 @@ import { Download } from '../../icons/Icons';
 import StudentRegistrationModal from '../../components/ui/AddU';
 import FloatingActionButton from '../../components/ui/FloatingButton';
 import { Book, Notification, Set } from '../../icons/Icons';
+import { HOST_URL } from '../../../../utils/envconfig';
 
 
 interface User {
@@ -29,8 +30,8 @@ export const AdminScreen = () => {
     const fetchUsers = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
-        // const response = await axios.get('http://192.168.128.15:3001/api/users/users', {
-        const response = await axios.get('https://yapp-production.up.railway.app/api/users/users', {
+        // const response = await axios.get('http://192.168.128.12:3001/api/users/users', {
+        const response = await axios.get(`${HOST_URL}/api/users/users`, {
           headers: { 'Authorization': 'Bearer ' + token }
         });
         setUsers(response.data);

@@ -4,7 +4,8 @@ import axios from 'axios';
 import { Card } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { HOST_URL } from '../../../../utils/envconfig';
+import styles from './styles';
 
 // Define la interfaz para el horario de clases
 interface ClassSchedule {
@@ -26,8 +27,7 @@ const Lunes1 = () => {
 
   const fetchClassSchedules = async () => {
     try {
-      const response = await axios.get(`https://yapp-production.up.railway.app/api/classes/${dayOfWeek}`);
-      console.log('Horarios:', response.data);
+      const response = await axios.get(`${HOST_URL}/api/classes/${dayOfWeek}`);
       setClassSchedules(response.data);
     } catch (error) {
       console.error('Error fetching class schedules:', error);
@@ -41,10 +41,11 @@ const Lunes1 = () => {
     try {
       const token = await AsyncStorage.getItem('token');
       const response = await axios.post(
-        'https://yapp-production.up.railway.app/api/classes/registerClass',
+        `${HOST_URL}/api/classes/registerClass`,
         { classId, dayOfWeek },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      console.log('Registration response:', response.data);
       Alert.alert('Inscripción exitosa', `Te has inscrito a la clase para el ${response.data.date}`);
     } catch (error) {
       {
@@ -53,7 +54,7 @@ const Lunes1 = () => {
     }
   };
 
-
+  console.log('Horarios de clases:', classSchedules);
   return (
     <ScrollView>
       {classSchedules.length > 0 ? (
@@ -82,55 +83,5 @@ const Lunes1 = () => {
     </ScrollView>
   );
 };
-
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-    marginTop: 50,
-  },
-  card: {
-    marginBottom: 20,
-    padding: 60,
-  },
-  header: {
-    color: '#5a215e',
-    fontSize: 30,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  label: {
-    color: '#1C495E',
-    fontSize: 16,
-    marginVertical: 5,
-    fontWeight: 'bold',
-  },
-  info: {
-    fontSize: 16,
-    marginVertical: 5,
-    fontWeight: 'bold',
-    color: '#FFC71F',
-  },
-  buttonday: {
-    width: '70%',
-    borderRadius: 20,
-    height: 50,
-    backgroundColor: '#D9A404',
-    alignContent: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    marginBottom: 30,
-  },
-  day: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    marginLeft: 10,
-    color: '#FFFF',
-  },
-});
 
 export default Lunes1;

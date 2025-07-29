@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'; // Importa íconos
 import Communications from 'react-native-communications'; // Para enviar correos
 import { WhatsApp } from '../../icons/Icons';
 import { Email } from '../../icons/Icons';
+import { HOST_URL } from '../../../../utils/envconfig';
 interface User {
   _id: string;
   name: string;
@@ -27,7 +28,7 @@ const ActiveU = () => {
     const fetchUsers = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
-        const response = await axios.get('https://yapp-production.up.railway.app/api/users/users', {
+        const response = await axios.get(`${HOST_URL}/api/users/users`, {
           headers: { 'Authorization': 'Bearer ' + token }
         });
 

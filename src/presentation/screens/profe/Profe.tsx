@@ -21,6 +21,7 @@ import { useNavigation } from '@react-navigation/native';
 import styles from './style';
 import { HOST_URL } from '../../../../utils/envconfig';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import david from './style';
 
 interface Student {
   _id: any;
@@ -206,7 +207,7 @@ const saveAttendanceList = async () => {
     <View style={styles.container}>
       <View style={styles.containerHeader}>
         <View style={{ flexDirection:'row', width:'100%', alignItems:'center', justifyContent:'space-between'}}>
-        <View style={{ height:'100%', justifyContent:'center', alignItems:'center'}}>
+        <View style={{borderWidth:0,  height:'100%', justifyContent:'center', alignItems:'center'}}>
           <Text style={styles.header}>Hola, {userName}</Text>
         </View>
         <TouchableOpacity onPress={handleLogout} style={globalStyles.profileImage}>
@@ -235,7 +236,7 @@ const saveAttendanceList = async () => {
       </ScrollView>
       </View>
       {filteredStudents.length === 0 ? (
-        <View style={{ height: 500 }}>
+        <View style={{ borderWidth:0, height: 450 }}>
           <Text style={styles.noStudentsText}>No hay estudiantes inscritos para {selectedDay}</Text>
         </View>
 
@@ -262,12 +263,19 @@ const saveAttendanceList = async () => {
           )}
         />
       )}
-      <FloatingActionButton onPress={() => setModalVisible(true)} />
-
+      <FloatingActionButton 
+      onPress={() => {
+        console.log("Botón de añadir alumno presionado");
+        setModalVisible(true)
+        }}
+      />
       <StudentRegistrationModal
-        visible={modalVisible}
-        data={filteredStudents}
-        onClose={() => setModalVisible(false)}
+      visible={modalVisible}
+      data={students}
+     onClose={() => {
+      setModalVisible(false);
+     fetchStudents();
+     }}
       />
       <View style={styles.ContainerBtnFoot}>
         <TouchableOpacity onPress={clearStudentList} style={styles.ButtonClear}>

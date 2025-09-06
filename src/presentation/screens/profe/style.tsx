@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     marginLeft:1,
     width:'100%',
     padding: 20,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#ffffffff',
   },
   containerHeader: {
     height:'10%',
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     marginBottom: 15,
     backgroundColor: '#333',
-    color: '#5a215e'
+    color: '#efe7f0ff'
   },
   daySelector: {
     flexDirection: 'row',
@@ -78,12 +78,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#D9A404',
+    backgroundColor: '#c2bf15ff',
     borderRadius: 8,
     marginHorizontal: 5,
   },
   selectedDayButton: {
-    backgroundColor: '#530460',
+    backgroundColor: '#5a215e',
     height: 30,
     width: 90,
   },
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   noStudentsText: {
     fontSize: 16,
     textAlign: 'center',
-    marginTop: 0,
+    marginTop: 10,
     color: 'gray',
   },
 });

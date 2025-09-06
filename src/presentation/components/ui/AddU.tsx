@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import axios from 'axios';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
@@ -11,6 +11,13 @@ interface Props {
     data:any
     onClose: () => void;
 
+}
+interface ClassSchedule {
+  _id: string;
+  name: string;
+  dayOfWeek: string;
+  time: string;
+  instructor: string;
 }
 
 const StudentRegistrationModal: React.FC<Props> = ({data,  visible, onClose }) => {
@@ -25,8 +32,26 @@ const StudentRegistrationModal: React.FC<Props> = ({data,  visible, onClose }) =
     const hoy = new Date();
     const diaActual = diasSemana[hoy.getDay()];
     const [newStudentId, setNewStudentId] = useState<string | null>(null);
+    const [classSchedules, setClassSchedules] = useState<ClassSchedule[]>([])
     console.log('Día actual:', diaActual);
     console.log('id del nuevo estudiante:', newStudentId);
+
+    //Llamado a endpoint para determinar id de la clase 
+
+    
+  useEffect(() => {
+    fetchClassSchedules();
+  }, []);
+
+  const fetchClassSchedules = async () => {
+    try {
+      const response = await axios.get(`${HOST_URL}/api/classes/${diaActual}`);
+      setClassSchedules(response.data);
+    } catch (error) {
+      console.error('Error fetching class schedules:', error);
+    } 
+  };
+
 
   const handleAddStudentToClass = async (classId: string) => {
   if (!newStudentId) {
@@ -37,8 +62,9 @@ const StudentRegistrationModal: React.FC<Props> = ({data,  visible, onClose }) =
   try {
     const token = await AsyncStorage.getItem('token');
 
-    const response = await axios.post(`${HOST_URL}/api/classes/registerClass`, {
+    const response = await axios.post(`${HOST_URL}/api/classes/registerStudent`, {
       classId,
+      studentId:newStudentId,
       dayOfWeek:diaActual,
     }, {
       headers: {
@@ -75,7 +101,7 @@ const StudentRegistrationModal: React.FC<Props> = ({data,  visible, onClose }) =
                 birthDate,
                 role
             });
-
+            console.log('response',response)
             const studentId = response.data._id;
             setNewStudentId(studentId);
             console.log('Usuario registrado:', response.data);
@@ -116,10 +142,14 @@ const StudentRegistrationModal: React.FC<Props> = ({data,  visible, onClose }) =
             <View style={styles.overlay}>
                 <View style={styles.modalContainer}>
                     <Text style={styles.title}>Inscribir Estudiante</Text>
-                    <TextInput value={name} onChangeText={setName} style={styles.input} placeholder="Nombre completo" placeholderTextColor={'#5A215E'} />
-                    <TextInput value={email} onChangeText={setEmail} style={styles.input} placeholder="Correo Electrónico" placeholderTextColor={'#5A215E'} />
-                    <TextInput value={password} onChangeText={setPassword} secureTextEntry style={styles.input} placeholder="Contraseña" placeholderTextColor={'#5A215E'} />
-
+                    {!newStudentId && (
+                    <TextInput value={name} onChangeText={setName} style={styles.input} placeholder="Nombre completo" placeholderTextColor={'#5A215E'} />)}
+                    {!newStudentId && (
+                    <TextInput value={email} onChangeText={setEmail} style={styles.input} placeholder="Correo Electrónico" placeholderTextColor={'#5A215E'} />)}
+                    {!newStudentId && (
+                    <TextInput value={password} onChangeText={setPassword} secureTextEntry style={styles.input} placeholder="Contraseña" placeholderTextColor={'#5A215E'} />)}
+                    
+                    {!newStudentId && (
                     <TextInput
                         value={phonenumber}
                         onChangeText={setPhoneNumber}
@@ -128,7 +158,7 @@ const StudentRegistrationModal: React.FC<Props> = ({data,  visible, onClose }) =
                         keyboardType="phone-pad"
                         placeholderTextColor={'#5A215E'}
                     />
-
+                    )}
 
                     <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
                         <Text style={{ color: '#5A215E' }}>{birthDate ? birthDate.toDateString() : 'Fecha de Nacimiento'} </Text>
@@ -152,11 +182,17 @@ const StudentRegistrationModal: React.FC<Props> = ({data,  visible, onClose }) =
                             <Text style={styles.buttonText}>Inscribir</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.buttonContainer2}>
-                        <TouchableOpacity style={[styles.registerButton, { opacity: newStudentId ? 1 : 0.5 }]} onPress={() => handleAddStudentToClass(data.classId)} disabled={!newStudentId}>
-                            <Text style={styles.buttonText}>Añadir a la clase</Text>
-                        </TouchableOpacity>
-                    </View>
+                    {classSchedules.length > 0 ? (
+                        classSchedules.map((classInfo, index) => (
+                            <View style={styles.buttonContainer2}>
+                                <TouchableOpacity style={[styles.registerButton, { opacity: newStudentId ? 1 : 0.5 }]} onPress={() => handleAddStudentToClass(classInfo._id)} disabled={!newStudentId}>
+                                    <Text style={styles.buttonText}>Añadir a la clase</Text>
+                                </TouchableOpacity>
+                            </View>
+                            ))
+                    ) : (
+                        <Text>No hay horarios disponibles para {diaActual}</Text>
+                    )}
                 </View>
             </View>
         </Modal>

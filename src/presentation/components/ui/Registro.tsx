@@ -26,7 +26,7 @@ export const Registro = () => {
     try {
       const response = await axios.post(`${HOST_URL}/api/users/register`, {
         name,
-        email,
+        email: email.trim().toLowerCase(),
         password,
         phonenumber: phoneNumberParsed.formatInternational(),
         birthDate,

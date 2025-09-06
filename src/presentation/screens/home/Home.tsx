@@ -26,6 +26,7 @@ import { HOST_URL } from "../../../../utils/envconfig";
 export const HomeScreen = () => {
   const navigation = useNavigation<any>();
   const [userName, setUserName] = useState('');
+  const [birtday, setBirtday] = useState(null)
   const [progress, setProgress] = useState(0);
   const [plan, setPlan] = useState('');
   const [planDuration, setPlanDuration] = useState(0);
@@ -53,7 +54,7 @@ export const HomeScreen = () => {
           'Authorization': 'Bearer ' + token
         }
       });
-
+      console.log('CUMPLEANOS')
       const userData = response.data;
 
 
@@ -136,8 +137,8 @@ export const HomeScreen = () => {
             width={null}
             style={{ elevation:10,}}
             height={10}
-            color='#26834e'
-            unfilledColor='#e0e0e0'
+            color='#23632cff'
+            unfilledColor='#af5b5bff'
             borderRadius={5}
             borderWidth={0}
           />

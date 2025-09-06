@@ -19,7 +19,7 @@ export const colors: ThemeColors = {
 
 export const globalStyles = StyleSheet.create({
   title: {
-    fontSize: 28,
+    fontSize: 25,
     color: colors.text,
     fontFamily: 'Quicksand-Bold',
   },
@@ -89,19 +89,20 @@ export const globalStyles = StyleSheet.create({
   profileImageContainer: {
     width: 50,
     height: 50,
+    backgroundColor:'transparent',
     justifyContent: 'center',
     alignContent: 'center'
 
 
   },
   profileImage: {
-    width: '10%',
+    width: '15%',
     height: '100%',
-    paddingVertical:5, 
+    paddingVertical:10, 
     justifyContent: 'center',
     alignContent: 'center',
     marginTop: 0,
-    marginLeft: 0
+    marginLeft: 0,
 
   },
   SetProfileImageContainer: {
@@ -157,7 +158,7 @@ export const globalStyles = StyleSheet.create({
   },
   SetTextPlan: {
     textAlign: 'center',
-    color: '#2c1d1d',
+    color: '#2c1d1dff',
     fontSize: 20,
     fontWeight: 'bold',
 
@@ -250,7 +251,7 @@ export const globalStyles = StyleSheet.create({
     padding: 5,
     position: 'relative',
     alignItems: 'center',
-    margin: '2%',
+    margin: '0%',
     borderRadius: 10,
     backgroundColor: '#7fff62',
     flex: 1,

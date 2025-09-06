@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 10,
     backgroundColor: '#333',
-    color: '#333'
+    color: '#fff'
   },
   userContainer: {
     flex:1,

@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 10,
     backgroundColor: '#333',
-    color: '#5a215e'
+    color: '#fff'
   },
   userContainer: {
     marginBottom: 20,

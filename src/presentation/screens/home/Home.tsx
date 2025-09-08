@@ -54,7 +54,6 @@ export const HomeScreen = () => {
           'Authorization': 'Bearer ' + token
         }
       });
-      console.log('CUMPLEANOS')
       const userData = response.data;
 
 

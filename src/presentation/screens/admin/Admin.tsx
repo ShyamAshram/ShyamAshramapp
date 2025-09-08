@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image, SafeAreaView } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image, SafeAreaView, Alert } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -9,6 +9,7 @@ import StudentRegistrationModal from '../../components/ui/AddU';
 import FloatingActionButton from '../../components/ui/FloatingButton';
 import { Book, Notification, Set } from '../../icons/Icons';
 import { HOST_URL } from '../../../../utils/envconfig';
+import { set } from 'date-fns';
 
 
 interface User {
@@ -25,6 +26,8 @@ export const AdminScreen = () => {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [students, setStudents] = useState<User[]>([]);
+
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -50,15 +53,26 @@ export const AdminScreen = () => {
     fetchUsers();
   }, []);
 
-  if (!isAdmin) {
-    return <Text style={styles.errorText}>No tienes permiso para acceder a esta pantalla</Text>;
-  }
+// const fetchStudents = async () => {
+//   try {
+//     const token = await AsyncStorage.getItem('token');
+//     const response = await axios.get(`${HOST_URL}/api/teach/all-registrations`, {
+//       headers: { Authorization: 'Bearer ' + token },
+//     });
+
+//     setStudents(response.data);
+//   } catch (error) {
+//     setStudents([]);
+//   } finally {
+//     setLoading(false);
+//   }
+// };
+
+// useEffect(() => {
+//   fetchStudents();
+// }, []);
 
 
-
-  function fetchStudents(): void {
-    throw new Error('Function not implemented.');
-  }
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem('token');
@@ -70,47 +84,60 @@ export const AdminScreen = () => {
     }
   };
 
-  return (
-    <SafeAreaView style={globalStyles.mainContainer2}>
-      <View style={globalStyles.header2}>
-        <View style={{ marginLeft: 100 }}>
-          <Text style={styles.title2}>YAPP</Text>
+return (
+  <SafeAreaView style={globalStyles.mainContainer2}>
+    {!isAdmin ? (
+      <Text style={styles.errorText}>
+        No tienes permiso para acceder a esta pantalla
+      </Text>
+    ) : (
+      <>
+        <View style={globalStyles.header2}>
+          <View style={{ marginLeft: 100 }}>
+            <Text style={styles.title2}>YAPP</Text>
+          </View>
+          <View style={globalStyles.profileImageContainer}>
+            <TouchableOpacity onPress={handleLogout} style={globalStyles.profileImage}>
+              <Set />
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={globalStyles.profileImageContainer}>
-          <TouchableOpacity onPress={handleLogout} style={globalStyles.profileImage}>
-            <Set />
+
+        <FloatingActionButton onPress={() => setModalVisible(true)} />
+
+        <StudentRegistrationModal
+          visible={modalVisible}
+          data={students}
+          onClose={() => setModalVisible(false)}
+        />
+
+        <View style={styles.container}>
+          <View style={styles.overlay}>
+            <Image style={styles.logo} source={require('../../assets/Logo1.png')} />
+          </View>
+          <TouchableOpacity style={styles.button} >
+            <Text style={styles.buttonText} onPress={() => navigation.navigate('Asignacion')}>
+              Asignación de Planes
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Activación')}>
+            <Text style={styles.buttonText}>Usuarios Activos</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("AttendanceListScreen")}>
+            <Text style={styles.buttonText}>Listas de Asistencia</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Profesores")}>
+            <Text style={styles.buttonText}>Profesores</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate("Excel")}>
+            <Download />
+            <Text style={styles.buttonText}>EXCEL</Text>
           </TouchableOpacity>
         </View>
-      </View>
-
-      <FloatingActionButton onPress={() => setModalVisible(true)} />
-
-      <StudentRegistrationModal
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-      />
-      <View style={styles.container}>
-        <View style={styles.overlay}>
-          <Image style={styles.logo} source={require('../../assets/Logo1.png')} />
-        </View>
-        <TouchableOpacity style={styles.button} >
-          <Text style={styles.buttonText} onPress={() => navigation.navigate('Asignacion')}>Asignación de Planes</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Activación')}>
-          <Text style={styles.buttonText}>Usuarios Activos</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("AttendanceListScreen")}>
-          <Text style={styles.buttonText}>Listas de Asistencia</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate("Excel")}>
-          <Download />
-          <Text style={styles.buttonText}>EXCEL</Text>
-        </TouchableOpacity>
-
-
-      </View>
-    </SafeAreaView>
-  );
+      </>
+    )}
+  </SafeAreaView>
+);
 };
 
 const styles = StyleSheet.create({

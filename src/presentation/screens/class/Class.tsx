@@ -10,30 +10,32 @@ import Footer from "../../components/ui/Foot";
 export const Class = () => {
 
   return (
-    <SafeAreaView style={globalStyles.mainContainer}>
+    <View style={globalStyles.mainContainer}>
 
       <View style={style.globalMargin}>
-        <Image style={style.imageBoton} source={require("../../assets/Top.png")} />
-        <ScrollView>
+        <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10, marginBottom: 10 }}>
+          <Image style={style.imageBoton} source={require("../../assets/Top.png")} />
+        </View>
+        <View style={{borderWidth:0, height:'70%', width:'100%', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
           <ClassSchedule />
+        </View>
+        <View>
           <Footer />
-        </ScrollView>
-
+        </View>
       </View>
 
-    </SafeAreaView>
+    </View>
   )
 
 }
 
 const style = StyleSheet.create({
   globalMargin: {
-
+    borderWidth:0,
+    height: "100%",
     width: "100%",
-    alignContent: 'flex-start',
     alignItems: 'center',
-    justifyContent: 'flex-start',
-    flex: 1,
+    justifyContent: 'center',
     flexDirection: 'column',
 
   },
@@ -45,7 +47,8 @@ const style = StyleSheet.create({
 
   },
   imageBoton: {
-    height: 120,
+    borderWidth:0,
+    height: 100,
     width: 150
   }
 })

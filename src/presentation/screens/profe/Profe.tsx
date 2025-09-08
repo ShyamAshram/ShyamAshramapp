@@ -59,7 +59,7 @@ const Profe = () => {
         headers: { Authorization: 'Bearer ' + token },
       });
 
-      setStudents(response.data); // Ya viene filtrado desde el backend
+      setStudents(response.data); 
     } catch (error) {
       console.error('Error fetching registrations:', error);
       Alert.alert('Error', 'No se pudieron cargar las inscripciones');

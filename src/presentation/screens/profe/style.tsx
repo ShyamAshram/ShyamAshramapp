@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#c2bf15ff',
+    borderWidth:1,
+    borderColor: '#c2bf15ff',
     borderRadius: 8,
     marginHorizontal: 5,
   },
@@ -88,11 +89,13 @@ const styles = StyleSheet.create({
     width: 90,
   },
   dayText: {
-    color: '#FFF',
+    color: '#c2bf15ff',
+    fontFamily:'Quicksand-Bold',
     fontSize: 15,
   },
   selectedDayText: {
-    fontWeight: 'bold',
+    fontFamily:'Quicksand-Bold',
+    fontSize: 15,
     color: '#FFF',
   },
   card: {

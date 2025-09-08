@@ -19,7 +19,7 @@ export const Signin = () => {
     >
       <Inicio />
       <View style={style.Foot}>
-        <Footer />
+      <Footer />
       </View>
     </KeyboardAvoidingView>
   );

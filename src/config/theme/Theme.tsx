@@ -251,10 +251,9 @@ export const globalStyles = StyleSheet.create({
     padding: 5,
     position: 'relative',
     alignItems: 'center',
-    margin: '0%',
+    margin: '2%',
     borderRadius: 10,
     backgroundColor: '#7fff62',
-    flex: 1,
   },
   containerText: {
     width: 100,

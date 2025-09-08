@@ -182,8 +182,9 @@ const style = StyleSheet.create({
     fontWeight: 'bold',
   },
   recoverPass:{
+    justifyContent:'center',
+    alignItems:'center',
     width:'100%',
-    marginLeft:200,
     padding: 5,
   }
 });

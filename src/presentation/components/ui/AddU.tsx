@@ -78,8 +78,9 @@ const StudentRegistrationModal: React.FC<Props> = ({data,  visible, onClose }) =
     const uniquePlanes = Array.from(new Map(planes.map(p => [p.value, p])).values());
 
 
-    //Llamado a endpoint para determinar id de la clase 
-
+  useEffect(() => {
+    fetchClassSchedules();
+  }, []);
     
   useEffect(() => {
     fetchClassSchedules();
@@ -96,32 +97,32 @@ const StudentRegistrationModal: React.FC<Props> = ({data,  visible, onClose }) =
 
 
   const handleAddStudentToClass = async (classId: string) => {
-  if (!newStudentId) {
-    Alert.alert('Error', 'Debes registrar al estudiante primero');
-    return;
-  }
+    if (!newStudentId) {
+      Alert.alert('Error', 'Debes registrar al estudiante primero');
+      return;
+    }
 
-  try {
-    const token = await AsyncStorage.getItem('token');
+    try {
+      const token = await AsyncStorage.getItem('token');
 
-    const response = await axios.post(`${HOST_URL}/api/classes/registerStudent`, {
-      classId,
-      studentId:newStudentId,
-      dayOfWeek:diaActual,
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+      const response = await axios.post(`${HOST_URL}/api/classes/registerStudent`, {
+        classId,
+        studentId:newStudentId,
+        dayOfWeek:diaActual,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
 
-    Alert.alert('Inscrito', `El estudiante fue inscrito a la clase del ${data.dayOfWeek}`);
-    setNewStudentId(null);
-    onClose();
-  } catch (error) {
-    console.error('Error al inscribir al estudiante:', error);
-    Alert.alert('Error', 'No se pudo inscribir el estudiante a la clase');
-  }
-};
+      Alert.alert('Inscrito', `El estudiante fue inscrito a la clase del ${data.dayOfWeek}`);
+      setNewStudentId(null);
+      onClose();
+    } catch (error) {
+      console.error('Error al inscribir al estudiante:', error);
+      Alert.alert('Error', 'No se pudo inscribir el estudiante a la clase');
+    }
+  };
 
 
     const [role] = useState('');
@@ -184,33 +185,33 @@ const StudentRegistrationModal: React.FC<Props> = ({data,  visible, onClose }) =
             setBirthDate(selectedDate);
         }
     };
-      const updateUserPlan = async (userId: string, newPlan: string, newDuration: number) => {
-    try {
-      const token = await AsyncStorage.getItem('token');
-      const response = await axios.put(`${HOST_URL}/api/users/${userId}`, {
-        plan: newPlan,
-        planDuration: newDuration
-      }, {
-        headers: { 'Authorization': 'Bearer ' + token }
-      });
-
-      setUsers(prevUsers => {
-        return prevUsers.map(user => {
-          if (user._id === userId) {
-            return {
-              ...user,
-              plan: newPlan,
-              planDuration: newDuration
-            };
-          }
-          return user;
+    const updateUserPlan = async (userId: string, newPlan: string, newDuration: number) => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        const response = await axios.put(`${HOST_URL}/api/users/${userId}`, {
+          plan: newPlan,
+          planDuration: newDuration
+        }, {
+          headers: { 'Authorization': 'Bearer ' + token }
         });
-      });
-      console.log('Usuario actualizado:', response.data);
-    } catch (error) {
-      console.error('Error al actualizar el usuario:', error);
-    }
-  };
+
+        setUsers(prevUsers => {
+          return prevUsers.map(user => {
+            if (user._id === userId) {
+              return {
+                ...user,
+                plan: newPlan,
+                planDuration: newDuration
+              };
+            }
+            return user;
+          });
+        });
+        console.log('Usuario actualizado:', response.data);
+      } catch (error) {
+        console.error('Error al actualizar el usuario:', error);
+      }
+    };
 
 useEffect(() => {
   if (newStudentId && visible) {
@@ -223,7 +224,7 @@ useEffect(() => {
   }
 }, [newStudentId, visible]);
 
-
+    console.log('class', newStudentId);
     return (
         <Modal transparent visible={visible} animationType="slide" presentationStyle='overFullScreen'>
             <View style={styles.overlay}>
@@ -231,14 +232,10 @@ useEffect(() => {
                     {!newStudentId ? (
                     <> 
                     <Text style={styles.title}>Inscribir Estudiante</Text>
-                    {!newStudentId && (
-                    <TextInput value={name} onChangeText={setName} style={styles.input} placeholder="Nombre completo" placeholderTextColor={'#5A215E'} />)}
-                    {!newStudentId && (
-                    <TextInput value={email} onChangeText={setEmail} style={styles.input} placeholder="Correo Electrónico" placeholderTextColor={'#5A215E'} />)}
-                    {!newStudentId && (
-                    <TextInput value={password} onChangeText={setPassword} secureTextEntry style={styles.input} placeholder="Contraseña" placeholderTextColor={'#5A215E'} />)}
+                    <TextInput value={name} onChangeText={setName} style={styles.input} placeholder="Nombre completo" placeholderTextColor={'#5A215E'} />
+                    <TextInput value={email} onChangeText={setEmail} style={styles.input} placeholder="Correo Electrónico" placeholderTextColor={'#5A215E'} />
+                    <TextInput value={password} onChangeText={setPassword} secureTextEntry style={styles.input} placeholder="Contraseña" placeholderTextColor={'#5A215E'} />
                     
-                    {!newStudentId && (
                     <TextInput
                         value={phonenumber}
                         onChangeText={setPhoneNumber}
@@ -247,7 +244,6 @@ useEffect(() => {
                         keyboardType="phone-pad"
                         placeholderTextColor={'#5A215E'}
                     />
-                    )}
 
                     <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
                         <Text style={{ color: '#5A215E' }}>{birthDate ? birthDate.toDateString() : 'Fecha de Nacimiento'} </Text>
@@ -306,7 +302,7 @@ useEffect(() => {
                         <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
                             <Text style={styles.buttonText}>Cancelar</Text>
                     </TouchableOpacity>
-                        <TouchableOpacity style={[styles.registerButton, { opacity: newStudentId ? 1 : 0.5 }]} onPress={() => handleAddStudentToClass(data.classId)} disabled={!selectedPlan}>
+                        <TouchableOpacity style={[styles.registerButton, { opacity: newStudentId ? 1 : 0.5 }]} onPress={() => handleAddStudentToClass(classSchedules[0]._id)} disabled={!selectedPlan}>
                             <Text style={styles.buttonText}>Añadir a la clase</Text>
                         </TouchableOpacity>
                     </View>

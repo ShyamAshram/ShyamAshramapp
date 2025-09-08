@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     title: {
-        fontSize: 20,
-        fontWeight: '800',
+        fontSize: 30,
+        fontFamily:'Quicksand-Bold',
         color: '#5A215E',
         marginBottom: 20,
     },

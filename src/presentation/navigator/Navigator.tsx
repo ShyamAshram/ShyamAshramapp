@@ -29,7 +29,7 @@ import RecuperarContrasena from "../components/RecuperarContrasena";
 import AttendanceListScreen from "../components/ui/Asistencia";
 import Excel from "../components/ui/Excel";
 import CheckLogin from "../components/CheckLogin";
-
+import { Profesores } from "../components/ui/Profesores";
 
 const Stack = createStackNavigator();
 
@@ -67,6 +67,7 @@ function Navigator() {
             <Stack.Screen name="RecuperarContrasena" component={RecuperarContrasena} />
             <Stack.Screen name="AttendanceListScreen" component={AttendanceListScreen} />
             <Stack.Screen name="Excel" component={Excel} />
+            <Stack.Screen name="Profesores" component={Profesores} />
 
         </Stack.Navigator>
     )

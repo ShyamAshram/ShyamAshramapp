@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Image, TouchableOpacity, TextInput, Text, StyleSheet, KeyboardAvoidingView, Platform, View } from 'react-native';
+import { Alert, Image, TouchableOpacity, TextInput, Text, StyleSheet, KeyboardAvoidingView, Platform, View, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -7,9 +7,10 @@ import { HOST_URL } from '../../../../utils/envconfig';
 
 export const Inicio = () => {
   const navigation = useNavigation<any>();
+  const [isLoading, setIsLoading]= useState(false)
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // Estado para mostrar u ocultar contraseña
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -28,6 +29,8 @@ export const Inicio = () => {
     }
 
     try {
+
+      setIsLoading(true)
       const response = await axios.post(`${HOST_URL}/api/users/login`, { email, password });
       const { token, user } = response.data;
       const role = user.role;
@@ -39,7 +42,6 @@ export const Inicio = () => {
       await AsyncStorage.setItem('token', token);
       await AsyncStorage.setItem('role', role);
 
-      // Navegación según el rol del usuario
       switch (role) {
         case 'admin':
           navigation.navigate('Admin');
@@ -50,12 +52,13 @@ export const Inicio = () => {
         default:
           navigation.navigate('HomeScreen');
       }
-
+      setIsLoading(false)
     } catch (error: any) {
+      setIsLoading(false)
       console.error('Error logging in:', error);
 
       if (error.response) {
-        Alert.alert('Login fallido', error.response.data.error || 'Correo o contraseña incorrectos');
+        Alert.alert('Credenciales incorrectas', error.response.data.error || 'Correo o contraseña incorrectos');
       } else if (error.request) {
         Alert.alert('Error de red', 'No se pudo establecer una conexión con el servidor. Por favor, inténtelo de nuevo más tarde.');
       } else {
@@ -68,7 +71,23 @@ export const Inicio = () => {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLocaleUpperCase());
   };
+  
 
+
+
+  if(isLoading){return(
+    <View style={{ position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'transparent', 
+      zIndex: 999,}}>
+    <ActivityIndicator style={{flex:1}} size="large" color={"#5A215E"}/>
+    </View>
+  )}
   return (
     <KeyboardAvoidingView
       style={style.containerMain}
@@ -114,6 +133,7 @@ export const Inicio = () => {
       </TouchableOpacity>
     </View>
     </KeyboardAvoidingView>
+
   );
 };
 
@@ -128,6 +148,7 @@ const style = StyleSheet.create({
   forgotPasswordText: {
     color: '#5A215E',
     fontSize: 12,
+    fontFamily:'Quicksand-Bold',
     marginTop: 10,
     textDecorationLine: 'underline',
   },

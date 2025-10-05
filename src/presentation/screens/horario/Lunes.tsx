@@ -6,13 +6,16 @@ import { StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HOST_URL } from '../../../../utils/envconfig';
 import styles from './styles';
+import { getNextDateForDay } from './service';
 
 // Define la interfaz para el horario de clases
 interface ClassSchedule {
   _id: string;
   name: string;
+  date: string;
   dayOfWeek: string;
   time: string;
+  instructorId: Object;
   instructor: string;
 }
 
@@ -20,6 +23,8 @@ const Lunes1 = () => {
   const [classSchedules, setClassSchedules] = useState<ClassSchedule[]>([]);
   const [loading, setLoading] = useState(true);
   const dayOfWeek = 'Lunes';
+
+  const nextDate = getNextDateForDay(dayOfWeek);
 
   useEffect(() => {
     fetchClassSchedules();
@@ -42,13 +47,14 @@ const Lunes1 = () => {
       const token = await AsyncStorage.getItem('token');
       const response = await axios.post(
         `${HOST_URL}/api/classes/registerClass`,
-        { classId, dayOfWeek },
+        { classId, dayOfWeek, date: nextDate.toISOString() },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       console.log('Registration response:', response.data);
       Alert.alert('Inscripción exitosa', `Te has inscrito a la clase para el ${response.data.date}`);
     } catch (error) {
       {
+        console.error('Error during class registration:', error);
         Alert.alert('Suscripción requerida', 'Necesitas tener un plan activo para inscribirte en esta clase.');
       }
     }
@@ -65,9 +71,10 @@ const Lunes1 = () => {
               <Card.Content>
                 <Text style={styles.label}>FECHA: <Text style={styles.info}>{classInfo.dayOfWeek}</Text></Text>
                 <Text style={styles.label}>HORA: <Text style={styles.info}>{classInfo.time}</Text></Text>
-                <Text style={styles.label}>INSTRUCTOR: <Text style={styles.info}>{classInfo.instructor}</Text></Text>
+                <Text style={styles.label}>INSTRUCTOR: <Text style={styles.info}>{(classInfo.instructorId as any)?.name}</Text></Text>
               </Card.Content>
             </Card>
+            {classInfo.instructorId && ( 
 
             <TouchableOpacity
               style={styles.buttonday}
@@ -75,6 +82,7 @@ const Lunes1 = () => {
             >
               <Text style={styles.day}>INSCRIBIRSE</Text>
             </TouchableOpacity>
+            )}
           </View>
         ))
       ) : (

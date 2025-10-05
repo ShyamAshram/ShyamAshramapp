@@ -6,11 +6,11 @@ import { StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HOST_URL } from '../../../../utils/envconfig';
 import styles from './styles';
-// Define la interfaz para el horario de clases
 interface ClassSchedule {
   _id: string;
   name: string;
   dayOfWeek: string;
+  date: string;
   time: string;
   instructorId: Object;
   instructor: string;
@@ -53,17 +53,13 @@ const Sabado1 = () => {
 
 
 
-  // If instructorId is an object with a 'name' property, define its type accordingly:
   interface Instructor { name: string; [key: string]: any }
-  // Then update ClassSchedule: instructorId: Instructor;
 
-  classSchedules.forEach((c) => {
-    // Example: if instructorId has a 'name' property
-    console.log('Instructor Name:', (c.instructorId as any).name);
+  // classSchedules.forEach((c) => {
+  //   console.log('Instructor Name:', (c.instructorId as any).name);
 
-    // Or just log the whole instructorId object for debugging
-    console.log(c.instructorId);
-  });
+  //   console.log(c.instructorId);
+  // });
 
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
@@ -79,7 +75,7 @@ const Sabado1 = () => {
               <Card.Content>
                 <Text style={styles.label}>FECHA: <Text style={styles.info}>{classInfo.dayOfWeek}</Text></Text>
                 <Text style={styles.label}>HORA: <Text style={styles.info}>{classInfo.time}</Text></Text>
-                <Text style={styles.label}>INSTRUCTOR: <Text style={styles.info}>{(classInfo.instructorId as any).name}</Text></Text>
+                <Text style={styles.label}>INSTRUCTOR: <Text style={styles.info}>{(classInfo.instructorId as any)?.name || 'No disponible'}</Text></Text>
               </Card.Content>
             </Card>
 

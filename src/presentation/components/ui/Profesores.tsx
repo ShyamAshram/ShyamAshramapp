@@ -106,20 +106,29 @@ export const Profesores = () => {
                 setOpenDropdowns((prev: any) => ({ ...prev, [item._id]: open }))
               }
               setValue={(callback) => {
-                const val = callback(selectedClasses[item._id] || []);
-                setSelectedClasses((prev) => ({ ...prev, [item._id]: val }));
+                setSelectedClasses((prev) => {
+                  // Resolvemos el valor real a partir de lo que DropDownPicker nos dé
+                  const newValue = typeof callback === "function"
+                    ? callback(prev[item._id] || [])
+                    : callback;
 
-                schedules.forEach((s) => {
-                  const alreadyAssigned = selectedClasses[item._id]?.includes(s._id);
-                  const nowAssigned = val.includes(s._id);
+                  const updated = { ...prev, [item._id]: newValue };
 
-                  if (!alreadyAssigned && nowAssigned) {
-                    assignClass(item._id, s._id);
-                  } else if (alreadyAssigned && !nowAssigned) {
-                    unassignClass(s._id);
-                  }
+                  schedules.forEach((s) => {
+                    const alreadyAssigned = prev[item._id]?.includes(s._id);
+                    const nowAssigned = newValue.includes(s._id);
+
+                    if (!alreadyAssigned && nowAssigned) {
+                      assignClass(item._id, s._id);
+                    } else if (alreadyAssigned && !nowAssigned) {
+                      unassignClass(s._id);
+                    }
+                  });
+
+                  return updated;
                 });
               }}
+
               items={schedules.map((s) => ({
                 label: `${s.dayOfWeek} - ${s.time}`,
                 value: s._id,

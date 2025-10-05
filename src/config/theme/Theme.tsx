@@ -80,14 +80,15 @@ export const globalStyles = StyleSheet.create({
   },
   header2: {
     flexDirection: 'row',
-
+    justifyContent:'center',
     alignItems: 'center',
     height: 60,
-    justifyContent: 'space-around',
     backgroundColor: '#5a215e'
   },
   profileImageContainer: {
-    width: 50,
+    position:'absolute',
+    left:350,
+     width: 50,
     height: 50,
     backgroundColor:'transparent',
     justifyContent: 'center',

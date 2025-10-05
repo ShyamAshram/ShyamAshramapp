@@ -5,6 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Picker} from '@react-native-picker/picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { HOST_URL } from '../../../../utils/envconfig';
+import stylesAdmin from './styles/stylesAdmin';
+import { Clock, Email, Form, Person } from '../../icons/Icons';
 
 interface User {
   _id: string;
@@ -86,7 +88,7 @@ const planesConDuracion: Record<PlanNombre, number> = {
   }, [searchQuery, users]);
 
   if (!isAdmin) {
-    return <Text style={styles.errorText}>No tienes permiso para acceder a esta pantalla</Text>;
+    return <Text style={stylesAdmin.errorText}>No tienes permiso para acceder a esta pantalla</Text>;
   }
 
   const updateUserPlan = async (userId: string, newPlan: string, newDuration: number) => {
@@ -119,7 +121,7 @@ const planesConDuracion: Record<PlanNombre, number> = {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
+      <View style={stylesAdmin.loadingContainer}>
         <ActivityIndicator size="large" color="#0000ff" />
       </View>
     );
@@ -132,9 +134,9 @@ const planesConDuracion: Record<PlanNombre, number> = {
 };
 
   return (
-    <View style={styles.container}>
+    <View style={stylesAdmin.containerAsignacion}>
       <TextInput
-        style={styles.searchInput}
+        style={stylesAdmin.searchInput}
         placeholder="Buscar usuarios..."
         value={searchQuery}
         onChangeText={setSearchQuery}
@@ -144,12 +146,28 @@ const planesConDuracion: Record<PlanNombre, number> = {
           data={filteredUsers}
           keyExtractor={user => user._id}
           renderItem={({ item, index }) => (
-            <View style={[styles.userContainer,  { zIndex: 1}] }>
-              <Text style={styles.userText}>Nombre: {item.name}</Text>
-              <Text style={styles.userText}>Correo: {item.email}</Text>
-              <Text style={styles.userText}>Plan: {item.plan}</Text>
-              <Text style={styles.userText}>Duración del Plan: {item.planDuration} días</Text>
-              
+            <View style={[stylesAdmin.userContainerAsignacion,  { zIndex: 1}] }>
+                <View style={stylesAdmin.badgeName}>
+                  <Text style={stylesAdmin.userText}>{item.name}</Text>
+                </View>
+                <View style={{flexDirection:'row', justifyContent:'center', gap:10,}}>
+                  <View style={stylesAdmin.badgeEmail}>
+                    <Email color='#f80000ff' />
+                    <Text style={stylesAdmin.userTextEmail}>{item.email}</Text>
+                  </View>
+                  <View style={stylesAdmin.badgePlan}>
+                    {item.plan !== 'No tienes un plan' && 
+                      <Form color= {'green'} size={20}/>
+                    }
+                    <Text style={[stylesAdmin.userText, {color:item.plan === 'No tienes un plan' ? 'red': 'green'}]}> {item.plan}</Text>
+                  </View>
+                </View>
+              {item.plan !== 'No tienes un plan' && 
+                <View style={stylesAdmin.badgeDias}>
+                  <Clock/>
+                  <Text style={stylesAdmin.userTextDias}>{item.planDuration} días</Text>
+                </View>
+              } 
                 <DropDownPicker
                   zIndex={1000}
                   zIndexInverse={3000}
@@ -174,9 +192,6 @@ const planesConDuracion: Record<PlanNombre, number> = {
                   dropDownContainerStyle={{  backgroundColor: '#fff',  position: 'absolute', zIndex: 2000, maxHeight:600, }}
                   containerStyle={{ marginBottom: openDropdowns[item._id] ? 320 : 20, position: 'relative', zIndex: 3000,}}
                 />
-
-              
-
             </View>
           )}
         />
@@ -185,72 +200,6 @@ const planesConDuracion: Record<PlanNombre, number> = {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    position:'static',
-    padding: 20,
-    zIndex:1,
-    backgroundColor: '#f0f0f0',
-  },
-  searchInput: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 25,
-    paddingHorizontal: 10,
-    marginBottom: 10,
-    backgroundColor: '#333',
-    color: '#fff'
-  },
-  userContainer: {
-    flex:1,
-    marginBottom: 20,
-    zIndex:-1000000,
-    padding: 20,
-    borderRadius: 10,
-    backgroundColor: '#ffffff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
-  },
-  userText: {
-    fontSize: 16,
-    fontWeight:'bold',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  button: {
-    marginTop: 10,
-    backgroundColor: '#5a215e',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 15,
-  },
-  button2: {
-    marginTop: 10,
-    backgroundColor: 'red',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 15,
-  },
-  buttonText: {
-    color: '#ffffff',
-    textAlign: 'center',
-  },
-  errorText: {
-    color: 'red',
-    textAlign: 'center',
-    marginTop: 20,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default Asignacion;
 

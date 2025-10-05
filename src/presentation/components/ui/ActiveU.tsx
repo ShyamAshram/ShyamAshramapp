@@ -4,9 +4,11 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Importa íconos
 import Communications from 'react-native-communications'; // Para enviar correos
-import { WhatsApp } from '../../icons/Icons';
+import { Clock, Form, WhatsApp } from '../../icons/Icons';
 import { Email } from '../../icons/Icons';
 import { HOST_URL } from '../../../../utils/envconfig';
+import stylesAdmin from './styles/stylesAdmin';
+import { style } from '../../screens/landing/style';
 interface User {
   _id: string;
   name: string;
@@ -61,12 +63,12 @@ const ActiveU = () => {
   }, [searchQuery, users]);
 
   if (!isAdmin) {
-    return <Text style={styles.errorText}>No tienes permiso para acceder a esta pantalla</Text>;
+    return <Text style={stylesAdmin.errorText}>No tienes permiso para acceder a esta pantalla</Text>;
   }
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
+      <View style={stylesAdmin.loadingContainer}>
         <ActivityIndicator size="large" color="#0000ff" />
       </View>
     );
@@ -92,9 +94,9 @@ const ActiveU = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={stylesAdmin.container}>
       <TextInput
-        style={styles.searchInput}
+        style={stylesAdmin.searchInput}
         placeholder="Buscar usuarios..."
         value={searchQuery}
         onChangeText={setSearchQuery}
@@ -103,23 +105,68 @@ const ActiveU = () => {
         data={filteredUsers}
         keyExtractor={user => user._id}
         renderItem={({ item }) => (
-          <View style={styles.userContainer}>
-            <View style={styles.header}>
-              <View style={[styles.statusDot, { backgroundColor: item.plan === 'No tienes un plan' ? 'gray' : 'green' }]} />
-              <Text style={[styles.userName, {color: item.plan === 'No tienes un plan' ? 'gray': 'green'}]}>Nombre: {item.name}</Text>
+          <View style={[stylesAdmin.userContainer, {flexDirection:'row'}]}>
+            <View style={{borderWidth:0, height:'100%', width:'85%',}}>
+              <View style={stylesAdmin.header}>
+                <View style={[stylesAdmin.statusDot, { backgroundColor: item.plan === 'No tienes un plan' ? 'gray' : 'green' }]} />
+                <Text style={[stylesAdmin.userName, {color: item.plan === 'No tienes un plan' ? 'gray': 'green'}]}>{item.name}</Text>
+              </View>
+                <View style={[stylesAdmin.badgeEmailActiveU]}>
+                  <Email color='#000'/>
+                <Text style={stylesAdmin.userText}>{item.email}</Text>
+              </View>
+              <View style={{  flexDirection:'row', justifyContent:'center', alignItems:'center', gap:5}}>
+              <View style={stylesAdmin.badgePlanActiveU}>
+                {item.plan !== 'No tienes un plan' && 
+                  <Form color='green' size={20}/>
+                }
+                <Text style={[stylesAdmin.userText,{color:item.plan !== 'No tienes un plan'?"green":'#000'}]}>{item.plan}</Text>
+              </View>
+              {item.plan !== 'No tienes un plan' && 
+              <View style={stylesAdmin.badgeDias}>
+                <Clock/>
+                <Text style={stylesAdmin.userText}> {item.planDuration} días</Text>
+              </View>}
+              </View>
+              <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 10, marginTop: 10 }}>
+                <TouchableOpacity style={stylesAdmin.whatsappButton} onPress={() => sendWhatsAppMessage(item.phonenumber)}>
+                  <WhatsApp />
+                  {/* <Text style={stylesAdmin.buttonText}>WhatsApp</Text> */}
+                </TouchableOpacity><TouchableOpacity style={stylesAdmin.whatsappButton2} onPress={() => sendEmail(item.email)}>
+                    <Email />
+                    {/* <Text style={stylesAdmin.buttonText}>Email</Text> */}
+                  </TouchableOpacity>
+              </View>
             </View>
-            <Text style={styles.userText}>Correo: {item.email}</Text>
-            <Text style={styles.userText}>Plan: {item.plan}</Text>
-            <Text style={styles.userText}>Duración del Plan: {item.planDuration} días</Text>
-            <>
-              <TouchableOpacity style={styles.whatsappButton} onPress={() => sendWhatsAppMessage(item.phonenumber)}>
-                <WhatsApp />
-                <Text style={styles.buttonText}>Enviar mensaje por WhatsApp</Text>
-              </TouchableOpacity><TouchableOpacity style={styles.whatsappButton2} onPress={() => sendEmail(item.email)}>
-                  <Email />
-                  <Text style={styles.buttonText}>Enviar mensaje por Email</Text>
-                </TouchableOpacity>
-            </>
+            <View
+              style={{
+                borderWidth: 1,
+                borderColor:item.plan === 'No tienes un plan' ? '#ff0000ff' : '#25D366',
+                height: '100%',
+                width: '10%',
+                backgroundColor: '#FFF',
+                borderRadius: 10,
+                justifyContent: 'center',
+
+              }}
+            >
+             
+
+              <Text
+                style={{
+                  borderWidth:0,
+                  width:180,
+                  fontFamily:'Quicksand-Bold',
+                  textAlign:'center',
+                  alignSelf:'center',
+                  fontSize: 15,
+                  color: item.plan === 'No tienes un plan' ? '#ff0000ff' : '#25D366',
+                  transform: [{ rotate: '-90deg' }],
+                }}
+              >
+                {item.plan === 'No tienes un plan' ? 'INACTIVO' : 'ACTIVO'}
+              </Text>
+            </View>
 
           </View>
         )}
@@ -128,96 +175,7 @@ const ActiveU = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#f0f0f0',
-  },
-  searchInput: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 25,
-    paddingHorizontal: 10,
-    marginBottom: 10,
-    backgroundColor: '#333',
-    color: '#fff'
-  },
-  userContainer: {
-    marginBottom: 20,
-    padding: 20,
-    borderRadius: 10,
-    backgroundColor: '#ffffff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  statusDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    marginRight: 8,
-  },
-  userName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333333',
-  },
-  userText: {
-    fontSize: 16,
-    color: '#333333',
-    marginBottom: 5,
-  },
-  buttonsContainer: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    marginTop: 10,
-  },
-  whatsappButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#25D366',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 15,
-    marginRight: 10,
-  },
-  whatsappButton2: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 10,
-    backgroundColor: '#D44638',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 15,
-    marginRight: 10,
-  },
-  buttonText: {
-    color: '#ffffff',
-    textAlign: 'center',
-    marginLeft: 10,
-  },
-  errorText: {
-    color: 'red',
-    textAlign: 'center',
-    marginTop: 20,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
+
 
 export default ActiveU;
 

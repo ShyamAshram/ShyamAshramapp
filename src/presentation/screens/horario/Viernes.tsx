@@ -13,6 +13,7 @@ interface ClassSchedule {
   dayOfWeek: string;
   time: string;
   instructor: string;
+  instructorId: Object;
 }
 
 const Viernes1 = () => {
@@ -65,13 +66,14 @@ const Viernes1 = () => {
               <Card.Content>
                 <Text style={styles.label}>FECHA: <Text style={styles.info}>{classInfo.dayOfWeek}</Text></Text>
                 <Text style={styles.label}>HORA: <Text style={styles.info}>{classInfo.time}</Text></Text>
-                <Text style={styles.label}>INSTRUCTOR: <Text style={styles.info}>{classInfo.instructor}</Text></Text>
+                <Text style={styles.label}>INSTRUCTOR: <Text style={styles.info}>{(classInfo.instructorId as any)?.name || 'No disponible'}</Text></Text>
               </Card.Content>
             </Card>
-
+            {classInfo.instructorId && (
             <TouchableOpacity style={styles.buttonday} onPress={() => (handleClassRegistration(classInfo._id))}>
               <Text style={styles.day}>INCRIBIRSE</Text>
             </TouchableOpacity>
+            )}
           </View>
         ))
       ) : (

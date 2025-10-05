@@ -46,8 +46,6 @@ const Profe = () => {
 
   const [savedDays, setSavedDays] = useState<Set<string>>(new Set());
 
-
-
   useEffect(() => {
     fetchStudents();
   }, [selectedDay]);
@@ -111,7 +109,7 @@ const Profe = () => {
   const clearStudentList = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
-      await axios.delete(`${HOST_URL}/api/teach/clear-registrations`, {
+      await axios.delete(`${HOST_URL}/api/teach/clear-attendance/${selectedDay}`, {
         headers: { Authorization: 'Bearer ' + token },
       });
       setStudents([]);
@@ -244,10 +242,8 @@ const saveAttendanceList = async () => {
         <FlatList
           data={filteredStudents}
           keyExtractor={(item) => item._id}
-          contentContainerStyle={{ padding: 10 }}
-          style={{  height: 500}}
+          contentContainerStyle={{ borderWidth:0, padding: 10, height:520 }}
           renderItem={({ item }) => (
-            console.log('item desde profe', item),
             <View style={styles.card}>
               <Text style={styles.studentName}>{item.userName}</Text>
               <Text style={styles.studentEmail}>{item.userEmail}</Text>
@@ -265,17 +261,16 @@ const saveAttendanceList = async () => {
       )}
       <FloatingActionButton 
       onPress={() => {
-        console.log("Botón de añadir alumno presionado");
         setModalVisible(true)
         }}
       />
       <StudentRegistrationModal
-      visible={modalVisible}
-      data={students}
-     onClose={() => {
-      setModalVisible(false);
-     fetchStudents();
-     }}
+        visible={modalVisible}
+        data={students}
+        onClose={() => {
+          setModalVisible(false);
+          fetchStudents();
+        }}
       />
       <View style={styles.ContainerBtnFoot}>
         <TouchableOpacity onPress={clearStudentList} style={styles.ButtonClear}>

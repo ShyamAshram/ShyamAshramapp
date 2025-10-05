@@ -4,6 +4,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { globalStyles } from '../../../config/theme/Theme';
 import { HOST_URL } from '../../../../utils/envconfig';
+import stylesAdmin from './styles/stylesAdmin';
 
 interface AttendanceGroup {
     title: string;
@@ -74,62 +75,37 @@ const AttendanceListScreen = () => {
     return (
         <SafeAreaView style={globalStyles.mainContainer2}>
             <View style={globalStyles.header2}>
-                <Text style={styles.title}>Listas de Asistencia</Text>
+                <Text style={stylesAdmin.title}>Listas de Asistencia</Text>
             </View>
             {loading ? (
-                <Text style={styles.loadingText}>Cargando...</Text>
+                <Text style={stylesAdmin.loadingText}>Cargando...</Text>
             ) : (
                 <SectionList
                     sections={attendanceLists}
                     keyExtractor={(item) => item._id || Math.random().toString()}
                     renderItem={({ item }) => (
-                        <View style={styles.listItem}>
-                            <Text style={styles.listText}>
-                                {item.students && Array.isArray(item.students)
-                                    ? item.students.map((s: any) => s.userName).join(', ')
-                                    : 'Sin estudiantes'}
-                            </Text>
-                        </View>
+                        console.log('Item de asistencia:', item),   
+                    <View style={stylesAdmin.card}>
+                        <Text style={stylesAdmin.cardSubtitle}>
+                        {item.students && Array.isArray(item.students)
+                            ? item.students.map((s: any) => `• ${s.userName}, correo: ${s.userEmail}`).join('\n')  
+                            : 'Sin estudiantes'} 
+                        </Text>
+                    </View>
                     )}
+
                     renderSectionHeader={({ section: { title } }) => (
-                        <Text style={styles.sectionHeader}>{title}</Text>
+                    <View style={stylesAdmin.sectionHeaderContainer}>
+                        <Text style={stylesAdmin.sectionHeaderText}>{title}</Text>
+                    </View>
                     )}
                     ListEmptyComponent={
-                        <Text style={styles.loadingText}>No hay listas de asistencia</Text>
+                        <Text style={stylesAdmin.loadingText}>No hay listas de asistencia</Text>
                     }
                 />
             )}
         </SafeAreaView>
     );
 };
-
-const styles = StyleSheet.create({
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: 'white',
-        textAlign: 'center',
-    },
-    loadingText: {
-        textAlign: 'center',
-        fontSize: 18,
-        marginTop: 20,
-    },
-    sectionHeader: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        backgroundColor: '#ddd',
-        padding: 10,
-    },
-    listItem: {
-        padding: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-    },
-    listText: {
-        fontSize: 16,
-        color: '#333'
-    },
-});
 
 export default AttendanceListScreen;

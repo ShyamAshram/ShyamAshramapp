@@ -31,7 +31,6 @@ interface User {
 }
 
 const StudentRegistrationModal: React.FC<Props> = ({data,  visible, onClose }) => {
-    console.log('data desde modal', data);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -224,7 +223,6 @@ useEffect(() => {
   }
 }, [newStudentId, visible]);
 
-    console.log('class', newStudentId);
     return (
         <Modal transparent visible={visible} animationType="slide" presentationStyle='overFullScreen'>
             <View style={styles.overlay}>

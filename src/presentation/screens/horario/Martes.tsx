@@ -12,6 +12,7 @@ interface ClassSchedule {
   name: string;
   dayOfWeek: string;
   time: string;
+  instructorId: Object;
   instructor: string;
 }
 
@@ -78,10 +79,10 @@ const Martes1 = () => {
               <Card.Content>
                 <Text style={styles.label}>FECHA: <Text style={styles.info}>{classInfo.dayOfWeek}</Text></Text>
                 <Text style={styles.label}>HORA: <Text style={styles.info}>{classInfo.time}</Text></Text>
-                <Text style={styles.label}>INSTRUCTOR: <Text style={styles.info}>{classInfo.instructor}</Text></Text>
+                <Text style={styles.label}>INSTRUCTOR: <Text style={styles.info}>{(classInfo.instructorId as any)?.name || 'No disponible'}</Text></Text>
               </Card.Content>
             </Card>
-
+            {classInfo.instructorId && ( 
             <TouchableOpacity
               style={[styles.buttonday, userRegistrations.includes(classInfo._id) && { backgroundColor: '#ccc' }]}
               onPress={() => handleClassRegistration(classInfo._id)}
@@ -91,6 +92,7 @@ const Martes1 = () => {
                 {userRegistrations.includes(classInfo._id) ? 'INSCRITO' : 'INSCRIBIRSE'}
               </Text>
             </TouchableOpacity>
+            )}
           </View>
         ))
       ) : (

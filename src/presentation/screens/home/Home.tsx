@@ -61,27 +61,36 @@ export const HomeScreen = () => {
       setPlan(userData.plan);
       setPlanDuration(userData.planDuration);
 
-      const totalPlanDuration = calculateTotalPlanDuration(userData.plan);
-
+      const totalPlanDuration = calculateTotalPlanDuration(userData.planDuration);
       const startDate = new Date(userData.planStartDate);
       const currentDate = new Date();
+      const total =  Number(userData.planTotalDuration) ?? totalPlanDuration; 
+      const remaining = Number(userData.planDuration) ?? 0;
 
+      console.log({ total, remaining });
+      // if (userData.plan === 'Ilimitado') {
+      //   const daysPassed = Math.min(
+      //     differenceInDays(currentDate, startDate),
+      //     totalPlanDuration
+      //   );
+      //   if(total>0 && remaining>0){}
+      //   const progressValue =Math.round(remaining *100 / total);
 
-      // Si el plan es ilimitado, calcula el progreso basado en días restantes
-      if (userData.plan === 'Ilimitado') {
-        const daysPassed = Math.min(
-          differenceInDays(currentDate, startDate),
-          totalPlanDuration
-        );
-        const progressValue = 1 - daysPassed / totalPlanDuration;
-        setProgress(progressValue);
-        setDaysLeft(totalPlanDuration - daysPassed);
-      } else {
-        // Para planes limitados, calcula el progreso basado en clases restantes
-        const progressValue = userData.planDuration / totalPlanDuration;
+      //   console.log( progressValue );
+      //   setProgress(progressValue);
+      //   setDaysLeft(totalPlanDuration - daysPassed);
+      // } else {
+        if(total>0 && remaining>0){
+        const progressValue = Math.round(remaining *100 / total);
+        console.log( progressValue );
+
         setProgress(progressValue);
         setDaysLeft(userData.planDuration);
-      }
+        } else {
+          setProgress(0);
+          setDaysLeft(0);
+        }
+      // }
 
       const unreadNotificationsCount = userData.notifications.filter((notification: { read: any; }) => !notification.read).length;
       setUnreadNotifications(unreadNotificationsCount);
@@ -109,10 +118,8 @@ export const HomeScreen = () => {
     try {
       await AsyncStorage.removeItem('token');
       await AsyncStorage.removeItem('role');
-      // console.log('Token REMOVE')
       navigation.navigate('Landing');
     } catch (error) {
-      // console.error('Error al cerrar sesión:', error);
     }
   };
 
@@ -122,22 +129,20 @@ export const HomeScreen = () => {
         <View style={{ justifyContent:'center', alignItems:'center'}}>
         <Title text={`Bienvenido, ${userName}`} />
         </View>
-        <View style={globalStyles.profileImageContainer}>
           <TouchableOpacity onPress={handleLogout} style={globalStyles.profileImage}>
             <Set />
           </TouchableOpacity>
-        </View>
       </View>
       <ScrollView style={globalStyles.globalMargin}>
         <View style={[globalStyles.progressContainer, globalStyles.shadowProp]}>
-          <Text style={globalStyles.progressText}>Progreso de tu suscripción: %{progress*100}</Text>
+          <Text style={globalStyles.progressText}>Tu suscripción tiene el {progress}% para tus clases</Text>
           <Progress.Bar
-            progress={progress}
+            progress={progress/100}
             width={null}
             style={{ elevation:10,}}
             height={10}
             color='#23632cff'
-            unfilledColor='#af5b5bff'
+            unfilledColor='#fff6f6ff'
             borderRadius={5}
             borderWidth={0}
           />

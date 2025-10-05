@@ -1,8 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Landing from "../screens/landing/Landing";
-import { Signin } from "../screens/singin/Singin";
-import { Login } from "../screens/login/Login";
+
 import { HomeScreen } from "../screens/home/Home";
 import { Class } from "../screens/class/Class";
 import { AdminScreen } from "../screens/admin/Admin"
@@ -30,6 +29,8 @@ import AttendanceListScreen from "../components/ui/Asistencia";
 import Excel from "../components/ui/Excel";
 import CheckLogin from "../components/CheckLogin";
 import { Profesores } from "../components/ui/Profesores";
+import { Login } from "../screens/login/Login";
+import { Signin } from "../screens/signin/Signin";
 
 const Stack = createStackNavigator();
 
@@ -40,8 +41,8 @@ function Navigator() {
         screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Landing" component={Landing} />
             <Stack.Screen name="CheckLogin" component={CheckLogin} />
-            <Stack.Screen name="Signin" component={Signin} />
             <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Signin" component={Signin} />
             <Stack.Screen name="HomeScreen" component={HomeScreen} />
             <Stack.Screen name="Admin" component={AdminScreen} />
             <Stack.Screen name="Asignacion" component={Asignacion} />

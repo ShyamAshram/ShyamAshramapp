@@ -59,12 +59,13 @@ const styles = StyleSheet.create({
   searchInput: {
     height: 40,
     borderColor: '#ccc',
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 8,
     paddingLeft: 10,
     marginBottom: 15,
-    backgroundColor: '#333',
-    color: '#efe7f0ff'
+    backgroundColor: '#FFF',
+    color: '#333',
+    fontFamily:'Quicksand-Bold',
   },
   daySelector: {
     flexDirection: 'row',

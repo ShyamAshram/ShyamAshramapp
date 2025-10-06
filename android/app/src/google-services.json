@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "686700339129",
-    "project_id": "yapp-2cec4",
-    "storage_bucket": "yapp-2cec4.firebasestorage.app"
+    "project_number": "288324066597",
+    "project_id": "shyamashram8",
+    "storage_bucket": "shyamashram8.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:686700339129:android:ccb8c3ddf6f269ae1ee068",
+        "mobilesdk_app_id": "1:288324066597:android:4f3640b6861eab6f318ecc",
         "android_client_info": {
-          "package_name": "com.company.yapp"
+          "package_name": "com.frontend"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA48G4QBnTzHQyaiLKSl1XFdIlD9TrQ51M"
+          "current_key": "AIzaSyDeWcYwQF1cCmNeiNxjoYinQ05JbgaWICA"
         }
       ],
       "services": {

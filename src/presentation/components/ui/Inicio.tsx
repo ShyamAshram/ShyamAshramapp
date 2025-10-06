@@ -4,6 +4,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { HOST_URL } from '../../../../utils/envconfig';
+import { getMessaging } from '@react-native-firebase/messaging';
 
 export const Inicio = () => {
   const navigation = useNavigation<any>();
@@ -41,6 +42,19 @@ export const Inicio = () => {
 
       await AsyncStorage.setItem('token', token);
       await AsyncStorage.setItem('role', role);
+      if (role === "user") {
+      try {
+        const fcmToken = await getMessaging().getToken();
+        const response =await axios.post(`${HOST_URL}/api/users/save-fcm-token`, {
+          userId: user._id,
+          fcmToken,
+        });
+        console.log("FCM token enviado al backend:", fcmToken);
+        console.log("Respuesta del backend:", response.data);
+      } catch (err) {
+        console.error("Error guardando FCM token:", err);
+      }
+    }
 
       switch (role) {
         case 'admin':

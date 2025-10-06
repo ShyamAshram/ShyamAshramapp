@@ -80,7 +80,7 @@ const stylesAdmin = StyleSheet.create({
     fontSize: 15,
 		textAlign:'center',
 		fontFamily:'Quicksand-Bold',
-    color: '#OOO',
+    color: '#333',
     marginBottom: 5,
   },
 	userTextDias: {

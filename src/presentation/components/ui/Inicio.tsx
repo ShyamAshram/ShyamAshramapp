@@ -13,6 +13,14 @@ export const Inicio = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
+async function subscribeUserTopics() {
+  try {
+    await getMessaging().subscribeToTopic('general');
+    console.log("User subscribed to topics");
+  } catch (error) {
+    console.error("Error subscribing to topic", error);
+  }
+}
   const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert('Error', 'Por favor, completa todos los campos');
@@ -51,6 +59,7 @@ export const Inicio = () => {
         });
         console.log("FCM token enviado al backend:", fcmToken);
         console.log("Respuesta del backend:", response.data);
+        await subscribeUserTopics()
       } catch (err) {
         console.error("Error guardando FCM token:", err);
       }

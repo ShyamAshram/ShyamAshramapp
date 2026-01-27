@@ -10,7 +10,6 @@ const stylesAdmin = StyleSheet.create({
 		backgroundColor: '#f0f0f0',
   },
   container: {
-    flex: 1,
     padding: 20,
     backgroundColor: '#f0f0f0',
   },
@@ -18,6 +17,7 @@ const stylesAdmin = StyleSheet.create({
     height: 40,
     padding:10,
     borderColor: 'gray',
+    fontFamily:'Quicksand-Bold',
     borderWidth: 1,
     borderRadius: 25,
     paddingHorizontal: 10,

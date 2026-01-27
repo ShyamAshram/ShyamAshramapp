@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { Linking, Text, View, Animated, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { globalStyles } from '../../../config/theme/Theme';
 import styles from './styles';
 const Plan2 = () => {
@@ -25,7 +26,7 @@ const Plan2 = () => {
     ).start();
   }, [scaleAnim])
   return (
-    <View style={styles.mainContainer}>
+    <SafeAreaView style={globalStyles.mainContainer}>
       <View style={globalStyles.header2}>
         <Text style={styles.title2}>4 Clases de Yoga o Taiji (Vigencia un mes)</Text>
       </View>
@@ -73,7 +74,7 @@ const Plan2 = () => {
           </TouchableOpacity>
         </Animated.View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

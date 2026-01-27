@@ -10,7 +10,7 @@ import ImageSlider from "../../components/ui/Slide";
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Progress from 'react-native-progress';
-import { differenceInDays } from 'date-fns';
+import { differenceInDays, set } from 'date-fns';
 
 import Plans from "../plans/Plans";
 import Plan2 from "../plans/Plan2"
@@ -25,6 +25,7 @@ import { HOST_URL } from "../../../../utils/envconfig";
 
 export const HomeScreen = () => {
   const navigation = useNavigation<any>();
+  const [hasNotification,setHasNotification] = useState(false);
   const [userName, setUserName] = useState('');
   const [birtday, setBirtday] = useState(null)
   const [progress, setProgress] = useState(0);
@@ -32,7 +33,7 @@ export const HomeScreen = () => {
   const [planDuration, setPlanDuration] = useState(0);
   const [daysLeft, setDaysLeft] = useState(0);
   const [unreadNotifications, setUnreadNotifications] = useState(0);
-
+  const [notificationCount, setNotificationCount] = useState(0);
   useEffect(() => {
     getUserDetails();
     const interval = setInterval(() => {
@@ -56,7 +57,16 @@ export const HomeScreen = () => {
       });
       const userData = response.data;
 
+      if(Array.isArray(userData.notifications) && userData.notifications.length > 0){
+        setHasNotification(true)  
+        setNotificationCount(userData.notifications.length);
+      }
+      else{
+        setHasNotification(false) 
+        setNotificationCount(0);
+      }
 
+      console.log(hasNotification)
       setUserName(userData.name);
       setPlan(userData.plan);
       setPlanDuration(userData.planDuration);
@@ -67,7 +77,6 @@ export const HomeScreen = () => {
       const total =  Number(userData.planTotalDuration) ?? totalPlanDuration; 
       const remaining = Number(userData.planDuration) ?? 0;
 
-      console.log({ total, remaining });
       // if (userData.plan === 'Ilimitado') {
       //   const daysPassed = Math.min(
       //     differenceInDays(currentDate, startDate),
@@ -157,7 +166,12 @@ export const HomeScreen = () => {
             <Text style={globalStyles.optionText}>Class schedules</Text>
           </TouchableOpacity>
           <TouchableOpacity style={globalStyles.containerIconsA} onPress={() => navigation.navigate(Alerts)}>
-            <Notification />
+            <Notification color={hasNotification ? '#daeb44ff' : '#fff'}/>
+            {notificationCount > 0 && (
+              <View style={{ position: 'absolute', right:0 , top:-5, left:90, backgroundColor:'red', width:15, height:15, borderRadius:25, justifyContent:'center', alignItems:'center'}}>
+                <Text style={{color:'white', fontSize:10, fontWeight:'bold'}}>{notificationCount}</Text>
+              </View>
+            )}
             <Text style={globalStyles.optionText}>Notification</Text>
           </TouchableOpacity>
         </View>

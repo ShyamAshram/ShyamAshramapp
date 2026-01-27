@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
-import { Text, View, Linking, Image, Animated, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, Linking, Image, Animated,TouchableOpacity, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { globalStyles } from '../../../config/theme/Theme';
 import styles from './styles';
 
@@ -26,7 +27,7 @@ const Plan4 = () => {
         ).start();
     }, [scaleAnim])
     return (
-        <SafeAreaView style={styles.mainContainer}>
+        <SafeAreaView style={globalStyles.mainContainer}>
             <View style={globalStyles.header2}>
                 <Text style={styles.title2}>Plan Anualidad</Text>
             </View>

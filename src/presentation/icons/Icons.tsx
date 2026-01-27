@@ -3,7 +3,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MateriaCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const Book = () => <Ionicons name="book" color={'#FFF'} size={15} />;
-export const Notification = () => <Ionicons name='notifications' color={'#FFF'} size={15} />;
+export const Notification = ({color='#FFF'}) => <Ionicons name='notifications' color={color} size={15} />;
 export const Calendario = () => <Ionicons name='calendar' color={'#544444'} size={15} />;
 export const Setting = () => <Ionicons name='settings' color={'#544444'} size={15} />;
 export const List = () => <Ionicons name='list' color={'#544444'} size={15} />;

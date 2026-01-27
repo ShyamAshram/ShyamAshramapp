@@ -63,7 +63,6 @@ export const globalStyles = StyleSheet.create({
     fontSize: 16,
   },
   container: {
-    flex: 1,
     backgroundColor: '#5a215e',
     position: 'relative',
   },

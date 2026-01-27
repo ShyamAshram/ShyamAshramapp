@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 40,
     borderStartColor: '#00000',
-    width: '300%',
+    width: '100%',
     position: 'relative',
   },
   text: {

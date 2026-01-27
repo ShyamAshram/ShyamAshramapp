@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Image, TouchableOpacity, TextInput, Text, StyleSheet, KeyboardAvoidingView, Platform, View, ActivityIndicator } from 'react-native';
+import { Alert, Image, TouchableOpacity, TextInput, Text, StyleSheet, KeyboardAvoidingView, Platform, View, ActivityIndicator, PermissionsAndroid} from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -16,11 +16,66 @@ export const Inicio = () => {
 async function subscribeUserTopics() {
   try {
     await getMessaging().subscribeToTopic('general');
-    console.log("User subscribed to topics");
   } catch (error) {
     console.error("Error subscribing to topic", error);
   }
 }
+const requestFilePermission = async () => {
+  try {
+    console.log("Requesting file permissions...");
+    if (Platform.OS === 'android') {
+      if (Platform.Version >= 33) {
+        // Android 13+: permisos separados
+        const granted = await PermissionsAndroid.requestMultiple([
+          PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
+          PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO,
+          PermissionsAndroid.PERMISSIONS.READ_MEDIA_AUDIO,
+        ]);
+
+        return (
+          granted['android.permission.READ_MEDIA_IMAGES'] === PermissionsAndroid.RESULTS.GRANTED ||
+          granted['android.permission.READ_MEDIA_VIDEO'] === PermissionsAndroid.RESULTS.GRANTED ||
+          granted['android.permission.READ_MEDIA_AUDIO'] === PermissionsAndroid.RESULTS.GRANTED
+        );
+      } else {
+        // Android < 13
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+          {
+            title: 'Permiso de almacenamiento',
+            message: 'Necesitamos acceder a tus archivos para continuar',
+            buttonNeutral: 'Preguntar después',
+            buttonNegative: 'Cancelar',
+            buttonPositive: 'Aceptar',
+          }
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      }
+    }
+    return true; // iOS no requiere
+  } catch (err) {
+    console.warn(err);
+    return false;
+  }
+};
+
+const requestUserPermission = async () => {
+  try {
+
+      if (Number(Platform.Version) >= 33) {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      }
+      return true;
+    
+  } catch (error) {
+    console.error("Error solicitando permisos de notificación:", error);
+    return false;
+  }
+};
+
   const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert('Error', 'Por favor, completa todos los campos');
@@ -74,7 +129,9 @@ async function subscribeUserTopics() {
           break;
         default:
           navigation.navigate('HomeScreen');
-      }
+      } 
+      await requestUserPermission();
+      await requestFilePermission();
       setIsLoading(false)
     } catch (error: any) {
       setIsLoading(false)

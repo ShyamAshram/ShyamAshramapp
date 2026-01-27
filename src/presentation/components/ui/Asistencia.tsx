@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, SectionList, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, SectionList,} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { globalStyles } from '../../../config/theme/Theme';

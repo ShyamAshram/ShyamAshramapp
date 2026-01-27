@@ -9,6 +9,8 @@ import { Email } from '../../icons/Icons';
 import { HOST_URL } from '../../../../utils/envconfig';
 import stylesAdmin from './styles/stylesAdmin';
 import { style } from '../../screens/landing/style';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { globalStyles } from '../../../config/theme/Theme';
 interface User {
   _id: string;
   name: string;
@@ -94,6 +96,7 @@ const ActiveU = () => {
   };
 
   return (
+    <SafeAreaView style={globalStyles.mainContainer}>
     <View style={stylesAdmin.container}>
       <TextInput
         style={stylesAdmin.searchInput}
@@ -172,6 +175,7 @@ const ActiveU = () => {
         )}
       />
     </View>
+    </SafeAreaView>
   );
 };
 

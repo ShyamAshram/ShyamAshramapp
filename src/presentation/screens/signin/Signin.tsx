@@ -14,7 +14,7 @@ export const Signin = () => {
     >
       <View style={style.containerMain}>
         <Registro />
-        <View>
+        <View style={{ width:'90%', position:'absolute', bottom:0, backgroundColor:'white'}}>
           <Footer />
         </View>
       </View>

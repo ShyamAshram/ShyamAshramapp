@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
 
   },
   ContainerBtnFoot: {
+    borderWidth:0, 
     flexDirection: 'row',
     justifyContent: 'center',
     height: 40,

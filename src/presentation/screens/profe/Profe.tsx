@@ -57,6 +57,7 @@ const Profe = () => {
         headers: { Authorization: 'Bearer ' + token },
       });
 
+      console.log('RESPONSE', JSON.stringify(response.data, null, 2))
       setStudents(response.data); 
     } catch (error) {
       console.error('Error fetching registrations:', error);
@@ -122,7 +123,6 @@ const Profe = () => {
 
 
 const saveAttendanceList = async () => {
-  console.log('students', JSON.stringify(students, null, 2))
   const attendedStudents = students
     .filter(student => student.attended && student.dayOfWeek === selectedDay)
     .map(student => ({
@@ -175,15 +175,9 @@ const saveAttendanceList = async () => {
     getUserDetails();
   }, []);
 
-  const studentsByDay = students.filter((student) => student.dayOfWeek === selectedDay)
-    .filter((student) => {
-      const studentDate = new Date(student.date);
-      const today = new Date();
-      const lastSaturday = new Date(today);
-      lastSaturday.setDate(today.getDate() - today.getDay() - 1);
-
-      return studentDate >= lastSaturday;;
-    });
+  const studentsByDay = students.filter(
+    (student) => student.dayOfWeek?.toLowerCase() === selectedDay.toLowerCase()
+  );
   const filteredStudents = studentsByDay.filter((student) =>
     student.userName.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -234,7 +228,7 @@ const saveAttendanceList = async () => {
       </ScrollView>
       </View>
       {filteredStudents.length === 0 ? (
-        <View style={{ borderWidth:0, height: 450 }}>
+        <View style={{ borderWidth:0, height: '60%' }}>
           <Text style={styles.noStudentsText}>No hay estudiantes inscritos para {selectedDay}</Text>
         </View>
 
@@ -242,7 +236,7 @@ const saveAttendanceList = async () => {
         <FlatList
           data={filteredStudents}
           keyExtractor={(item) => item._id}
-          contentContainerStyle={{ borderWidth:0, padding: 10, height:520 }}
+          contentContainerStyle={{ borderWidth:0, padding: 10, height:'60%' }}
           renderItem={({ item }) => (
             <View style={styles.card}>
               <Text style={styles.studentName}>{item.userName}</Text>

@@ -5,6 +5,7 @@ import { globalStyles } from '../../../config/theme/Theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RectButton, Swipeable } from 'react-native-gesture-handler';
 import { HOST_URL } from '../../../../utils/envconfig';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface Notifications {
   _id: string;
@@ -16,7 +17,7 @@ interface Notifications {
 const NotificationUi = () => {
   const [notifications, setNotifications] = useState<Notifications[]>([]);
   const [loading, setLoading] = useState(true);
-
+  
   useEffect(() => {
     fetchNotifications();
   }, []);
@@ -79,31 +80,31 @@ const NotificationUi = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header2}>
-        <Text style={styles.header}>Notificaciones</Text>
-      </View>
-      <FlatList
-        data={notifications}
-        renderItem={renderNotificationItem}
-        keyExtractor={item => item._id}
-        style={styles.notificationList}
-        ListEmptyComponent={
-          <View style={styles.notificationContainer}>
-            <Text style={styles.NonotificationTitle}>No hay notificaciones de momento</Text>
-          </View>
-        }
-      />
+    <SafeAreaView style={styles.mainContainer}>
+        <View style={styles.header2}>
+          <Text style={styles.header}>Notificaciones</Text>
+        </View>
+        <FlatList
+          data={notifications}
+          renderItem={renderNotificationItem}
+          keyExtractor={item => item._id}
+          style={styles.notificationList}
+          ListEmptyComponent={
+            <View style={styles.notificationContainer}>
+              <Text style={styles.NonotificationTitle}>No hay notificaciones de momento</Text>
+            </View>
+          }
+        />
 
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 0,
-    flexDirection: 'column',
-    width: '100%'
+
+  mainContainer:{
+    backgroundColor: '#fff',
+
   },
   header: {
 

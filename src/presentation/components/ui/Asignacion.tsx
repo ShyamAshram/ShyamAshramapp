@@ -7,6 +7,8 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { HOST_URL } from '../../../../utils/envconfig';
 import stylesAdmin from './styles/stylesAdmin';
 import { Clock, Email, Form, Person } from '../../icons/Icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { globalStyles } from '../../../config/theme/Theme';
 
 interface User {
   _id: string;
@@ -134,69 +136,71 @@ const planesConDuracion: Record<PlanNombre, number> = {
 };
 
   return (
-    <View style={stylesAdmin.containerAsignacion}>
-      <TextInput
-        style={stylesAdmin.searchInput}
-        placeholder="Buscar usuarios..."
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-      />
-      <View style={{ flex: 1, position: 'relative', zIndex: 0 }}>
-        <FlatList
-          data={filteredUsers}
-          keyExtractor={user => user._id}
-          renderItem={({ item, index }) => (
-            <View style={[stylesAdmin.userContainerAsignacion,  { zIndex: 1}] }>
-                <View style={stylesAdmin.badgeName}>
-                  <Text style={stylesAdmin.userText}>{item.name}</Text>
-                </View>
-                <View style={{flexDirection:'row', justifyContent:'center', gap:10,}}>
-                  <View style={stylesAdmin.badgeEmail}>
-                    <Email color='#f80000ff' />
-                    <Text style={stylesAdmin.userTextEmail}>{item.email}</Text>
-                  </View>
-                  <View style={stylesAdmin.badgePlan}>
-                    {item.plan !== 'No tienes un plan' && 
-                      <Form color= {'green'} size={20}/>
-                    }
-                    <Text style={[stylesAdmin.userText, {color:item.plan === 'No tienes un plan' ? 'red': 'green'}]}> {item.plan}</Text>
-                  </View>
-                </View>
-              {item.plan !== 'No tienes un plan' && 
-                <View style={stylesAdmin.badgeDias}>
-                  <Clock/>
-                  <Text style={stylesAdmin.userTextDias}>{item.planDuration} días</Text>
-                </View>
-              } 
-                <DropDownPicker
-                  zIndex={1000}
-                  zIndexInverse={3000}
-                  listMode='SCROLLVIEW'
-                  dropDownDirection='AUTO'
-                  open={openDropdowns[item._id] || false}
-                  setOpen={getOpenSetter(item._id)} 
-                  value={selectedPlan[item._id] || null}
-                  setValue={(callback) => {
-                    const value = typeof callback === 'function' ? callback(selectedPlan[item._id]) : callback;
-                    const duration = planesConDuracion[value as PlanNombre];
-                    if (typeof duration === 'number') {
-                      updateUserPlan(item._id, value, duration);
-                      setSelectedPlan(prev => ({ ...prev, [item._id]: value }));
-                    }
-                
-
-                  }}
-                  items={uniquePlanes}
-                  placeholder="Selecciona un plan"
-                  style={{ borderColor: '#5a215e',backgroundColor: '#FFF', borderWidth:3}}
-                  dropDownContainerStyle={{  backgroundColor: '#fff',  position: 'absolute', zIndex: 2000, maxHeight:600, }}
-                  containerStyle={{ marginBottom: openDropdowns[item._id] ? 320 : 20, position: 'relative', zIndex: 3000,}}
-                />
-            </View>
-          )}
+    <SafeAreaView style={globalStyles.mainContainer} >
+      <View style={stylesAdmin.containerAsignacion}>
+        <TextInput
+          style={stylesAdmin.searchInput}
+          placeholder="Buscar usuarios..."
+          value={searchQuery}
+          onChangeText={setSearchQuery}
         />
+        <View style={{ flex: 1, position: 'relative', zIndex: 0 }}>
+          <FlatList
+            data={filteredUsers}
+            keyExtractor={user => user._id}
+            renderItem={({ item, index }) => (
+              <View style={[stylesAdmin.userContainerAsignacion,  { zIndex: 1}] }>
+                  <View style={stylesAdmin.badgeName}>
+                    <Text style={stylesAdmin.userText}>{item.name}</Text>
+                  </View>
+                  <View style={{flexDirection:'row', justifyContent:'center', gap:10,}}>
+                    <View style={stylesAdmin.badgeEmail}>
+                      <Email color='#f80000ff' />
+                      <Text style={stylesAdmin.userTextEmail}>{item.email}</Text>
+                    </View>
+                    <View style={stylesAdmin.badgePlan}>
+                      {item.plan !== 'No tienes un plan' && 
+                        <Form color= {'green'} size={20}/>
+                      }
+                      <Text style={[stylesAdmin.userText, {color:item.plan === 'No tienes un plan' ? 'red': 'green'}]}> {item.plan}</Text>
+                    </View>
+                  </View>
+                {item.plan !== 'No tienes un plan' && 
+                  <View style={stylesAdmin.badgeDias}>
+                    <Clock/>
+                    <Text style={stylesAdmin.userTextDias}>{item.planDuration} días</Text>
+                  </View>
+                } 
+                  <DropDownPicker
+                    zIndex={1000}
+                    zIndexInverse={3000}
+                    listMode='SCROLLVIEW'
+                    dropDownDirection='AUTO'
+                    open={openDropdowns[item._id] || false}
+                    setOpen={getOpenSetter(item._id)} 
+                    value={selectedPlan[item._id] || null}
+                    setValue={(callback) => {
+                      const value = typeof callback === 'function' ? callback(selectedPlan[item._id]) : callback;
+                      const duration = planesConDuracion[value as PlanNombre];
+                      if (typeof duration === 'number') {
+                        updateUserPlan(item._id, value, duration);
+                        setSelectedPlan(prev => ({ ...prev, [item._id]: value }));
+                      }
+                  
+
+                    }}
+                    items={uniquePlanes}
+                    placeholder="Selecciona un plan"
+                    style={{ borderColor: '#5a215e',backgroundColor: '#FFF', borderWidth:3}}
+                    dropDownContainerStyle={{  backgroundColor: '#fff',  position: 'absolute', zIndex: 2000, maxHeight:600, }}
+                    containerStyle={{ marginBottom: openDropdowns[item._id] ? 320 : 20, position: 'relative', zIndex: 3000,}}
+                  />
+              </View>
+            )}
+          />
+        </View>
       </View>
-    </View>
+      </SafeAreaView>
   );
 };
 

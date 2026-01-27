@@ -4,6 +4,8 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { HOST_URL } from '../../../../utils/envconfig';
+import { SafeAreaView } from "react-native-safe-area-context";
+import { globalStyles } from "../../../config/theme/Theme";
 
 interface User {
   _id: string;
@@ -85,6 +87,7 @@ export const Profesores = () => {
 };
 
   return (
+    <SafeAreaView style={globalStyles.mainContainer} >
     <View style={styles.container}>
       <FlatList
         data={users}
@@ -155,6 +158,7 @@ export const Profesores = () => {
         )}
       />
     </View>
+    </SafeAreaView>
   );
 };
 

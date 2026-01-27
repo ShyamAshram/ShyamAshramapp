@@ -6,6 +6,8 @@ import 'react-native-gesture-handler';
 import app from '@react-native-firebase/app';
 import messaging from '@react-native-firebase/messaging';
 import notifee, { AndroidImportance } from '@notifee/react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native';
 
 
 
@@ -25,7 +27,7 @@ export const App = () => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
 
       await notifee.displayNotification({
-        title: remoteMessage.notification?.title || '📢 Notificación',
+        title: remoteMessage.notification?.title || 'Notificación',
         body: remoteMessage.notification?.body || 'Mensaje recibido',
         android: {
           channelId: 'default',
@@ -62,9 +64,11 @@ export const App = () => {
 
 testFCM();
   return (
-    <NavigationContainer>
-      <Navigator />
-    </NavigationContainer>
+
+        <NavigationContainer>
+          <Navigator />
+        </NavigationContainer>
+
   );
 };
 

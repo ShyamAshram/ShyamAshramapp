@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image, SafeAreaView, Alert } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -65,7 +66,7 @@ export const AdminScreen = () => {
   };
 
 return (
-  <SafeAreaView style={globalStyles.mainContainer2}>
+  <SafeAreaView style={globalStyles.mainContainer}>
     {!isAdmin ? (
       <Text style={styles.errorText}>
         No tienes permiso para acceder a esta pantalla
@@ -124,7 +125,7 @@ return (
         </View>
       </>
     )}
-  </SafeAreaView>
+  </SafeAreaView> 
 );
 };
 

@@ -1,4 +1,5 @@
-import { StyleSheet, } from "react-native";
+import { Dimensions, StyleSheet, } from "react-native";
+const {width, height} = Dimensions.get('window');
 
 export interface ThemeColors {
   primary: string;
@@ -19,7 +20,7 @@ export const colors: ThemeColors = {
 
 export const globalStyles = StyleSheet.create({
   title: {
-    fontSize: 25,
+    fontSize:18,
     color: colors.text,
     fontFamily: 'Quicksand-Bold',
   },
@@ -68,9 +69,10 @@ export const globalStyles = StyleSheet.create({
   },
 
   header: {
+    borderWidth: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    height: 70,
+    height: height * 0.13,
     borderBottomRightRadius:10,
     borderBottomLeftRadius:10,
     elevation:5,
@@ -80,8 +82,9 @@ export const globalStyles = StyleSheet.create({
   header2: {
     flexDirection: 'row',
     justifyContent:'center',
-    alignItems: 'center',
-    height: 60,
+    alignItems: 'flex-end',
+    height: 75,
+    borderRadius: 10,
     backgroundColor: '#5a215e'
   },
   profileImageContainer: {
@@ -98,11 +101,8 @@ export const globalStyles = StyleSheet.create({
   profileImage: {
     width: '15%',
     height: '100%',
-    paddingVertical:10, 
     justifyContent: 'center',
-    alignContent: 'center',
-    marginTop: 0,
-    marginLeft: 0,
+    alignItems: 'center',
 
   },
   SetProfileImageContainer: {
@@ -132,7 +132,7 @@ export const globalStyles = StyleSheet.create({
 
   },
   progText: {
-    
+    marginTop: 10,
     width: '100%',
     flexDirection: 'row'
   },
@@ -283,7 +283,7 @@ export const globalStyles = StyleSheet.create({
 
   containermid: {
     width: '98%',
-
+    height:height*0.3,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 20,
@@ -358,7 +358,7 @@ export const globalStyles = StyleSheet.create({
   },
   textPlan: {
     color: '#D9A404',
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'Quicksand-Bold',
     textAlign: 'center',
     justifyContent: 'center',

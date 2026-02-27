@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Alert, Image, TouchableOpacity, TextInput, Text, StyleSheet, KeyboardAvoidingView, Platform, View, ActivityIndicator, PermissionsAndroid} from 'react-native';
+import { Alert, Image, TouchableOpacity, TextInput, Text, StyleSheet, KeyboardAvoidingView, Platform, View, ActivityIndicator, PermissionsAndroid, Dimensions} from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { HOST_URL } from '../../../../utils/envconfig';
 import { getMessaging } from '@react-native-firebase/messaging';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+const{width, height} = Dimensions.get('window');
 
 export const Inicio = () => {
   const navigation = useNavigation<any>();
@@ -12,6 +14,7 @@ export const Inicio = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const insets = useSafeAreaInsets();
 
 async function subscribeUserTopics() {
   try {
@@ -98,11 +101,6 @@ const requestUserPermission = async () => {
       const response = await axios.post(`${HOST_URL}/api/users/login`, { email, password });
       const { token, user } = response.data;
       const role = user.role;
-
-      console.log('Axios response:', response.data);
-      console.log('User  logged in:', token);
-      console.log('Role:', role);
-
       await AsyncStorage.setItem('token', token);
       await AsyncStorage.setItem('role', role);
       if (role === "user") {
@@ -153,29 +151,12 @@ const requestUserPermission = async () => {
   };
   
 
-
-
-  if(isLoading){return(
-    <View style={{ position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'transparent', 
-      zIndex: 999,}}>
-    <ActivityIndicator style={{flex:1}} size="large" color={"#5A215E"}/>
-    </View>
-  )}
   return (
-    <KeyboardAvoidingView
-      style={style.containerMain}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <View style={style.containerMain}>
       <Image style={style.logo} source={require('../../assets/Logo1.png')} />
-
+      <View style={{width:'100%', justifyContent:'flex-start',alignItems:'center', borderWidth: 0, padding:10}}>  
       <TextInput
+        maxFontSizeMultiplier={1}
         value={email}
         onChangeText={(text) => setEmail(text.toLowerCase())}
         style={style.input}
@@ -188,6 +169,8 @@ const requestUserPermission = async () => {
       {/* Contenedor de contraseña con botón de mostrar */}
       <View style={style.passwordContainer}>
         <TextInput
+          maxFontSizeMultiplier={1}
+
           value={password}
           onChangeText={setPassword}
           secureTextEntry={!showPassword}
@@ -196,31 +179,33 @@ const requestUserPermission = async () => {
           placeholderTextColor={'#5A215E'}
         />
         <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={style.showPasswordButton}>
-          <Text style={{ color: '#5A215E', fontWeight: 'bold' }}>
+          <Text maxFontSizeMultiplier={1} style={{ color: '#5A215E', fontWeight: 'bold' }}>
             {showPassword ? '👁️' : '👁️‍🗨️'}
           </Text>
         </TouchableOpacity>
       </View>
+      </View>
       <View style={style.recoverPass}>
         <TouchableOpacity onPress={() => navigation.navigate('RecuperarContrasena')}>
-          <Text style={style.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
+          <Text maxFontSizeMultiplier={1} style={style.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
         </TouchableOpacity>
       </View>
 
     <View style={{width:'100%', justifyContent:'center',alignItems:'center'}}>
       <TouchableOpacity style={style.button2} onPress={handleLogin}>
-        <Text style={style.buttonText}>Entrar</Text>
+        <Text maxFontSizeMultiplier={1} style={style.buttonText}>Entrar</Text>
       </TouchableOpacity>
     </View>
-    </KeyboardAvoidingView>
+    {isLoading && <ActivityIndicator size="large" color="#5A215E" style={{ flex:1, position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />}
+    </View>
 
   );
 };
 
 const style = StyleSheet.create({
   containerMain: {
+    borderWidth: 0,
     flex: 1,
-    width: '100%',
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
@@ -233,12 +218,13 @@ const style = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   logo: {
-    width: 250,
-    height: 250,
+    borderWidth:0,
+    width: width,
+    height: height * 0.3,
     marginBottom: 20,
   },
   input: {
-    width: '90%',
+    width: width * 0.9,
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
@@ -251,12 +237,12 @@ const style = StyleSheet.create({
   passwordContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '90%',
+    width: width * 0.9,
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 25,
     backgroundColor: 'white',
-    marginBottom: 10,
+    marginBottom: 5,
   },
   inputPassword: {
     flex: 1,
@@ -271,7 +257,7 @@ const style = StyleSheet.create({
   button2: {
     marginTop: 20,
     backgroundColor: '#5A215E',
-    width: '70%',
+    width: width * 0.7,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
@@ -279,7 +265,7 @@ const style = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
   },
   recoverPass:{

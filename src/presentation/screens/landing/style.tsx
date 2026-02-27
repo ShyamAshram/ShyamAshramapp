@@ -1,4 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+const{width, height} = Dimensions.get('window');
 
 export const style = StyleSheet.create({
     containerMain: {
@@ -16,7 +19,7 @@ export const style = StyleSheet.create({
         height: '100%'
     },
     margin: {
-        width: "auto",
+        width: width,
         paddingHorizontal: 15,
         flex: 1,
         flexDirection: 'column',
@@ -26,13 +29,15 @@ export const style = StyleSheet.create({
         marginTop: 50,
     },
     wave: {
-        width: '200%',
-        height: '50%',
+        width: width * 0.9,
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: height * 0.4,
         position: 'relative',
     },
     logo: {
-        width: 600,
-        height: 350,
+        width: width,
+        height: height * 0.4,
         alignItems: 'center',
         position: 'relative',
         marginTop: 50,
@@ -55,7 +60,7 @@ export const style = StyleSheet.create({
     button2: {
         marginTop: 20,
         backgroundColor: '#5A215E',
-        width: '55%',
+        width: '90%',
         height: 40,
         justifyContent: 'center',
         alignItems: 'center',
@@ -63,29 +68,32 @@ export const style = StyleSheet.create({
     },
     buttonText: {
         color: 'white',
-        fontSize: 20,
+        fontSize: 14,
         fontFamily:'Quicksand-Bold'
     },
     container: {
         flex: 1,
+        borderWidth: 0,
+        width:width * 0.9,
+        height: height * 0.09,
         justifyContent: 'flex-start',
         alignItems: 'center',
         paddingHorizontal: 20,
-        marginTop: 40,
     },
     containerFoot: {
+        borderWidth: 0,
+        
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
 
         borderStartColor: '#00000',
-        marginLeft: 150,
         marginBottom: 5,
         width: '100%'
 
     },
     text: {
-        fontSize: 12,
+        fontSize: 9,
         color: 'black'
 
     }

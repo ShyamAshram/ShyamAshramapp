@@ -1,4 +1,6 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+const {width, height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -48,6 +50,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginLeft: 10,
     color: '#FFFF',
+  },
+  noClassesContainer: {
+    height:height,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

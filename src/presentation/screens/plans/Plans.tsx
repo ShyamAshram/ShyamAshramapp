@@ -3,8 +3,10 @@ import { Text, View, Linking, Image, Animated, TouchableOpacity, ScrollView } fr
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { globalStyles } from '../../../config/theme/Theme';
 import styles from './styles';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Plans = () => {
+  const insets = useSafeAreaInsets();
   const handlePress = () => {
     Linking.openURL('https://drive.google.com/file/d/17MqhZd8pY9pn3_GyyW6Apx9aXKdxHDjH/view');
   };
@@ -27,18 +29,18 @@ const Plans = () => {
     ).start();
   }, [scaleAnim])
   return (
-    <SafeAreaView style={globalStyles.mainContainer}>
-      <View style={globalStyles.header2}>
-        <Text style={styles.title2}>Plan Ilimitado</Text>
+    <View style={globalStyles.mainContainer}>
+      <View style={[globalStyles.header2, { paddingTop: insets.top }]}>
+        <Text maxFontSizeMultiplier={1} style={styles.title2}>Plan Ilimitado</Text>
       </View>
 
-      <ScrollView style={styles.globalMargin}>
+      <ScrollView style={styles.globalMargin} contentContainerStyle={styles.scrollContent}>
         <View style={styles.cardTop}>
           <View style={styles.overlay}>
             <Image style={styles.logo} source={require('../../assets/Logo1.png')} resizeMode="contain" />
           </View>
           <View style={styles.cardtextTop}>
-            <Text style={styles.description}>
+            <Text maxFontSizeMultiplier={1} style={styles.description}>
               ¡Bienvenido al plan ilimitado! Este plan está diseñado para quienes desean sumergirse completamente en la práctica y disfrutar de una experiencia transformadora.
             </Text>
           </View>
@@ -58,34 +60,34 @@ const Plans = () => {
         </View>
         <View style={styles.cardbottom}>
           <View style={styles.cardtextPrice}>
-            <Text style={styles.price}>PAGO EN EFECTIVO</Text>
-            <Text style={styles.price}>$220.000</Text>
+            <Text maxFontSizeMultiplier={1} style={styles.price}>PAGO EN EFECTIVO</Text>
+            <Text maxFontSizeMultiplier={1} style={styles.price}>$220.000</Text>
           </View>
         </View>
         <View style={styles.cardbottom}>
           <View style={styles.cardtextPrice}>
-            <Text style={styles.price}>TRANSFERENCIA</Text>
-            <Text style={styles.price}>$235.000</Text>
+            <Text maxFontSizeMultiplier={1} style={styles.price}>TRANSFERENCIA</Text>
+            <Text maxFontSizeMultiplier={1} style={styles.price}>$235.000</Text>
           </View>
         </View>
         <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
           <TouchableOpacity style={styles.paymentContainer} onPress={handlePress} activeOpacity={0.7}>
-            <Text style={styles.paymentText}>MEDIOS DE PAGO</Text>
+            <Text maxFontSizeMultiplier={1} style={styles.paymentText}>MEDIOS DE PAGO</Text>
           </TouchableOpacity>
         </Animated.View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
 // 🔹 Componente reutilizable para los títulos de sección
 const SectionTitle = ({ title }: { title: string }) => (
-  <Text style={styles.subtitle}>{title}</Text>
+  <Text maxFontSizeMultiplier={1} style={styles.subtitle}>{title}</Text>
 );
 
 // 🔹 Componente reutilizable para los elementos de la lista
 const ListItem = ({ text }: { text: string }) => (
-  <Text style={styles.listItem}>• {text}</Text>
+  <Text maxFontSizeMultiplier={1} style={styles.listItem}>• {text}</Text>
 );
 
 

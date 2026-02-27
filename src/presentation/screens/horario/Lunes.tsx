@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HOST_URL } from '../../../../utils/envconfig';
 import styles from './styles';
 import { getNextDateForDay } from './service';
+import { useClassSchedules } from './hook/useClassSchedules';
 
 // Define la interfaz para el horario de clases
 interface ClassSchedule {
@@ -20,73 +21,58 @@ interface ClassSchedule {
 }
 
 const Lunes1 = () => {
-  const [classSchedules, setClassSchedules] = useState<ClassSchedule[]>([]);
-  const [loading, setLoading] = useState(true);
   const dayOfWeek = 'Lunes';
+    const { classSchedules, loading, handleClassRegistration, userRegistrations } =
+    useClassSchedules(dayOfWeek);
 
-  const nextDate = getNextDateForDay(dayOfWeek);
+ const onRegisterPress = async (classId: string) => {
+    const result = await handleClassRegistration(classId);
 
-  useEffect(() => {
-    fetchClassSchedules();
-  }, []);
-
-  const fetchClassSchedules = async () => {
-    try {
-      const response = await axios.get(`${HOST_URL}/api/classes/${dayOfWeek}`);
-      setClassSchedules(response.data);
-    } catch (error) {
-      console.error('Error fetching class schedules:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-
-  const handleClassRegistration = async (classId: string) => {
-    try {
-      const token = await AsyncStorage.getItem('token');
-      const response = await axios.post(
-        `${HOST_URL}/api/classes/registerClass`,
-        { classId, dayOfWeek, date: nextDate.toISOString() },
-        { headers: { Authorization: `Bearer ${token}` } }
+    if (result.alreadyRegistered) {
+      Alert.alert('Ya inscrito', 'Ya estás inscrito en esta clase.');
+    } else if (result.success) {
+      Alert.alert(
+        'Inscripción exitosa',
+        `Te has inscrito para ${result.date}`
       );
-      console.log('Registration response:', response.data);
-      Alert.alert('Inscripción exitosa', `Te has inscrito a la clase para el ${response.data.date}`);
-    } catch (error) {
-      {
-        console.error('Error during class registration:', error);
-        Alert.alert('Suscripción requerida', 'Necesitas tener un plan activo para inscribirte en esta clase.');
-      }
+    } else {
+      Alert.alert(
+        'Suscripción requerida',
+        'Necesitas un plan activo.'
+      );
     }
   };
-
-  console.log('Horarios de clases:', classSchedules);
   return (
-    <ScrollView>
+    <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
       {classSchedules.length > 0 ? (
         classSchedules.map((classInfo, index) => (
           <View style={styles.container} key={classInfo._id}>
-            <Text style={styles.header}>{classInfo.name}</Text>
+            <Text maxFontSizeMultiplier={1} style={styles.header}>{classInfo.name}</Text>
             <Card style={styles.card}>
               <Card.Content>
-                <Text style={styles.label}>FECHA: <Text style={styles.info}>{classInfo.dayOfWeek}</Text></Text>
-                <Text style={styles.label}>HORA: <Text style={styles.info}>{classInfo.time}</Text></Text>
-                <Text style={styles.label}>INSTRUCTOR: <Text style={styles.info}>{(classInfo.instructorId as any)?.name}</Text></Text>
+                <Text maxFontSizeMultiplier={1} style={styles.label}>FECHA: <Text maxFontSizeMultiplier={1} style={styles.info}>{classInfo.dayOfWeek}</Text></Text>
+                <Text maxFontSizeMultiplier={1} style={styles.label}>HORA: <Text maxFontSizeMultiplier={1} style={styles.info}>{classInfo.time}</Text></Text>
+                <Text maxFontSizeMultiplier={1} style={styles.label}>INSTRUCTOR: <Text maxFontSizeMultiplier={1} style={styles.info}>{(classInfo.instructorId as any)?.name}</Text></Text>
               </Card.Content>
             </Card>
             {classInfo.instructorId && ( 
 
             <TouchableOpacity
-              style={styles.buttonday}
-              onPress={() => handleClassRegistration(classInfo._id)}
+              style={[styles.buttonday, userRegistrations.includes(classInfo._id) && { backgroundColor: '#ccc' }]}
+              onPress={() => onRegisterPress(classInfo._id)}
+              disabled={userRegistrations.includes(classInfo._id)}
             >
-              <Text style={styles.day}>INSCRIBIRSE</Text>
+              <Text maxFontSizeMultiplier={1} style={styles.day}>
+                {userRegistrations.includes(classInfo._id) ? 'INSCRITO' : 'INSCRIBIRSE'}
+              </Text>
             </TouchableOpacity>
             )}
           </View>
         ))
       ) : (
-        <Text>No hay horarios disponibles para {dayOfWeek}</Text>
+        <View style={styles.noClassesContainer} >
+          <Text maxFontSizeMultiplier={1} style={{fontSize: 14, color: '#000', fontFamily:'Quicksand-Bold', textAlign:'center'}}>No hay horarios disponibles para {dayOfWeek}</Text>
+        </View>
       )}
     </ScrollView>
   );

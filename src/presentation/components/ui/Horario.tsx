@@ -1,117 +1,89 @@
-import React from 'react';
-import { View, Text, StyleSheet, Linking } from 'react-native';
+import React, { useMemo } from 'react';
+import { View, Text, StyleSheet, FlatList, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Calendario } from '../../icons/Icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+const { width } = Dimensions.get('window');
+const ITEM_WIDTH = width / 2 - 30;
 
 const ClassSchedule = () => {
-  const navigation = useNavigation<any>()
-  const handlePress = () => {
-    const websiteUrl = 'https://shyamashram.com/yoga/';
-    Linking.openURL(websiteUrl);
-  };
+  const navigation = useNavigation<any>();
+  const numColumns = width > 600 ? 3 : 2;
 
+  const days = useMemo(
+    () => [
+      { label: 'LUNES', screen: 'Lunes1' },
+      { label: 'MARTES', screen: 'Martes1' },
+      { label: 'MIÉRCOLES', screen: 'Miercoles1' },
+      { label: 'JUEVES', screen: 'Jueves1' },
+      { label: 'VIERNES', screen: 'Viernes1' },
+      { label: 'SÁBADO', screen: 'Sabado1' },
+    ],
+    []
+  );
+
+  const renderItem = ({ item }: any) => (
+    <TouchableOpacity
+      style={styles.buttonday}
+      onPress={() => navigation.navigate(item.screen)}
+    >
+      <Calendario />
+      <Text maxFontSizeMultiplier={1} style={styles.day}>
+        {item.label}
+      </Text>
+    </TouchableOpacity>
+  );
 
   return (
-    <View style={styles.container}>
-
-
-      <View style={styles.scheduleContainer}>
-        <TouchableOpacity style={styles.buttonday} onPress={() => navigation.navigate('Lunes1')}>
-          <Calendario />
-          <Text style={styles.day}>LUNES</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonday} onPress={() => navigation.navigate('Martes1')}>
-          <Calendario />
-          <Text style={styles.day}>MARTES</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonday} onPress={() => navigation.navigate('Miercoles1')}>
-          <Calendario />
-          <Text style={styles.day}>MIÉRCOLES</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonday} onPress={() => navigation.navigate('Jueves1')}>
-          <Calendario />
-          <Text style={styles.day}>JUEVES</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonday} onPress={() => navigation.navigate('Viernes1')}>
-          <Calendario />
-          <Text style={styles.day}>VIERNES</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonday} onPress={() => navigation.navigate('Sabado1')}>
-          <Calendario />
-          <Text style={styles.day}>SÁBADO</Text>
-        </TouchableOpacity>
-      </View>
-
+     <View style={styles.container}>
+      <FlatList
+        key={numColumns}
+        data={days}
+        keyExtractor={(item) => item.screen}
+        renderItem={renderItem}
+        numColumns={numColumns}
+        style={{ width: '100%' }}
+        columnWrapperStyle={numColumns > 1 ? styles.row : undefined}
+        contentContainerStyle={styles.scheduleContainer}
+        showsVerticalScrollIndicator={false}
+      />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
+    width:width * 0.9,
+    height:'100%',
+    borderWidth:0,
     justifyContent: 'center',
-
+    alignItems: 'center',
   },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginTop: 20,
-    marginBottom: 10,
-
+  row: {
+    borderWidth:0, 
+    width: '100%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 20,
   },
   scheduleContainer: {
-    width: '100%',
-    height: '90%',
-    marginTop: 40,
-    alignContent: 'center',
-    justifyContent: 'center'
-  },
-  dayContainer: {
-    marginBottom: 20,
-
+    width: '100%', 
+    paddingTop: 40,
   },
   day: {
-    fontWeight: 'bold',
-    fontSize: 20,
+    fontFamily: 'Quicksand-Bold',
+    fontSize: 18,
     marginLeft: 10,
-    color: '#FFFF'
-
-
-  },
-  classItem: {
-    flexDirection: 'row',
-    marginBottom: 6,
-    justifyContent: 'space-between'
-  },
-  timeContainer: {
-    width: 90,
-    height: 16,
-
+    color: '#FFF',
   },
   buttonday: {
-    width: "100%",
-    borderRadius: 20,
-    height: 50,
+    width: ITEM_WIDTH,
+    height: 120,
+    borderRadius: 10,
     backgroundColor: '#D9A404',
-    alignContent: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row',
-    marginBottom: 30,
-  },
-  time: {
-    textAlign: 'justify'
-  },
-  classNameContainer: {
-    width: 200,
-    height: 16,
-  },
-  className: {
-    marginLeft: 50,
-    fontWeight: 'bold',
-    textAlign: 'justify'
+    marginBottom: 20,
   },
 });
 

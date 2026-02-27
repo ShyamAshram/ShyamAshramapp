@@ -11,6 +11,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Progress from 'react-native-progress';
 import { differenceInDays, set } from 'date-fns';
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import Plans from "../plans/Plans";
 import Plan2 from "../plans/Plan2"
@@ -34,6 +35,7 @@ export const HomeScreen = () => {
   const [daysLeft, setDaysLeft] = useState(0);
   const [unreadNotifications, setUnreadNotifications] = useState(0);
   const [notificationCount, setNotificationCount] = useState(0);
+  const insets = useSafeAreaInsets();
   useEffect(() => {
     getUserDetails();
     const interval = setInterval(() => {
@@ -133,9 +135,9 @@ export const HomeScreen = () => {
   };
 
   return (
-    <SafeAreaView style={globalStyles.mainContainer}>
-      <View style={globalStyles.header}>
-        <View style={{ justifyContent:'center', alignItems:'center'}}>
+    <View style={[globalStyles.mainContainer, ]}>
+      <View style={[globalStyles.header, { paddingTop: insets.top }]}>
+        <View style={{ justifyContent:'center', alignItems:'center', width:'80%'}}>
         <Title text={`Bienvenido, ${userName}`} />
         </View>
           <TouchableOpacity onPress={handleLogout} style={globalStyles.profileImage}>
@@ -144,7 +146,7 @@ export const HomeScreen = () => {
       </View>
       <ScrollView style={globalStyles.globalMargin}>
         <View style={[globalStyles.progressContainer, globalStyles.shadowProp]}>
-          <Text style={globalStyles.progressText}>Tu suscripción tiene el {progress}% para tus clases</Text>
+          <Text maxFontSizeMultiplier={1} style={globalStyles.progressText}>Tu suscripción tiene el {progress}% para tus clases</Text>
           <Progress.Bar
             progress={progress/100}
             width={null}
@@ -156,36 +158,43 @@ export const HomeScreen = () => {
             borderWidth={0}
           />
           <View style={globalStyles.progText}>
-            <Text style={globalStyles.progressText}>Plan:<Text style={{fontFamily:'Quicksand-Bold', color: '#D9A404', fontSize: 15 }}> {plan} </Text></Text>
-            <Text style={globalStyles.progressText}>Días restantes: <Text style={{ fontFamily:'Quicksand-Bold',color: '#D9A404', fontSize: 15 }}>{daysLeft} días</Text></Text>
+            <View style={{borderWidth:0, width:'50%',justifyContent:'center', alignItems:'center', borderRightWidth:1, borderColor:'#ccc'}}>
+            <Text maxFontSizeMultiplier={1} adjustsFontSizeToFit style={globalStyles.progressText}>Plan</Text>
+            <Text maxFontSizeMultiplier={1} adjustsFontSizeToFit style={{fontFamily:'Quicksand-Bold', color: '#D9A404', fontSize: 15 }}> {plan} </Text>
+            </View>
+            <View style={{borderWidth:0, width:'50%', justifyContent:'center', alignItems:'center', borderLeftWidth:1, borderColor:'#ccc'}}>
+
+            <Text maxFontSizeMultiplier={1} adjustsFontSizeToFit style={globalStyles.progressText}>Días restantes</Text>
+            <Text maxFontSizeMultiplier={1} style={{ fontFamily:'Quicksand-Bold',color: '#D9A404', fontSize: 15 }}>{daysLeft} días</Text>
+            </View>
           </View>
         </View>
         <View style={globalStyles.intoEnd}>
           <TouchableOpacity style={globalStyles.containerIcons} onPress={() => navigation.navigate(Class)}>
             <Book />
-            <Text style={globalStyles.optionText}>Class schedules</Text>
+            <Text maxFontSizeMultiplier={1} style={globalStyles.optionText}>Class schedules</Text>
           </TouchableOpacity>
           <TouchableOpacity style={globalStyles.containerIconsA} onPress={() => navigation.navigate(Alerts)}>
             <Notification color={hasNotification ? '#daeb44ff' : '#fff'}/>
             {notificationCount > 0 && (
               <View style={{ position: 'absolute', right:0 , top:-5, left:90, backgroundColor:'red', width:15, height:15, borderRadius:25, justifyContent:'center', alignItems:'center'}}>
-                <Text style={{color:'white', fontSize:10, fontWeight:'bold'}}>{notificationCount}</Text>
+                <Text maxFontSizeMultiplier={1} style={{color:'white', fontSize:10, fontWeight:'bold'}}>{notificationCount}</Text>
               </View>
             )}
-            <Text style={globalStyles.optionText}>Notification</Text>
+            <Text maxFontSizeMultiplier={1} style={globalStyles.optionText}>Notification</Text>
           </TouchableOpacity>
         </View>
         <View style={globalStyles.containermid}>
           <ImageSlider />
         </View>
         <Pressable style={globalStyles.buttonOver}>
-          <Text style={globalStyles.planText}>PLANES</Text>
+          <Text maxFontSizeMultiplier={1} style={globalStyles.planText}>PLANES</Text>
         </Pressable>
         <View style={{ flexDirection: 'column' }}>
           <View style={globalStyles.menu}>
             <View style={globalStyles.containerplans}>
               <View style={{ height:25, width:'100%', justifyContent:'center', alignItems:'center'}}>
-                <Text style={globalStyles.textPlan}>ANUALIDAD</Text>
+                <Text maxFontSizeMultiplier={1} style={globalStyles.textPlan}>ANUALIDAD</Text>
               </View>
               <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan4)}>
                 <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo1.png")} />
@@ -193,7 +202,7 @@ export const HomeScreen = () => {
             </View>
             <View style={globalStyles.containerplans}>
               <View style={{ height:25, width:'100%', justifyContent:'center', alignItems:'center'}}>
-                <Text style={globalStyles.textPlan}>6 MESES</Text>
+                <Text maxFontSizeMultiplier={1}  style={globalStyles.textPlan}>6 MESES</Text>
               </View>
               <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan5)}>
                 <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo6.png")} />
@@ -203,7 +212,7 @@ export const HomeScreen = () => {
           <View style={globalStyles.menu}>
             <View style={globalStyles.containerplans}>
               <View style={{ height:25, width:'100%', justifyContent:'center', alignItems:'center'}}>
-                <Text style={globalStyles.textPlan}>3 MESES</Text>
+                <Text maxFontSizeMultiplier={1} style={globalStyles.textPlan}>3 MESES</Text>
               </View>
               <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan6)}>
                 <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo5.png")} />
@@ -211,7 +220,7 @@ export const HomeScreen = () => {
             </View>
             <View style={globalStyles.containerplans}>
               <View style={{ height:25, width:'100%', justifyContent:'center', alignItems:'center'}}>
-                <Text style={globalStyles.textPlan}>ILIMITADO</Text>
+                <Text maxFontSizeMultiplier={1} style={globalStyles.textPlan}>ILIMITADO</Text>
               </View>
               <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plans)}>
                 <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo7.png")} />
@@ -221,7 +230,7 @@ export const HomeScreen = () => {
           <View style={globalStyles.menu}>
             <View style={globalStyles.containerplans}>
               <View style={{ height:25, width:'100%', justifyContent:'center', alignItems:'center'}}>
-                <Text style={globalStyles.textPlan}>4 CLASES</Text>
+                <Text maxFontSizeMultiplier={1} style={globalStyles.textPlan}>4 CLASES</Text>
               </View>
               <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan2)}>
                 <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo4.png")} />
@@ -229,7 +238,7 @@ export const HomeScreen = () => {
             </View>
             <View style={globalStyles.containerplans}>
               <View style={{ height:25, width:'100%', justifyContent:'center', alignItems:'center'}}>
-                <Text style={globalStyles.textPlan}>1 Clase</Text>
+                <Text maxFontSizeMultiplier={1} style={globalStyles.textPlan}>1 Clase</Text>
               </View>
               <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan3)}>
                 <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo8.png")} />
@@ -238,8 +247,11 @@ export const HomeScreen = () => {
           </View>
 
         </View>
+        <View style={{  width:'100%',  justifyContent:'flex-start', alignItems:'flex-start', paddingBottom:insets.bottom}}>
         <Footer />
+      </View>
       </ScrollView>
-    </SafeAreaView>
+      
+    </View>
   );
 };

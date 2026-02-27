@@ -1,20 +1,23 @@
 import React from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, Platform, Dimensions } from 'react-native';
 import { Registro } from '../../components/ui/Registro';
 import Footer from '../../components/ui/Foot';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+const{width, height} = Dimensions.get('window');
 
 export const Signin = () => {
+const inset  = useSafeAreaInsets();
 
 
   return (
     <KeyboardAvoidingView
       style={style.containerMain}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
     >
       <View style={style.containerMain}>
         <Registro />
-        <View style={{ width:'90%', position:'absolute', bottom:0, backgroundColor:'white'}}>
+        <View style={{ width:'90%', position:'absolute', bottom:0, backgroundColor:'white', paddingBottom: inset.bottom }}>
           <Footer />
         </View>
       </View>
@@ -24,12 +27,10 @@ export const Signin = () => {
 
 const style = StyleSheet.create({
   containerMain: {
-    flex: 1,
-    width: '100%',
-    marginBottom: 10,
+    width: width,
+    height: height,
     backgroundColor: 'white',
     justifyContent: 'flex-start',
-    alignContent: 'center',
     alignItems: 'center'
   },
 

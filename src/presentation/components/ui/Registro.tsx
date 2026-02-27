@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, } from 'react-native';
+import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ActivityIndicator, Alert, Dimensions } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { HOST_URL } from '../../../../utils/envconfig';
+const{width, height} = Dimensions.get('window');
 
 export const Registro = () => {
   const navigation = useNavigation<any>();
@@ -14,15 +15,16 @@ export const Registro = () => {
   const [phonenumber, setPhoneNumber] = useState('');
   const [birthDate, setBirthDate] = useState<Date | null>(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [role] = useState('');
 
   const handleRegister = async () => {
     const phoneNumberParsed = parsePhoneNumberFromString(phonenumber, 'CO');
     if (!phoneNumberParsed || !phoneNumberParsed.isValid()) {
-      console.error('Número de teléfono no válido');
+      Alert.alert('Número de teléfono no válido');
       return;
     }
-
+    setLoading(true);
     try {
       const response = await axios.post(`${HOST_URL}/api/users/register`, {
         name,
@@ -32,10 +34,25 @@ export const Registro = () => {
         birthDate,
         role
       });
-      console.log('User registered:', response.data);
-      navigation.navigate('Landing');
-    } catch (error) {
-      console.error('Error registering user:', error);
+
+      if(response.status === 201) {
+        Alert.alert('Registro exitoso', 'Tu cuenta ha sido creada correctamente');
+        setTimeout(() => {
+          navigation.navigate('Landing');
+        }, 1000);
+      } else {
+        Alert.alert('Error', 'Ocurrió un error al registrar tu cuenta');
+      }
+    }catch (error: any) {
+      const message =
+        error.response?.data?.error ||
+        "Ocurrió un error al registrar";
+
+      Alert.alert("Ups", message);
+
+      setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,19 +64,18 @@ export const Registro = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={style.containerMain}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'white' }}>
       <Image style={style.logo} source={require('../../assets/Logo1.png')} />
 
-      <TextInput value={name} onChangeText={setName} style={style.input} placeholder="Nombre completo" placeholderTextColor={'#5A215E'} />
-      <TextInput value={email} onChangeText={setEmail} style={style.input} placeholder="Correo Electrónico" placeholderTextColor={'#5A215E'} />
-      <TextInput value={password} onChangeText={setPassword} secureTextEntry style={style.input} placeholder="Contraseña" placeholderTextColor={'#5A215E'} />
+      <TextInput maxFontSizeMultiplier={1} value={name} onChangeText={setName} style={style.input} placeholder="Nombre completo" placeholderTextColor={'#5A215E'} />
+      <TextInput maxFontSizeMultiplier={1} value={email} onChangeText={setEmail} style={style.input} placeholder="Correo Electrónico" placeholderTextColor={'#5A215E'} />
+      <TextInput maxFontSizeMultiplier={1} value={password} onChangeText={setPassword} secureTextEntry style={style.input} placeholder="Contraseña" placeholderTextColor={'#5A215E'} />
 
       <TextInput
+        maxFontSizeMultiplier={1}
         value={phonenumber}
         onChangeText={setPhoneNumber}
+        maxLength={10}
         style={style.input}
         placeholder="Número de Teléfono"
         keyboardType="phone-pad"
@@ -68,47 +84,52 @@ export const Registro = () => {
 
 
       <TouchableOpacity style={style.input} onPress={() => setShowDatePicker(true)}>
-        <Text style={{ color: '#5A215E' }}>{birthDate ? birthDate.toDateString() : 'Fecha de Nacimiento'} </Text>
+        <Text maxFontSizeMultiplier={1} style={{ color: '#5A215E' }}>{birthDate ? birthDate.toDateString() : 'Fecha de Nacimiento'} </Text>
       </TouchableOpacity>
 
 
       {showDatePicker && (
         <DateTimePicker
+          
           value={birthDate || new Date()}
           mode="date"
-          display="default"
+          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
           onChange={handleDateChange}
-          style={{ backgroundColor: '#5A215E' }}
+          style={{ backgroundColor: '#5A215E', }}
+          
         />
       )}
 
-      <TouchableOpacity style={style.button2} onPress={handleRegister}>
-        <Text style={style.buttonText}>Registrar</Text>
+      <TouchableOpacity  disabled={loading} style={style.button2} onPress={handleRegister}>
+        <Text maxFontSizeMultiplier={1} style={style.buttonText}>Registrar</Text>
       </TouchableOpacity>
-    </KeyboardAvoidingView>
+      {loading && <ActivityIndicator size="large" color="#5A215E" />}
+    </View>
   );
 };
 
 const style = StyleSheet.create({
   containerMain: {
     flex: 1,
-    width: '100%',
+    borderWidth: 1,
+    width: width,
+    height: height,
     backgroundColor: 'white',
     justifyContent: 'flex-start',
     alignContent: 'center',
     alignItems: 'center'
   },
   logo: {
-    width: 250,
-    height: 250,
+    width: width,
+    height: height * 0.3,
     alignItems: 'flex-start',
     position: 'relative',
     marginTop: 80,
   },
   input: {
     position: 'relative',
-    width: '90%',
-    height: 40,
+    width: width * 0.8,
+    height: height * 0.05,
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 25,
@@ -126,8 +147,8 @@ const style = StyleSheet.create({
   button2: {
     marginTop: 20,
     backgroundColor: '#5A215E',
-    width: '70%',
-    height: 40,
+    width: width * 0.7,
+    height: height * 0.04,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 20,

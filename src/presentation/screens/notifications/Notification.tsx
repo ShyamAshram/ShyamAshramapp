@@ -6,12 +6,13 @@ import NotificationUi from '../../components/ui/Notis';
 
 export const Alerts = () => {
 
+
     return (
-        <SafeAreaView style={globalStyles.mainContainer}>
+        <View style={globalStyles.mainContainer}>
             <View>
                 <NotificationUi />
             </View>
-        </SafeAreaView>
+        </View>
     )
 
 }

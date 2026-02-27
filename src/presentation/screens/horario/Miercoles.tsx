@@ -6,6 +6,7 @@ import { StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HOST_URL } from '../../../../utils/envconfig';
 import styles from './styles';
+import { useClassSchedules } from './hook/useClassSchedules';
 
 // Define la interfaz para el horario de clases
 interface ClassSchedule {
@@ -18,68 +19,63 @@ interface ClassSchedule {
 }
 
 const Miercoles1 = () => {
-  const [classSchedules, setClassSchedules] = useState<ClassSchedule[]>([]);
-  const [loading, setLoading] = useState(true);
-  const dayOfWeek = 'Miércoles'; // Cambia esto según sea necesario
+  const dayOfWeek = 'Miércoles';
 
-  useEffect(() => {
-    fetchClassSchedules();
-  }, []);
-
-  const fetchClassSchedules = async () => {
-    try {
-      const response = await axios.get(`${HOST_URL}/api/classes/${dayOfWeek}`);
-      console.log('Horarios:', response.data);
-      setClassSchedules(response.data); // Almacena los horarios
-    } catch (error) {
-      console.error('Error fetching class schedules:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  const handleClassRegistration = async (classId: string) => {
-    try {
-      const token = await AsyncStorage.getItem('token');
-      const response = await axios.post(
-        `${HOST_URL}/api/classes/registerClass`,
-        { classId, dayOfWeek },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      Alert.alert('Inscripción exitosa', `Te has inscrito a la clase para el ${response.data.date}`);
-    } catch (error) {
-      {
-        Alert.alert('Suscripción requerida', 'Necesitas tener un plan activo para inscribirte en esta clase.');
-      }
-    }
-  };
-
-  if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
-  }
-
+     const { classSchedules, loading, handleClassRegistration, userRegistrations } =
+     useClassSchedules(dayOfWeek);
+ 
+  const onRegisterPress = async (classId: string) => {
+     const result = await handleClassRegistration(classId);
+ 
+     if (result.alreadyRegistered) {
+       Alert.alert('Ya inscrito', 'Ya estás inscrito en esta clase.');
+     } else if (result.success) {
+       Alert.alert(
+         'Inscripción exitosa',
+         `Te has inscrito para ${result.date}`
+       );
+     } else {
+       Alert.alert(
+         'Suscripción requerida',
+         'Necesitas un plan activo.'
+       );
+     }
+   };
+ 
+   if (loading) {
+     return <ActivityIndicator size="large" />;
+   }
   return (
-    <ScrollView>
+      <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
       {classSchedules.length > 0 ? (
         classSchedules.map((classInfo, index) => (
           <View style={styles.container} key={classInfo._id}>
-            <Text style={styles.header}>{classInfo.name}</Text>
+            <Text maxFontSizeMultiplier={1} style={styles.header}>{classInfo.name}</Text>
             <Card key={index} style={styles.card}>
               <Card.Content>
-                <Text style={styles.label}>FECHA: <Text style={styles.info}>{classInfo.dayOfWeek}</Text></Text>
-                <Text style={styles.label}>HORA: <Text style={styles.info}>{classInfo.time}</Text></Text>
-                <Text style={styles.label}>INSTRUCTOR: <Text style={styles.info}>{(classInfo.instructorId as any)?.name || 'No disponible'}</Text></Text>
+                <Text maxFontSizeMultiplier={1} style={styles.label}>FECHA: <Text maxFontSizeMultiplier={1} style={styles.info}>{classInfo.dayOfWeek}</Text></Text>
+                <Text maxFontSizeMultiplier={1} style={styles.label}>HORA: <Text maxFontSizeMultiplier={1} style={styles.info}>{classInfo.time}</Text></Text>
+                <Text maxFontSizeMultiplier={1} style={styles.label}>INSTRUCTOR: <Text maxFontSizeMultiplier={1} style={styles.info}>{(classInfo.instructorId as any)?.name || 'No disponible'}</Text></Text>
               </Card.Content>
             </Card>
             {classInfo.instructorId && ( 
 
-            <TouchableOpacity style={styles.buttonday} onPress={() => (handleClassRegistration(classInfo._id))} >
-              <Text style={styles.day}>INCRIBIRSE</Text>
+            <TouchableOpacity
+              style={[styles.buttonday, userRegistrations.includes(classInfo._id) && { backgroundColor: '#ccc' }]}
+              onPress={() => onRegisterPress(classInfo._id)}
+              disabled={userRegistrations.includes(classInfo._id)}
+            >
+              <Text maxFontSizeMultiplier={1} style={styles.day}>
+                {userRegistrations.includes(classInfo._id) ? 'INSCRITO' : 'INSCRIBIRSE'}
+              </Text>
             </TouchableOpacity>
             )}
           </View>
         ))
       ) : (
-        <Text>No hay horarios disponibles para {dayOfWeek}</Text>
+        <View style={styles.noClassesContainer} >
+          <Text style={{fontSize: 14, color: '#000', fontFamily:'Quicksand-Bold', textAlign:'center'}}>No hay horarios disponibles para {dayOfWeek}</Text>
+        </View>
       )}
     </ScrollView>
   );

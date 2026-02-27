@@ -5,7 +5,7 @@ import { globalStyles } from '../../../config/theme/Theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RectButton, Swipeable } from 'react-native-gesture-handler';
 import { HOST_URL } from '../../../../utils/envconfig';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface Notifications {
   _id: string;
@@ -15,6 +15,8 @@ interface Notifications {
 }
 
 const NotificationUi = () => {
+      const insets = useSafeAreaInsets()
+  
   const [notifications, setNotifications] = useState<Notifications[]>([]);
   const [loading, setLoading] = useState(true);
   
@@ -63,15 +65,15 @@ const NotificationUi = () => {
 
   const renderRightActions = (id: string) => (
     <RectButton style={styles.deleteButton} onPress={() => deleteNotification(id)}>
-      <Text style={styles.deleteButtonText}>Eliminar</Text>
+      <Text maxFontSizeMultiplier={1} style={styles.deleteButtonText}>Eliminar</Text>
     </RectButton>
   );
 
   const renderNotificationItem = ({ item }: { item: Notifications }) => (
     <Swipeable renderRightActions={() => renderRightActions(item._id)}>
       <View style={styles.notificationContainer}>
-        <Text style={styles.notificationTitle}>{item.title}</Text>
-        <Text style={styles.notificationDescription}>{item.description}</Text>
+        <Text maxFontSizeMultiplier={1} style={styles.notificationTitle}>{item.title}</Text>
+        <Text maxFontSizeMultiplier={1} style={styles.notificationDescription}>{item.description}</Text>
       </View>
     </Swipeable>
   );
@@ -80,9 +82,9 @@ const NotificationUi = () => {
   }
 
   return (
-    <SafeAreaView style={styles.mainContainer}>
-        <View style={styles.header2}>
-          <Text style={styles.header}>Notificaciones</Text>
+    <View style={styles.mainContainer}>
+        <View style={[styles.header2, { paddingTop: insets.top }]}>
+          <Text maxFontSizeMultiplier={1} style={styles.header}>Notificaciones</Text>
         </View>
         <FlatList
           data={notifications}
@@ -91,12 +93,12 @@ const NotificationUi = () => {
           style={styles.notificationList}
           ListEmptyComponent={
             <View style={styles.notificationContainer}>
-              <Text style={styles.NonotificationTitle}>No hay notificaciones de momento</Text>
+              <Text maxFontSizeMultiplier={1} style={styles.NonotificationTitle}>No hay notificaciones de momento</Text>
             </View>
           }
         />
 
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -109,14 +111,15 @@ const styles = StyleSheet.create({
   header: {
 
     color: '#FFFF',
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
   },
   header2: {
     flexDirection: 'row',
-    alignItems: 'center',
-    height: 60,
+    alignItems: 'flex-end',
+    height: 80,
+    borderRadius: 10,
     justifyContent: 'center',
     backgroundColor: '#5a215e'
   },
@@ -126,7 +129,7 @@ const styles = StyleSheet.create({
 
   },
   notificationContainer: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#FFF',
     padding: 10,
     marginBottom: 10,
     borderRadius: 5,

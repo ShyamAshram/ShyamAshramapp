@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, Platform, Dimensions } from 'react-native';
 import { Inicio } from '../../components/ui/Inicio';
 import Footer from '../../components/ui/Foot';
 import { HOST_URL } from '../../../../utils/envconfig';
-
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+const {width, height} = Dimensions.get('window');
 export const Login = () => {
+  const insets = useSafeAreaInsets();
 
   useEffect(()=>{
     console.log('HOSTTTTT', HOST_URL)
@@ -17,9 +19,12 @@ export const Login = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
     >
+      <View style={style.containerMain}>
+      
       <Inicio />
-      <View style={style.Foot}>
-      <Footer />
+      <View style={[style.Foot, { paddingBottom: insets.bottom }]}>
+        <Footer />
+      </View>
       </View>
     </KeyboardAvoidingView>
   );
@@ -27,16 +32,13 @@ export const Login = () => {
 
 const style = StyleSheet.create({
   containerMain: {
-    flex: 1,
-    width: '100%',
-    marginBottom: 10,
+    height:height, 
     backgroundColor: 'white',
-    justifyContent: 'flex-start',
-    alignContent: 'center',
     alignItems: 'center',
   },
   Foot: {
     position: 'relative',
-    justifyContent: 'flex-end',
+    backgroundColor: 'white',
+    borderWidth: 0,
   },
 });

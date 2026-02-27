@@ -19,7 +19,7 @@ export const Class = () => {
         <View style={{borderWidth:0, height:'70%', width:'100%', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
           <ClassSchedule />
         </View>
-        <View>
+        <View style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
           <Footer />
         </View>
       </View>

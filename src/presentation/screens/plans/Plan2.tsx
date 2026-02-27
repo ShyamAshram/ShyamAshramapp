@@ -3,7 +3,9 @@ import { Linking, Text, View, Animated, Image, TouchableOpacity, ScrollView } fr
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { globalStyles } from '../../../config/theme/Theme';
 import styles from './styles';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const Plan2 = () => {
+  const insets = useSafeAreaInsets();
   const handlePress = () => {
     Linking.openURL('https://drive.google.com/file/d/17MqhZd8pY9pn3_GyyW6Apx9aXKdxHDjH/view');
   };
@@ -26,18 +28,18 @@ const Plan2 = () => {
     ).start();
   }, [scaleAnim])
   return (
-    <SafeAreaView style={globalStyles.mainContainer}>
-      <View style={globalStyles.header2}>
-        <Text style={styles.title2}>4 Clases de Yoga o Taiji (Vigencia un mes)</Text>
+    <View style={globalStyles.mainContainer}>
+      <View style={[globalStyles.header2, { paddingTop: insets.top, height: 100 }]}>
+        <Text maxFontSizeMultiplier={1} style={styles.title2}>4 Clases de Yoga o Taiji (Vigencia un mes)</Text>
       </View>
 
-      <ScrollView style={styles.globalMargin}>
+      <ScrollView style={styles.globalMargin} contentContainerStyle={styles.scrollContent}>
         <View style={styles.cardTop}>
           <View style={styles.overlay}>
             <Image style={styles.logo} source={require('../../assets/Logo1.png')} resizeMode="contain" />
           </View>
           <View style={styles.cardtextTop}>
-            <Text style={styles.description}>
+            <Text maxFontSizeMultiplier={1} style={styles.description}>
               ¡Bienvenido al plan de 4 clases de yoga o taiji! Este plan te permite explorar ambas disciplinas
               durante un mes, con la flexibilidad de elegir la combinación que más te convenga.
             </Text>
@@ -58,34 +60,34 @@ const Plan2 = () => {
         </View>
         <View style={styles.cardbottom}>
           <View style={styles.cardtextPrice}>
-            <Text style={styles.price}>PAGO EN EFECTIVO</Text>
-            <Text style={styles.price}>$155.000</Text>
+            <Text maxFontSizeMultiplier={1} style={styles.price}>PAGO EN EFECTIVO</Text>
+            <Text maxFontSizeMultiplier={1} style={styles.price}>$155.000</Text>
           </View>
         </View>
         <View style={styles.cardbottom}>
           <View style={styles.cardtextPrice}>
-            <Text style={styles.price}>TRANSFERENCIA</Text>
-            <Text style={styles.price}>$165.000</Text>
+            <Text maxFontSizeMultiplier={1} style={styles.price}>TRANSFERENCIA</Text>
+            <Text maxFontSizeMultiplier={1} style={styles.price}>$165.000</Text>
           </View>
         </View>
         <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
           <TouchableOpacity style={styles.paymentContainer} onPress={handlePress} activeOpacity={0.7}>
-            <Text style={styles.paymentText}>MEDIOS DE PAGO</Text>
+            <Text maxFontSizeMultiplier={1} style={styles.paymentText}>MEDIOS DE PAGO</Text>
           </TouchableOpacity>
         </Animated.View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
 // 🔹 Componente para los títulos de sección
 const SectionTitle = ({ title }: { title: string }) => (
-  <Text style={styles.subtitle}>{title}</Text>
+  <Text maxFontSizeMultiplier={1} style={styles.subtitle}>{title}</Text>
 );
 
 // 🔹 Componente para los elementos de la lista
 const ListItem = ({ text }: { text: string }) => (
-  <Text style={styles.listItem}>• {text}</Text>
+  <Text maxFontSizeMultiplier={1} style={styles.listItem}>• {text}</Text>
 );
 
 

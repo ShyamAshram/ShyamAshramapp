@@ -80,12 +80,17 @@ android {
     compileSdk rootProject.ext.compileSdkVersion
 
     namespace "com.ShyamAshramYapp"
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
     defaultConfig {
         applicationId "com.ShyamAshramYapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
-        versionName "1.0.1"
+        versionCode 11
+        versionName "1.0.9"
     }
     signingConfigs {
         debug {

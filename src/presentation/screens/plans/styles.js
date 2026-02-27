@@ -9,6 +9,9 @@ const styles = StyleSheet.create({
     globalMargin: {
       paddingHorizontal: 16,
     },
+    scrollContent: {
+      paddingBottom: 100,
+    },
     title2: {
       fontSize: 20,
       fontWeight: 'bold',

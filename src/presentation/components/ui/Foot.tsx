@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity, Linking, StyleSheet } from 'react-native'
 import { Facebook, Instagram } from '../../icons/Icons';
 
 
+
 const Footer = () => {
   const handlePress = () => {
     const websiteUrl = 'https://www.facebook.com/ShyamAshram/?paipv=0&eav=AfaZ9aWKsZ4ydXLeH8R74dhWKtHlK5SDqVZsH99Z9ftX7MCfXl6jQAxs6A86x30PYow&_rdr';
@@ -21,7 +22,7 @@ const Footer = () => {
       <TouchableOpacity style={{ marginRight: 20 }} onPress={handlePress2}>
         <Instagram />
       </TouchableOpacity>
-      <Text style={styles.text}>Copyright 2024 | Desarrollado por Andromeda</Text>
+      <Text maxFontSizeMultiplier={1} style={styles.text}>Copyright 2024 | Desarrollado por Andromeda</Text>
     </View>
   );
 };
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'black',
-    fontSize: 10,
+    fontSize: 9,
 
   }
 

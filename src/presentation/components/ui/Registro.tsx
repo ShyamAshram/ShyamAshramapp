@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { HOST_URL } from '../../../../utils/envconfig';
 const{width, height} = Dimensions.get('window');
+import Logo from '../../assets/logo.svg';
+
 
 export const Registro = () => {
   const navigation = useNavigation<any>();
@@ -65,8 +67,10 @@ export const Registro = () => {
 
   return (
     <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'white' }}>
-      <Image style={style.logo} source={require('../../assets/Logo1.png')} />
-
+      <View style={{borderWidth:0, height: height * 0.25, width: width, justifyContent: 'center', alignItems: 'center', marginTop: 80}}>
+        <Logo width={300} height={200}/>
+      </View>
+      <View style={{borderWidth:0, gap:10,    width: width, justifyContent: 'center', alignItems: 'center' }}>
       <TextInput maxFontSizeMultiplier={1} value={name} onChangeText={setName} style={style.input} placeholder="Nombre completo" placeholderTextColor={'#5A215E'} />
       <TextInput maxFontSizeMultiplier={1} value={email} onChangeText={setEmail} style={style.input} placeholder="Correo Electrónico" placeholderTextColor={'#5A215E'} />
       <TextInput maxFontSizeMultiplier={1} value={password} onChangeText={setPassword} secureTextEntry style={style.input} placeholder="Contraseña" placeholderTextColor={'#5A215E'} />
@@ -99,7 +103,7 @@ export const Registro = () => {
           
         />
       )}
-
+      </View>
       <TouchableOpacity  disabled={loading} style={style.button2} onPress={handleRegister}>
         <Text maxFontSizeMultiplier={1} style={style.buttonText}>Registrar</Text>
       </TouchableOpacity>
@@ -128,13 +132,12 @@ const style = StyleSheet.create({
   },
   input: {
     position: 'relative',
-    width: width * 0.8,
+    width: width * 0.9,
     height: height * 0.05,
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 25,
     paddingHorizontal: 10,
-    marginBottom: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,

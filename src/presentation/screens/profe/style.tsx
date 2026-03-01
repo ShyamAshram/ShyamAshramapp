@@ -17,7 +17,9 @@ const styles = StyleSheet.create({
     alignItems:'center',
   },
   TxtBtn: {
-    color: 'white'
+    color: 'white',
+    fontFamily:'Quicksand-Bold',
+    textAlign:'center'
   },
   ButtonClear: {
     backgroundColor: '#ee4444',
@@ -35,10 +37,8 @@ const styles = StyleSheet.create({
     width: '50%',
     marginRight: 15,
     borderRadius: 25,
-    alignContent: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center'
+    justifyContent:'center',
+    alignItems:'center'
 
   },
   ContainerBtnFoot: {

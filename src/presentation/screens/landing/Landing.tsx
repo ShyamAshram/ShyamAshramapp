@@ -4,6 +4,9 @@ import { useNavigation } from "@react-navigation/native";
 import { Facebook, Instagram } from "../../icons/Icons";
 import { style } from "./style";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Logo from '../../assets/logo.svg';
+
+
 function Landing(): React.JSX.Element {
     const navigation = useNavigation<any>();
     const insets = useSafeAreaInsets();
@@ -22,7 +25,7 @@ function Landing(): React.JSX.Element {
             <View style={style.margin}>
 
                 <View style={style.wave}>
-                    <Image style={style.logo} source={require('../../assets/Logo1.png')} />
+                    <Logo width={300} height={200}/>
                 </View>
 
                 <View style={style.container}>
@@ -34,7 +37,9 @@ function Landing(): React.JSX.Element {
                         <Text maxFontSizeMultiplier={1.0} style={style.buttonText}>Registrarse</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={[style.containerFoot, { marginBottom: insets.bottom }]}>
+               
+            </View>
+             <View style={[style.containerFoot, { marginBottom: insets.bottom }]}>
                     <TouchableOpacity style={{ marginRight: 5 }} onPress={handlePress}>
                         <Facebook />
                     </TouchableOpacity>
@@ -43,8 +48,6 @@ function Landing(): React.JSX.Element {
                     </TouchableOpacity>
                     <Text maxFontSizeMultiplier={1.1} style={style.text}>Copyright 2024 | Desarrollado por Andromeda</Text>
                 </View>
-            </View>
-
 
         </View>
     )

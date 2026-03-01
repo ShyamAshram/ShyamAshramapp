@@ -229,12 +229,13 @@ useEffect(() => {
                 <View style={styles.modalContainer}>
                     {!newStudentId ? (
                     <> 
-                    <Text style={styles.title}>Inscribir Estudiante</Text>
-                    <TextInput value={name} onChangeText={setName} style={styles.input} placeholder="Nombre completo" placeholderTextColor={'#5A215E'} />
-                    <TextInput value={email} onChangeText={setEmail} style={styles.input} placeholder="Correo Electrónico" placeholderTextColor={'#5A215E'} />
-                    <TextInput value={password} onChangeText={setPassword} secureTextEntry style={styles.input} placeholder="Contraseña" placeholderTextColor={'#5A215E'} />
+                    <Text maxFontSizeMultiplier={1} style={styles.title}>Inscribir Estudiante</Text>
+                    <TextInput maxFontSizeMultiplier={1} value={name} onChangeText={setName} style={styles.input} placeholder="Nombre completo" placeholderTextColor={'#5A215E'} />
+                    <TextInput maxFontSizeMultiplier={1} value={email} onChangeText={setEmail} style={styles.input} placeholder="Correo Electrónico" placeholderTextColor={'#5A215E'} />
+                    <TextInput maxFontSizeMultiplier={1} value={password} onChangeText={setPassword} secureTextEntry style={styles.input} placeholder="Contraseña" placeholderTextColor={'#5A215E'} />
                     
                     <TextInput
+                        maxFontSizeMultiplier={1}
                         value={phonenumber}
                         onChangeText={setPhoneNumber}
                         style={styles.input}
@@ -244,7 +245,7 @@ useEffect(() => {
                     />
 
                     <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
-                        <Text style={{ color: '#5A215E' }}>{birthDate ? birthDate.toDateString() : 'Fecha de Nacimiento'} </Text>
+                        <Text maxFontSizeMultiplier={1} style={{ color: '#5A215E' }}>{birthDate ? birthDate.toDateString() : 'Fecha de Nacimiento'} </Text>
                     </TouchableOpacity>
 
 
@@ -259,10 +260,10 @@ useEffect(() => {
                     )}
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-                            <Text style={styles.buttonText}>Cancelar</Text>
+                            <Text maxFontSizeMultiplier={1} style={styles.buttonText}>Cancelar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
-                            <Text style={styles.buttonText}>Inscribir</Text>
+                            <Text maxFontSizeMultiplier={1} style={styles.buttonText}>Inscribir</Text>
                         </TouchableOpacity>
                     </View>
                     </>

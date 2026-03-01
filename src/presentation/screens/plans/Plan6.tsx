@@ -4,6 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { globalStyles } from '../../../config/theme/Theme';
 import styles from './styles';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Logo from '../../assets/logo.svg';
+
 
 
 const Plan6 = () => {
@@ -40,7 +42,7 @@ const Plan6 = () => {
             <ScrollView style={styles.globalMargin }  contentContainerStyle={styles.scrollContent}>
                 <View style={styles.cardTop}>
                     <View style={styles.overlay}>
-                        <Image style={styles.logo} source={require('../../assets/Logo1.png')} resizeMode="contain" />
+                        <Logo width={200} height={40}/>
                     </View>
                     <View style={styles.cardtextTop}>
                         <Text maxFontSizeMultiplier={1} style={styles.description}>

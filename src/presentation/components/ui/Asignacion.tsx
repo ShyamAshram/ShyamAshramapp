@@ -7,7 +7,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { HOST_URL } from '../../../../utils/envconfig';
 import stylesAdmin from './styles/stylesAdmin';
 import { Clock, Email, Form, Person } from '../../icons/Icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { globalStyles } from '../../../config/theme/Theme';
 
 interface User {
@@ -27,6 +27,7 @@ const Asignacion = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [openDropdowns, setOpenDropdowns] = useState<{ [key: string]: boolean }>({});
   const [selectedPlan, setSelectedPlan] = useState<{ [key: string]: string }>({});
+  const insets = useSafeAreaInsets();
 
 const planes = [
   { label: 'Seleccionar plan...', value: '' },
@@ -90,7 +91,12 @@ const planesConDuracion: Record<PlanNombre, number> = {
   }, [searchQuery, users]);
 
   if (!isAdmin) {
-    return <Text style={stylesAdmin.errorText}>No tienes permiso para acceder a esta pantalla</Text>;
+    return (
+      <View style={{flex:1, justifyContent:'center'}}>
+      <Text style={stylesAdmin.errorText}>
+        No tienes permiso para acceder a esta pantalla
+      </Text>
+      </View>)
   }
 
   const updateUserPlan = async (userId: string, newPlan: string, newDuration: number) => {
@@ -136,9 +142,10 @@ const planesConDuracion: Record<PlanNombre, number> = {
 };
 
   return (
-    <SafeAreaView style={globalStyles.mainContainer} >
+    <View style={[globalStyles.mainContainer, {paddingTop:insets.top}]} >
       <View style={stylesAdmin.containerAsignacion}>
         <TextInput
+          maxFontSizeMultiplier={1}
           style={stylesAdmin.searchInput}
           placeholder="Buscar usuarios..."
           value={searchQuery}
@@ -147,28 +154,32 @@ const planesConDuracion: Record<PlanNombre, number> = {
         <View style={{ flex: 1, position: 'relative', zIndex: 0 }}>
           <FlatList
             data={filteredUsers}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{paddingBottom:100}}
+            style={{borderWidth:0, padding:8}}
+
             keyExtractor={user => user._id}
             renderItem={({ item, index }) => (
               <View style={[stylesAdmin.userContainerAsignacion,  { zIndex: 1}] }>
                   <View style={stylesAdmin.badgeName}>
-                    <Text style={stylesAdmin.userText}>{item.name}</Text>
+                    <Text maxFontSizeMultiplier={1} style={stylesAdmin.userText}>{item.name}</Text>
                   </View>
                   <View style={{flexDirection:'row', justifyContent:'center', gap:10,}}>
                     <View style={stylesAdmin.badgeEmail}>
                       <Email color='#f80000ff' />
-                      <Text style={stylesAdmin.userTextEmail}>{item.email}</Text>
+                      <Text maxFontSizeMultiplier={1} style={stylesAdmin.userTextEmail}>{item.email}</Text>
                     </View>
                     <View style={stylesAdmin.badgePlan}>
                       {item.plan !== 'No tienes un plan' && 
                         <Form color= {'green'} size={20}/>
                       }
-                      <Text style={[stylesAdmin.userText, {color:item.plan === 'No tienes un plan' ? 'red': 'green'}]}> {item.plan}</Text>
+                      <Text maxFontSizeMultiplier={1} style={[stylesAdmin.userText, {color:item.plan === 'No tienes un plan' ? 'red': 'green'}]}> {item.plan}</Text>
                     </View>
                   </View>
                 {item.plan !== 'No tienes un plan' && 
                   <View style={stylesAdmin.badgeDias}>
                     <Clock/>
-                    <Text style={stylesAdmin.userTextDias}>{item.planDuration} días</Text>
+                    <Text maxFontSizeMultiplier={1} style={stylesAdmin.userTextDias}>{item.planDuration} días</Text>
                   </View>
                 } 
                   <DropDownPicker
@@ -194,13 +205,14 @@ const planesConDuracion: Record<PlanNombre, number> = {
                     style={{ borderColor: '#5a215e',backgroundColor: '#FFF', borderWidth:3}}
                     dropDownContainerStyle={{  backgroundColor: '#fff',  position: 'absolute', zIndex: 2000, maxHeight:600, }}
                     containerStyle={{ marginBottom: openDropdowns[item._id] ? 320 : 20, position: 'relative', zIndex: 3000,}}
+                    textStyle={{fontSize:10, fontFamily:'Quicksand-Bold'}}
                   />
               </View>
             )}
           />
         </View>
       </View>
-      </SafeAreaView>
+      </View>
   );
 };
 

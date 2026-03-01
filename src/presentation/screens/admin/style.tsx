@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
 
   errorText: {
     color: 'red',
+    fontFamily:'Quicksand-Bold',
     textAlign: 'center',
     marginTop: 20,
   },
@@ -76,14 +77,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title2: {
-    fontSize: 28,
-    fontWeight: "bold",
+    fontSize: 23,
     color: 'white',
-    fontFamily: 'Cochin',
-    textAlign: 'left',
-    justifyContent: 'center',
-    alignContent: 'center',
-    alignItems: 'center'
+    fontFamily: 'Quicksand-Bold',
+    
   },
   overlay: {
 

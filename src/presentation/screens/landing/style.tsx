@@ -7,10 +7,8 @@ export const style = StyleSheet.create({
     containerMain: {
         flex: 1,
         width: '100%',
-        height: 'auto',
         color: 'white',
         justifyContent: 'center',
-        alignContent: 'center',
         alignItems: 'center'
     },
     svgcon: {
@@ -19,28 +17,24 @@ export const style = StyleSheet.create({
         height: '100%'
     },
     margin: {
-        width: width,
-        paddingHorizontal: 15,
         flex: 1,
         flexDirection: 'column',
-        marginBottom: 1,
-        marginLeft: 10,
-        marginRight: 10,
-        marginTop: 50,
-    },
-    wave: {
-        width: width * 0.9,
         justifyContent: 'center',
         alignItems: 'center',
-        height: height * 0.4,
-        position: 'relative',
+    },
+    wave: {
+        marginTop:60,
+        overflow: 'hidden',
+        width: '90%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 150,
     },
     logo: {
-        width: width,
+        width: width * 0.7,
         height: height * 0.4,
         alignItems: 'center',
         position: 'relative',
-        marginTop: 50,
     },
     button: {
         alignItems: 'center',
@@ -72,16 +66,13 @@ export const style = StyleSheet.create({
         fontFamily:'Quicksand-Bold'
     },
     container: {
-        flex: 1,
-        borderWidth: 0,
         width:width * 0.9,
-        height: height * 0.09,
+        height: height * 0.3,
         justifyContent: 'flex-start',
         alignItems: 'center',
         paddingHorizontal: 20,
     },
     containerFoot: {
-        borderWidth: 0,
         
         flexDirection: 'row',
         justifyContent: 'flex-start',

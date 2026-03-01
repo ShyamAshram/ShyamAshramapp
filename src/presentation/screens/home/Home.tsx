@@ -68,7 +68,6 @@ export const HomeScreen = () => {
         setNotificationCount(0);
       }
 
-      console.log(hasNotification)
       setUserName(userData.name);
       setPlan(userData.plan);
       setPlanDuration(userData.planDuration);

@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 import { HOST_URL } from '../../../../utils/envconfig';
 import { getMessaging } from '@react-native-firebase/messaging';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Logo from '../../assets/logo.svg';
+
 const{width, height} = Dimensions.get('window');
 
 export const Inicio = () => {
@@ -153,7 +155,8 @@ const requestUserPermission = async () => {
 
   return (
     <View style={style.containerMain}>
-      <Image style={style.logo} source={require('../../assets/Logo1.png')} />
+      <Logo width={300} height={200}/>
+
       <View style={{width:'100%', justifyContent:'flex-start',alignItems:'center', borderWidth: 0, padding:10}}>  
       <TextInput
         maxFontSizeMultiplier={1}

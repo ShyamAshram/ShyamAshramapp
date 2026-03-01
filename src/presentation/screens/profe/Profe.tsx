@@ -57,7 +57,7 @@ const Profe = () => {
         headers: { Authorization: 'Bearer ' + token },
       });
 
-      console.log('RESPONSE', JSON.stringify(response.data, null, 2))
+      // console.log('RESPONSE', JSON.stringify(response.data, null, 2))
       setStudents(response.data); 
     } catch (error) {
       console.error('Error fetching registrations:', error);
@@ -200,7 +200,7 @@ const saveAttendanceList = async () => {
       <View style={styles.containerHeader}>
         <View style={{ flexDirection:'row', width:'100%', alignItems:'center', justifyContent:'space-between'}}>
         <View style={{borderWidth:0,  height:'100%', justifyContent:'center', alignItems:'center'}}>
-          <Text style={styles.header}>Hola, {userName}</Text>
+          <Text maxFontSizeMultiplier={1} style={styles.header}>Hola, {userName}</Text>
         </View>
         <TouchableOpacity onPress={handleLogout} style={globalStyles.profileImage}>
           <Seti color={'#1C495E'}/>
@@ -209,27 +209,28 @@ const saveAttendanceList = async () => {
       </View>
 
       <TextInput
+        maxFontSizeMultiplier={1}
         style={styles.searchInput}
         placeholder="Buscar estudiante por nombre..."
         value={searchQuery}
         onChangeText={setSearchQuery}
       />
       <View style={{height:50, width:'100%'}}>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.daySelector}>
+      <ScrollView  horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.daySelector}>
         {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'].map((day) => (
           <TouchableOpacity
             key={day}
             style={[styles.dayButton, selectedDay === day && styles.selectedDayButton]}
             onPress={() => setSelectedDay(day)}
           >
-            <Text style={[styles.dayText, selectedDay === day && styles.selectedDayText]}>{day}</Text>
+            <Text maxFontSizeMultiplier={1} style={[styles.dayText, selectedDay === day && styles.selectedDayText]}>{day}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
       </View>
       {filteredStudents.length === 0 ? (
         <View style={{ borderWidth:0, height: '60%' }}>
-          <Text style={styles.noStudentsText}>No hay estudiantes inscritos para {selectedDay}</Text>
+          <Text maxFontSizeMultiplier={1} style={styles.noStudentsText}>No hay estudiantes inscritos para {selectedDay}</Text>
         </View>
 
       ) : (
@@ -239,11 +240,11 @@ const saveAttendanceList = async () => {
           contentContainerStyle={{ borderWidth:0, padding: 10, height:'60%' }}
           renderItem={({ item }) => (
             <View style={styles.card}>
-              <Text style={styles.studentName}>{item.userName}</Text>
-              <Text style={styles.studentEmail}>{item.userEmail}</Text>
-              <Text style={styles.studentEmail}>{item.dayOfWeek}</Text>
-              <View style={styles.attendanceContainer}>
-                <Text style={styles.attendanceText}>Asistió:</Text>
+              <Text maxFontSizeMultiplier={1} style={styles.studentName}>{item.userName}</Text>
+              <Text maxFontSizeMultiplier={1} style={styles.studentEmail}>{item.userEmail}</Text>
+              <Text maxFontSizeMultiplier={1} style={styles.studentEmail}>{item.dayOfWeek}</Text>
+              <View  style={styles.attendanceContainer}>
+                <Text maxFontSizeMultiplier={1} style={styles.attendanceText}>Asistió:</Text>
                 <Switch
                   value={item.attended}
                   onValueChange={(newValue) => updateAttendance(item._id, newValue)}
@@ -268,10 +269,10 @@ const saveAttendanceList = async () => {
       />
       <View style={styles.ContainerBtnFoot}>
         <TouchableOpacity onPress={clearStudentList} style={styles.ButtonClear}>
-          <Text style={styles.TxtBtn}>Limpiar Lista</Text>
+          <Text maxFontSizeMultiplier={1} style={styles.TxtBtn}>Limpiar Lista</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={saveAttendanceList} style={styles.ButtonSave}>
-          <Text style={styles.TxtBtn}>Guardar Asistencias</Text>
+          <Text maxFontSizeMultiplier={1} style={styles.TxtBtn}>Guardar Asistencias</Text>
         </TouchableOpacity>
       </View>
 

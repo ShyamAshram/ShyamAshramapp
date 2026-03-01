@@ -88,10 +88,11 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: '#5a215e'
   },
   profileImageContainer: {
+    zIndex:1000,
     position:'absolute',
-    left:350,
+    right:10,
      width: 50,
-    height: 50,
+    height: 35,
     backgroundColor:'transparent',
     justifyContent: 'center',
     alignContent: 'center'

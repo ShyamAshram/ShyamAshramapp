@@ -4,8 +4,9 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { HOST_URL } from '../../../../utils/envconfig';
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { globalStyles } from "../../../config/theme/Theme";
+import stylesAdmin from "./styles/stylesAdmin";
 
 interface User {
   _id: string;
@@ -25,6 +26,7 @@ export const Profesores = () => {
   const [schedules, setSchedules] = useState<ClassSchedule[]>([]);
   const [openDropdowns, setOpenDropdowns] = useState<{ [key: string]: boolean }>({});
   const [selectedClasses, setSelectedClasses] = useState<{ [key: string]: string[] }>({});
+  const insets = useSafeAreaInsets();
 
 
   useEffect(() => {
@@ -37,6 +39,8 @@ export const Profesores = () => {
         });
         const profs = usersRes.data.filter((u: User) => u.role === "profe");
         setUsers(profs);
+
+        console.log(users)
 
         const schedulesRes = await axios.get(`${HOST_URL}/api/classes/all`, {
           headers: { Authorization: "Bearer " + token },
@@ -87,15 +91,28 @@ export const Profesores = () => {
 };
 
   return (
-    <SafeAreaView style={globalStyles.mainContainer} >
+    <View style={globalStyles.mainContainer} >
+      <View style={[globalStyles.header2,  {paddingTop:insets.top}]}>
+        <Text maxFontSizeMultiplier={1} style={stylesAdmin.title}>Profesores</Text>
+    </View>
+    {users.length === 0 ? (
+        <Text maxFontSizeMultiplier={1} style={stylesAdmin.loadingText}>No hay profesores inscritos aún</Text>
+
+      ) :(
     <View style={styles.container}>
+      
+
       <FlatList
         data={users}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom:100}}
+        style={{borderWidth:0, padding:8}}
         keyExtractor={(user) => user._id}
         renderItem={({ item }) => (
           <View style={styles.userContainer}>
+
             <View style={{justifyContent:'center', alignItems:'center', marginBottom:10, borderWidth:2, borderColor:'#5a215e', padding:5, borderRadius:25,}}>
-              <Text style={styles.userText}>{item.name}</Text>
+              <Text maxFontSizeMultiplier={1} style={styles.userText}>{item.name}</Text>
             </View> 
             <DropDownPicker
               multiple={true} 
@@ -140,7 +157,7 @@ export const Profesores = () => {
               multipleText={(selectedClasses[item._id]?.length || 0) > 0
                 ? `${selectedClasses[item._id].length} horarios seleccionados`
                 : "Selecciona horarios"}
-              style={{ borderColor: "#5a215e", backgroundColor: "#FFF", borderWidth: 3 }}
+              style={{ borderColor: "#5a215e", backgroundColor: "#FFF", borderWidth: 3,  }}
               dropDownContainerStyle={{
                 backgroundColor: "#fff",
                 position: "absolute",
@@ -152,13 +169,18 @@ export const Profesores = () => {
                 position: "relative",
                 zIndex: 3000,
               }}
+              labelStyle={{fontSize:10, fontFamily:'Quicksand-Bold'}}
+              textStyle={{fontSize:10, fontFamily:'Quicksand-Bold'}}
+              listMessageTextStyle={{fontSize:10, fontFamily:'Quicksand-Bold'}}
             />
 
           </View>
+          
         )}
       />
     </View>
-    </SafeAreaView>
+      )}
+    </View>
   );
 };
 
@@ -167,7 +189,7 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
     padding: 20,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#FFF",
   },
   userContainer: {
     marginBottom: 25,

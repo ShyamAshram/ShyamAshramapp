@@ -9,7 +9,7 @@ import { Email } from '../../icons/Icons';
 import { HOST_URL } from '../../../../utils/envconfig';
 import stylesAdmin from './styles/stylesAdmin';
 import { style } from '../../screens/landing/style';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { globalStyles } from '../../../config/theme/Theme';
 interface User {
   _id: string;
@@ -27,6 +27,7 @@ const ActiveU = () => {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -64,9 +65,15 @@ const ActiveU = () => {
     setFilteredUsers(filtered);
   }, [searchQuery, users]);
 
-  if (!isAdmin) {
-    return <Text style={stylesAdmin.errorText}>No tienes permiso para acceder a esta pantalla</Text>;
+ if (!isAdmin) {
+    return (
+      <View style={{flex:1, justifyContent:'center'}}>
+      <Text style={stylesAdmin.errorText}>
+        No tienes permiso para acceder a esta pantalla
+      </Text>
+      </View>)
   }
+
 
   if (loading) {
     return (
@@ -96,9 +103,10 @@ const ActiveU = () => {
   };
 
   return (
-    <SafeAreaView style={globalStyles.mainContainer}>
+    <View style={[[globalStyles.mainContainer, {paddingTop: insets.top} ]]}>
     <View style={stylesAdmin.container}>
       <TextInput
+        maxFontSizeMultiplier={1}
         style={stylesAdmin.searchInput}
         placeholder="Buscar usuarios..."
         value={searchQuery}
@@ -106,29 +114,32 @@ const ActiveU = () => {
       />
       <FlatList
         data={filteredUsers}
+        contentContainerStyle={{paddingBottom:100}}
+        style={{borderWidth:0, padding:8}}
+        showsVerticalScrollIndicator={false}
         keyExtractor={user => user._id}
         renderItem={({ item }) => (
           <View style={[stylesAdmin.userContainer, {flexDirection:'row'}]}>
             <View style={{borderWidth:0, height:'100%', width:'85%',}}>
               <View style={stylesAdmin.header}>
                 <View style={[stylesAdmin.statusDot, { backgroundColor: item.plan === 'No tienes un plan' ? 'gray' : 'green' }]} />
-                <Text style={[stylesAdmin.userName, {color: item.plan === 'No tienes un plan' ? 'gray': 'green'}]}>{item.name}</Text>
+                <Text maxFontSizeMultiplier={1} style={[stylesAdmin.userName, {color: item.plan === 'No tienes un plan' ? 'gray': 'green'}]}>{item.name}</Text>
               </View>
                 <View style={[stylesAdmin.badgeEmailActiveU]}>
                   <Email color='#000'/>
-                <Text style={stylesAdmin.userText}>{item.email}</Text>
+                <Text maxFontSizeMultiplier={1} style={stylesAdmin.userText}>{item.email}</Text>
               </View>
               <View style={{  flexDirection:'row', justifyContent:'center', alignItems:'center', gap:5}}>
               <View style={stylesAdmin.badgePlanActiveU}>
                 {item.plan !== 'No tienes un plan' && 
                   <Form color='green' size={20}/>
                 }
-                <Text style={[stylesAdmin.userText,{color:item.plan !== 'No tienes un plan'?"green":'#000'}]}>{item.plan}</Text>
+                <Text maxFontSizeMultiplier={1} style={[stylesAdmin.userText,{color:item.plan !== 'No tienes un plan'?"green":'#000'}]}>{item.plan}</Text>
               </View>
               {item.plan !== 'No tienes un plan' && 
               <View style={stylesAdmin.badgeDias}>
                 <Clock/>
-                <Text style={stylesAdmin.userText}> {item.planDuration} días</Text>
+                <Text maxFontSizeMultiplier={1} style={stylesAdmin.userText}> {item.planDuration} días</Text>
               </View>}
               </View>
               <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 10, marginTop: 10 }}>
@@ -156,6 +167,7 @@ const ActiveU = () => {
              
 
               <Text
+              maxFontSizeMultiplier={1} 
                 style={{
                   borderWidth:0,
                   width:180,
@@ -175,7 +187,7 @@ const ActiveU = () => {
         )}
       />
     </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

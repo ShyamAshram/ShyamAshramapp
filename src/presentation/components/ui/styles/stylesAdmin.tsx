@@ -7,11 +7,11 @@ const stylesAdmin = StyleSheet.create({
 		position:'static',
 		padding: 20,
 		zIndex:1,
-		backgroundColor: '#f0f0f0',
+		backgroundColor: '#FFF',
   },
   container: {
     padding: 20,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#FFF',
   },
   searchInput: {
     height: 40,
@@ -50,7 +50,7 @@ const stylesAdmin = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
-    elevation: 3,
+    elevation: 10,
   },
   header: {
     flexDirection: 'row',
@@ -122,6 +122,7 @@ const stylesAdmin = StyleSheet.create({
   },
   errorText: {
     color: 'red',
+    fontFamily:'Quicksand-Bold',
     textAlign: 'center',
     marginTop: 20,
   },
@@ -146,11 +147,13 @@ const stylesAdmin = StyleSheet.create({
   },
 	    title: {
         fontSize: 24,
-        fontWeight: 'bold',
+        fontFamily:'Quicksand-Bold',
         color: 'white',
         textAlign: 'center',
     },
     loadingText: {
+        fontFamily:'Quicksand-Bold',
+        color:'#333',
         textAlign: 'center',
         fontSize: 18,
         marginTop: 20,

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -11,6 +11,8 @@ import FloatingActionButton from '../../components/ui/FloatingButton';
 import { Book, Person,  Set } from '../../icons/Icons';
 import { HOST_URL } from '../../../../utils/envconfig';
 import styles from './style';
+import Logo from '../../assets/logo.svg';
+
 
 interface User {
   _id: string;
@@ -27,6 +29,7 @@ export const AdminScreen = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [students, setStudents] = useState<User[]>([]);
+  const insets = useSafeAreaInsets();
 
 
   useEffect(() => {
@@ -66,16 +69,18 @@ export const AdminScreen = () => {
   };
 
 return (
-  <SafeAreaView style={globalStyles.mainContainer}>
+  <View style={globalStyles.mainContainer}>
     {!isAdmin ? (
+      <View style={{flex:1, justifyContent:'center'}}>
       <Text style={styles.errorText}>
         No tienes permiso para acceder a esta pantalla
       </Text>
+      </View>
     ) : (
       <>
-        <View style={globalStyles.header2}>
+        <View style={[globalStyles.header2, {paddingTop:insets.top}]}>
           <View style={{alignItems:'center', width:"100%"}}>
-            <Text style={styles.title2}>YAPP</Text>
+            <Text maxFontSizeMultiplier={1} style={styles.title2}>Yoga Ashram</Text>
           </View>
           <View style={globalStyles.profileImageContainer}>
             <TouchableOpacity onPress={handleLogout} style={{justifyContent:'center', alignItems:"center"}}>
@@ -94,38 +99,38 @@ return (
 
         <View style={styles.container}>
           <View style={styles.overlay}>
-            <Image style={styles.logo} source={require('../../assets/Logo1.png')} />
+            <Logo width={300} height={200}/>
           </View>
           <View style={styles.row}>
           <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Asignacion")}>
               <Form />
-              <Text style={styles.buttonText} >
+              <Text maxFontSizeMultiplier={1} style={styles.buttonText} >
                 Asignación de Planes
               </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Activación')}>
             <Person />
-            <Text style={styles.buttonText}>Usuarios Activos</Text>
+            <Text maxFontSizeMultiplier={1} style={styles.buttonText}>Usuarios Activos</Text>
           </TouchableOpacity>
           </View>
           <View style={styles.row}>
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("AttendanceListScreen")}>
               <ListForm />
-              <Text style={styles.buttonText}>Listas de Asistencia</Text>
+              <Text maxFontSizeMultiplier={1} style={styles.buttonText}>Listas de Asistencia</Text>
             </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Profesores")}>
             <Profesores />
-            <Text style={styles.buttonText}>Profesores</Text>
+            <Text maxFontSizeMultiplier={1} style={styles.buttonText}>Profesores</Text>
           </TouchableOpacity>
           </View>
           <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate("Excel")}>
             <Download />
-            <Text style={styles.buttonText2}>EXCEL</Text>
+            <Text maxFontSizeMultiplier={1} style={styles.buttonText2}>EXCEL</Text>
           </TouchableOpacity>
         </View>
       </>
     )}
-  </SafeAreaView> 
+  </View> 
 );
 };
 

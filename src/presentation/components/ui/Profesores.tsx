@@ -21,6 +21,15 @@ interface ClassSchedule {
   time: string;
 }
 
+const weekOrder = [
+  "Lunes",
+  "Martes",
+  "Miércoles",
+  "Jueves",
+  "Viernes",
+  "Sábado",
+];
+
 export const Profesores = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [schedules, setSchedules] = useState<ClassSchedule[]>([]);
@@ -90,6 +99,17 @@ export const Profesores = () => {
   }
 };
 
+const sortedSchedules = [...schedules].sort((a, b) => {
+  const dayA = weekOrder.indexOf(a.dayOfWeek);
+  const dayB = weekOrder.indexOf(b.dayOfWeek);
+
+  if (dayA !== dayB) {
+    return dayA - dayB;
+  }
+
+  return a.time.localeCompare(b.time); // ordena también por hora
+});
+
   return (
     <View style={globalStyles.mainContainer} >
       <View style={[globalStyles.header2,  {paddingTop:insets.top}]}>
@@ -149,8 +169,8 @@ export const Profesores = () => {
                 });
               }}
 
-              items={schedules.map((s) => ({
-                label: `${s.dayOfWeek} - ${s.time}`,
+              items={sortedSchedules.map((s) => ({
+                label: `${s.dayOfWeek} - ${s.time} - ${s.name}`,
                 value: s._id,
               }))}
               placeholder="Selecciona horarios"
@@ -161,13 +181,11 @@ export const Profesores = () => {
               dropDownContainerStyle={{
                 backgroundColor: "#fff",
                 position: "absolute",
-                zIndex: 2000,
-                maxHeight: 600,
+                maxHeight: 200,
               }}
               containerStyle={{
-                marginBottom: openDropdowns[item._id] ? 350 : 20,
-                position: "relative",
-                zIndex: 3000,
+                marginBottom: openDropdowns[item._id] ? 200 : 20,
+  
               }}
               labelStyle={{fontSize:10, fontFamily:'Quicksand-Bold'}}
               textStyle={{fontSize:10, fontFamily:'Quicksand-Bold'}}

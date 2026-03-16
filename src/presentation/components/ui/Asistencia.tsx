@@ -7,6 +7,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { globalStyles } from '../../../config/theme/Theme';
 import { HOST_URL } from '../../../../utils/envconfig';
 import stylesAdmin from './styles/stylesAdmin';
+import { Check, Close, Download, Form, ListForm, Profesores } from '../../icons/Icons';
+
 
 interface AttendanceGroup {
     title: string;
@@ -28,6 +30,7 @@ const AttendanceListScreen = () => {
                         headers: { Authorization: `Bearer ${token}` },
                     }
                 );
+                console.log(response)
 
                 let groupedData: AttendanceGroup[] = [];
                 if (
@@ -83,11 +86,48 @@ const AttendanceListScreen = () => {
                     renderItem={({ item }) => (
                         console.log('Item de asistencia:', item),   
                     <View style={stylesAdmin.card}>
-                        <Text maxFontSizeMultiplier={1} style={stylesAdmin.cardSubtitle}>
-                        {item.students && Array.isArray(item.students)
-                            ? item.students.map((s: any) => `• ${s.userName}, correo: ${s.userEmail}`).join('\n')  
-                            : 'Sin estudiantes'} 
-                        </Text>
+                        <View style={{borderWidth:0, marginBottom:2,}}>
+                            {item.students && Array.isArray(item.students) ? (
+                                item.students.map((s: any) => (
+                                <View
+                                    key={s._id}
+                                    style={{
+                                    borderColor: '#ddd',
+                                    borderWidth:1, 
+                                    marginTop:8,
+                                    borderRadius:10,
+                                    padding:5,
+                                    justifyContent:'flex-start',
+                                    alignItems:'center',
+                                    flexDirection:'row',
+                                    gap:8
+                                    }}
+                                >
+                                    <View style={{width:'80%'}}>
+                                        <Text style={stylesAdmin.cardSubtitle}>
+                                        {s.userName}
+                                        </Text>
+
+                                        <Text style={stylesAdmin.cardSubtitle}>
+                                        {s.userEmail}
+                                        </Text>
+                                    </View>
+                                    <View style={{borderWidth:0, width:'15%', height:'100%', alignItems:'center' }} >
+                                        {s.attended ? ( 
+                                            <Check />
+                                        ):(
+                                            <Close />
+                                        )}
+                                    </View>
+                                    
+                                    
+                                </View>
+                                
+                                ))
+                            ) : (
+                                <Text style={stylesAdmin.cardSubtitle}>Sin estudiantes</Text>
+                            )}
+                            </View>
                     </View>
                     )}
 

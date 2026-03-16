@@ -31,6 +31,8 @@ import CheckLogin from "../components/CheckLogin";
 import { Profesores } from "../components/ui/Profesores";
 import { Login } from "../screens/login/Login";
 import { Signin } from "../screens/signin/Signin";
+import CheckoutScreen from "../screens/checkout/CheckoutScreen";
+import Role from "../components/ui/Role";
 
 const Stack = createStackNavigator();
 
@@ -46,6 +48,7 @@ function Navigator() {
             <Stack.Screen name="HomeScreen" component={HomeScreen} />
             <Stack.Screen name="Admin" component={AdminScreen} />
             <Stack.Screen name="Asignacion" component={Asignacion} />
+            <Stack.Screen name="Role" component={Role} />
             <Stack.Screen name="Activación" component={ActiveU} />
             <Stack.Screen name='Class' component={Class} />
             <Stack.Screen name='Alerts' component={Alerts} />
@@ -69,6 +72,7 @@ function Navigator() {
             <Stack.Screen name="AttendanceListScreen" component={AttendanceListScreen} />
             <Stack.Screen name="Excel" component={Excel} />
             <Stack.Screen name="Profesores" component={Profesores} />
+            <Stack.Screen name="CheckoutScreen" component={CheckoutScreen} />
 
         </Stack.Navigator>
     )

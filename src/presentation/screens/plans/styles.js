@@ -86,6 +86,12 @@ const styles = StyleSheet.create({
       shadowRadius: 3.84,
       elevation: 5,
     },
+    contPayment:{
+      width:'100%', 
+      justifyContent:'center', 
+      alignItems:'center', 
+      marginTop:20
+    },
     subtitle: {
       fontSize: 15,
       fontWeight: 'bold',
@@ -101,13 +107,13 @@ const styles = StyleSheet.create({
     },
     paymentContainer: {
       height:60,
+      width:'60%',
       alignContent:'center',
       justifyContent:'center',
       alignItems:'center',
       backgroundColor:'#5a215e',
-      borderRadius:50,
+      borderRadius:20,
       alignItems: 'center',
-      marginTop: 20,
     },
     qr: {
       width: 120,
@@ -120,6 +126,31 @@ const styles = StyleSheet.create({
       marginTop: 8,
       fontWeight: 'bold',
     },
+    modalOverlay:{
+      flex:1,
+      backgroundColor:'rgba(0,0,0,0.5)',
+      justifyContent:'center',
+      alignItems:'center'
+    },
+
+    modalContent:{
+      width:'85%',
+      backgroundColor:'#fff',
+      borderRadius:15,
+      padding:20
+    },
+
+    modalTitle:{
+      fontSize:14,
+      fontWeight:'bold',
+      marginBottom:15
+    },
+
+    paymentOption:{
+      padding:15,
+      borderBottomWidth:1,
+      borderColor:'#eee'
+    }
   });
 
   export default styles;

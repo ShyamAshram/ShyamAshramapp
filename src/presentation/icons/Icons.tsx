@@ -22,3 +22,9 @@ export const Form = ({color='#11688C', size=30}) => <MateriaCommunityIcons name=
 export const ListForm = () => <MateriaCommunityIcons name='list-status' color={'#11688C'} size={30}/>
 export const Profesores = () => <MateriaCommunityIcons name='calendar-account' color={'#11688C'} size={30}/>
 export const Clock =() => <MateriaCommunityIcons name='clock-check-outline' color={'#D9A404'} size={25}/>
+export const Key = () => <MateriaCommunityIcons name='key' color={"#11688C"} size={25} />
+export const Card =() => <MateriaCommunityIcons name='credit-card' color={'#D9A404'} size={25} />
+export const Cash = () => <MateriaCommunityIcons name='cash' color={'#00a653'} size={25} />
+export const Check = () => <MateriaCommunityIcons name='check' color={'#00a653'} size={30} />
+export const Close = () => <MateriaCommunityIcons name='close' color={'#cc1818'} size={30} />
+

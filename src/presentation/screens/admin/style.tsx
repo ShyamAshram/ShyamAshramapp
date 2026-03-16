@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title2: {
-    fontSize: 23,
+    fontSize: 18,
     color: 'white',
     fontFamily: 'Quicksand-Bold',
     

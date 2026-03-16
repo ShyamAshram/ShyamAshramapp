@@ -1,3 +1,5 @@
+process.env.METRO_DISABLE_FILE_WATCHING = "true";
+process.env.WATCHMAN_DISABLE = "true";
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 
 const defaultConfig = getDefaultConfig(__dirname);
@@ -11,6 +13,7 @@ const config = {
       ext => ext !== 'svg'
     ),
     sourceExts: [...defaultConfig.resolver.sourceExts, 'svg'],
+
   },
 };
 

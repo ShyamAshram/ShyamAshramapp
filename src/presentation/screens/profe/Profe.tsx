@@ -71,13 +71,10 @@ const Profe = () => {
 
 
   const updateAttendance = async (studentId: string, attended: boolean) => {
+
+    console.log(studentId, attended )
     try {
-      const token = await AsyncStorage.getItem('token');
-      await axios.put(
-        `${HOST_URL}/api/teach/update-attendance/${studentId}`,
-        { attended },
-        { headers: { Authorization: 'Bearer ' + token } }
-      );
+     
       setStudents((prevStudents) =>
         prevStudents.map((student) =>
           student._id === studentId ? { ...student, attended } : student
@@ -123,12 +120,18 @@ const Profe = () => {
 
 
 const saveAttendanceList = async () => {
+
+   const studentsToUpdate = students.filter(
+    student => student.dayOfWeek === selectedDay
+  );
+
   const attendedStudents = students
-    .filter(student => student.attended && student.dayOfWeek === selectedDay)
+    .filter(student => student.dayOfWeek === selectedDay)
     .map(student => ({
       _id: student?.userId?._id,
       userName: student.userName,
-      userEmail: student.userEmail
+      userEmail: student.userEmail,
+      attended: student.attended
     }));
     console.log('lista', JSON.stringify(attendedStudents, null, 2))
   if (attendedStudents.length === 0) {
@@ -138,6 +141,16 @@ const saveAttendanceList = async () => {
 
   try {
     const token = await AsyncStorage.getItem('token');
+
+    await Promise.all(
+      studentsToUpdate.map(student =>
+        axios.put(
+          `${HOST_URL}/api/teach/update-attendance/${student._id}`,
+          { attended: student.attended },
+          { headers: { Authorization: 'Bearer ' + token } }
+        )
+      )
+    );
     const response = await axios.post(
       `${HOST_URL}/api/list/save-attendance`,
       { attendedStudents, instructorId: 2  },

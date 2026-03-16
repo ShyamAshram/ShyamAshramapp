@@ -3,7 +3,6 @@ import { View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator, 
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Importa íconos
-import Communications from 'react-native-communications'; // Para enviar correos
 import { Clock, Form, WhatsApp } from '../../icons/Icons';
 import { Email } from '../../icons/Icons';
 import { HOST_URL } from '../../../../utils/envconfig';

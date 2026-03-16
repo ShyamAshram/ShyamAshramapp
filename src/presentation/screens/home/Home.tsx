@@ -28,6 +28,7 @@ export const HomeScreen = () => {
   const navigation = useNavigation<any>();
   const [hasNotification,setHasNotification] = useState(false);
   const [userName, setUserName] = useState('');
+  const [userId, setUserId] =  useState('');
   const [birtday, setBirtday] = useState(null)
   const [progress, setProgress] = useState(0);
   const [plan, setPlan] = useState('');
@@ -36,6 +37,23 @@ export const HomeScreen = () => {
   const [unreadNotifications, setUnreadNotifications] = useState(0);
   const [notificationCount, setNotificationCount] = useState(0);
   const insets = useSafeAreaInsets();
+  const [plans, setPlans] = useState<any[]>([])
+
+  const getPlans = async () => {
+    const response = await fetch(`${HOST_URL}/api/plans`);
+    const data = await response.json();
+    return data;
+  };
+
+  useEffect(() => {
+  const loadPlans = async () => {
+    const plans = await getPlans();
+    setPlans(plans);
+  };
+
+  loadPlans();
+}, []);
+
   useEffect(() => {
     getUserDetails();
     const interval = setInterval(() => {
@@ -67,7 +85,7 @@ export const HomeScreen = () => {
         setHasNotification(false) 
         setNotificationCount(0);
       }
-
+      setUserId(userData.id)
       setUserName(userData.name);
       setPlan(userData.plan);
       setPlanDuration(userData.planDuration);
@@ -92,7 +110,6 @@ export const HomeScreen = () => {
       // } else {
         if(total>0 && remaining>0){
         const progressValue = Math.round(remaining *100 / total);
-        console.log( progressValue );
 
         setProgress(progressValue);
         setDaysLeft(userData.planDuration);
@@ -132,6 +149,23 @@ export const HomeScreen = () => {
     } catch (error) {
     }
   };
+
+  const handlePlansNav = (planName:string, navName:string) =>{
+     const selectedPlan = 
+        plans?.find(
+          (p: any) => p.name === planName
+        );
+
+
+    if (!selectedPlan) return;
+    navigation.navigate(navName, {
+      planId: selectedPlan._id,
+      userId:userId,
+      plan:selectedPlan
+    })
+    }
+
+  
 
   return (
     <View style={[globalStyles.mainContainer, ]}>
@@ -195,7 +229,7 @@ export const HomeScreen = () => {
               <View style={{ height:25, width:'100%', justifyContent:'center', alignItems:'center'}}>
                 <Text maxFontSizeMultiplier={1} style={globalStyles.textPlan}>ANUALIDAD</Text>
               </View>
-              <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan4)}>
+              <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => handlePlansNav('Anualidad', 'Plan4')}>
                 <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo1.png")} />
               </TouchableOpacity>
             </View>
@@ -203,7 +237,7 @@ export const HomeScreen = () => {
               <View style={{ height:25, width:'100%', justifyContent:'center', alignItems:'center'}}>
                 <Text maxFontSizeMultiplier={1}  style={globalStyles.textPlan}>6 MESES</Text>
               </View>
-              <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan5)}>
+              <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => handlePlansNav("6 meses", 'Plan5')}>
                 <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo6.png")} />
               </TouchableOpacity>
             </View>
@@ -213,7 +247,7 @@ export const HomeScreen = () => {
               <View style={{ height:25, width:'100%', justifyContent:'center', alignItems:'center'}}>
                 <Text maxFontSizeMultiplier={1} style={globalStyles.textPlan}>3 MESES</Text>
               </View>
-              <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan6)}>
+              <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => handlePlansNav("3 meses", 'Plan6') }>
                 <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo5.png")} />
               </TouchableOpacity>
             </View>
@@ -221,7 +255,7 @@ export const HomeScreen = () => {
               <View style={{ height:25, width:'100%', justifyContent:'center', alignItems:'center'}}>
                 <Text maxFontSizeMultiplier={1} style={globalStyles.textPlan}>ILIMITADO</Text>
               </View>
-              <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plans)}>
+              <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => handlePlansNav("Mensualidad Ilimitada", 'Plans')}>
                 <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo7.png")} />
               </TouchableOpacity>
             </View>
@@ -231,7 +265,7 @@ export const HomeScreen = () => {
               <View style={{ height:25, width:'100%', justifyContent:'center', alignItems:'center'}}>
                 <Text maxFontSizeMultiplier={1} style={globalStyles.textPlan}>4 CLASES</Text>
               </View>
-              <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan2)}>
+              <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => handlePlansNav("4 clases", 'Plan2')}>
                 <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo4.png")} />
               </TouchableOpacity>
             </View>
@@ -239,7 +273,7 @@ export const HomeScreen = () => {
               <View style={{ height:25, width:'100%', justifyContent:'center', alignItems:'center'}}>
                 <Text maxFontSizeMultiplier={1} style={globalStyles.textPlan}>1 Clase</Text>
               </View>
-              <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() => navigation.navigate(Plan3)}>
+              <TouchableOpacity style={globalStyles.buttonsPlans} onPress={() =>handlePlansNav("Clase Individual", 'Plan3')}>
                 <Image style={globalStyles.imageBoton} source={require("../../assets/Fondo8.png")} />
               </TouchableOpacity>
             </View>

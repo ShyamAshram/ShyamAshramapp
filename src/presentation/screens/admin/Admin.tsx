@@ -98,8 +98,8 @@ return (
         />
 
         <View style={styles.container}>
-          <View style={styles.overlay}>
-            <Logo width={300} height={200}/>
+          <View style={[styles.overlay,{width:'100%', height:'30%'}]}>
+            <Logo width={200} height={150}/>
           </View>
           <View style={styles.row}>
           <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Asignacion")}>
@@ -121,6 +121,12 @@ return (
           <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Profesores")}>
             <Profesores />
             <Text maxFontSizeMultiplier={1} style={styles.buttonText}>Profesores</Text>
+          </TouchableOpacity>
+          </View>
+          <View style={styles.row}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Role")}>
+            <Profesores />
+            <Text maxFontSizeMultiplier={1} style={styles.buttonText}>Roles APP</Text>
           </TouchableOpacity>
           </View>
           <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate("Excel")}>

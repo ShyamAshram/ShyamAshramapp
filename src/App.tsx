@@ -6,8 +6,7 @@ import 'react-native-gesture-handler';
 import app from '@react-native-firebase/app';
 import messaging from '@react-native-firebase/messaging';
 import notifee, { AndroidImportance } from '@notifee/react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { SafeAreaView } from 'react-native';
+import { StripeProvider } from '@stripe/stripe-react-native';
 
 
 
@@ -64,10 +63,11 @@ export const App = () => {
 
 testFCM();
   return (
-
-        <NavigationContainer>
-          <Navigator />
-        </NavigationContainer>
+    <StripeProvider publishableKey='pk_live_51Mk7DTGAImkSbji9HXcgPbyvS9vBZawNjsz4TC1gzvvT0dXDS1QuyMyhzVK22zYwGAyDDnlIZPuhDjl2ylHIWqJg00OZKI4zks'>
+      <NavigationContainer>
+        <Navigator />
+      </NavigationContainer>
+    </StripeProvider>
 
   );
 };

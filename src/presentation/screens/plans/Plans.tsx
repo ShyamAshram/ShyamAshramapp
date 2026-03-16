@@ -1,39 +1,55 @@
-import React, { useRef, useEffect } from 'react';
-import { Text, View, Linking, Image, Animated, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useRef, useEffect, useState } from 'react';
+import { Text, View, Linking, Image, Animated, TouchableOpacity, ScrollView, Alert, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { globalStyles } from '../../../config/theme/Theme';
 import styles from './styles';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Logo from '../../assets/logo.svg';
+import { HOST_URL } from '../../../../utils/envconfig';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useStripe } from '@stripe/stripe-react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
+import PaymentMethodsModal from './components/PaymentMethods';
+
+import { stripePayment, copyTransferKey, openWhatsAppPayment } from "./payments";
 
 
 const Plans = () => {
-  const insets = useSafeAreaInsets();
-  const handlePress = () => {
-    Linking.openURL('https://drive.google.com/file/d/17MqhZd8pY9pn3_GyyW6Apx9aXKdxHDjH/view');
-  };
-  const scaleAnim = useRef(new Animated.Value(1)).current;
 
-  useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(scaleAnim, {
-          toValue: 0.9,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(scaleAnim, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
-  }, [scaleAnim])
+  const { initPaymentSheet, presentPaymentSheet } = useStripe();
+  const insets = useSafeAreaInsets();
+  const route = useRoute<any>();
+  const userId = route.params?.userId
+  const plan = route.params?.plan
+
+  const formatCOP = (value:any) => {
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: plan.currency,
+      minimumFractionDigits: 0
+    }).format(value);
+  };
+
+  const [paymentModal, setPaymentModal] = useState(false);
+
+
+  const [token, setToken] = useState('')
+  const navigation = useNavigation()
+  
+
+  useEffect(()=>{
+    const token = async()=>{
+      const tokenAs = await AsyncStorage.getItem('token');
+      setToken(tokenAs as string)
+    }
+    token()
+  },[])
+      
   return (
     <View style={globalStyles.mainContainer}>
       <View style={[globalStyles.header2, { paddingTop: insets.top }]}>
-        <Text maxFontSizeMultiplier={1} style={styles.title2}>Plan Ilimitado</Text>
+        <Text maxFontSizeMultiplier={1} style={styles.title2}>{plan?.name}</Text>
       </View>
 
       <ScrollView style={styles.globalMargin} contentContainerStyle={styles.scrollContent}>
@@ -63,20 +79,53 @@ const Plans = () => {
         <View style={styles.cardbottom}>
           <View style={styles.cardtextPrice}>
             <Text maxFontSizeMultiplier={1} style={styles.price}>PAGO EN EFECTIVO</Text>
-            <Text maxFontSizeMultiplier={1} style={styles.price}>$220.000</Text>
+            <Text maxFontSizeMultiplier={1} style={styles.price}>{formatCOP(plan.price2)}</Text>
           </View>
         </View>
         <View style={styles.cardbottom}>
           <View style={styles.cardtextPrice}>
             <Text maxFontSizeMultiplier={1} style={styles.price}>TRANSFERENCIA</Text>
-            <Text maxFontSizeMultiplier={1} style={styles.price}>$235.000</Text>
+            <Text maxFontSizeMultiplier={1} style={styles.price}>{formatCOP(plan.price)}</Text>
           </View>
         </View>
-        <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
-          <TouchableOpacity style={styles.paymentContainer} onPress={handlePress} activeOpacity={0.7}>
+        <View style={styles.contPayment}>
+          <TouchableOpacity style={styles.paymentContainer} onPress={() => setPaymentModal(true)} activeOpacity={0.7}>
             <Text maxFontSizeMultiplier={1} style={styles.paymentText}>MEDIOS DE PAGO</Text>
           </TouchableOpacity>
-        </Animated.View>
+        </View>
+       <PaymentMethodsModal
+        visible={paymentModal}
+        onClose={() => setPaymentModal(false)}
+       onCard={async () => {
+
+        const success = await stripePayment({
+          initPaymentSheet,
+          presentPaymentSheet,
+          amount: plan.price * 100,
+          userId: userId,
+          plan:'Ilimitado'
+        });
+
+        if(success){
+          Alert.alert("Pago exitoso");
+        }
+
+        setPaymentModal(false);
+      }}
+
+      onTransfer={()=>{
+        copyTransferKey("@sheyna755");
+        setPaymentModal(false);
+      }}
+
+      onCash={()=>{
+        openWhatsAppPayment(
+          "573176744519",
+          "Hola, quiero pagar el plan ilimitado en efectivo"
+        );
+        setPaymentModal(false);
+      }}
+      />
       </ScrollView>
     </View>
   );

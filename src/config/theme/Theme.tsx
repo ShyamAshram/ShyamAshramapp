@@ -1,5 +1,7 @@
-import { Dimensions, StyleSheet, } from "react-native";
+import { Dimensions, Platform, StyleSheet, } from "react-native";
 const {width, height} = Dimensions.get('window');
+
+const isIphone = Platform.OS === 'ios';
 
 export interface ThemeColors {
   primary: string;
@@ -81,9 +83,10 @@ export const globalStyles = StyleSheet.create({
   },
   header2: {
     flexDirection: 'row',
+    borderWidth: 1,
     justifyContent:'center',
     alignItems: 'flex-end',
-    height: 75,
+    height: isIphone ? height * 0.1 : 75,
     borderRadius: 10,
     backgroundColor: '#5a215e'
   },

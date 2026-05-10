@@ -73,9 +73,8 @@ export const style = StyleSheet.create({
         paddingHorizontal: 20,
     },
     containerFoot: {
-        
         flexDirection: 'row',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         alignItems: 'center',
 
         borderStartColor: '#00000',

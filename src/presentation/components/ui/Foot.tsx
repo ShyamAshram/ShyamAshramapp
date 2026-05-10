@@ -32,7 +32,7 @@ export default Footer;
 const styles = StyleSheet.create({
   padre: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
     marginTop: 40,
     borderStartColor: '#00000',

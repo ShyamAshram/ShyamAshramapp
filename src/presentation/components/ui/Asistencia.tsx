@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, SectionList,} from 'react-native';
+import { View, Text, SectionList, TouchableOpacity,} from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import axios from 'axios';
 
@@ -7,7 +7,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { globalStyles } from '../../../config/theme/Theme';
 import { HOST_URL } from '../../../../utils/envconfig';
 import stylesAdmin from './styles/stylesAdmin';
-import { Check, Close, Download, Form, ListForm, Profesores } from '../../icons/Icons';
+import { Arrow, Check, Close, Download, Form, ListForm, Profesores } from '../../icons/Icons';
+import { useNavigation } from '@react-navigation/native';
 
 
 interface AttendanceGroup {
@@ -19,6 +20,7 @@ const AttendanceListScreen = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [attendanceLists, setAttendanceLists] = useState<AttendanceGroup[]>([]);
     const insets = useSafeAreaInsets();
+    const navigation = useNavigation<any>();
 
     useEffect(() => {
         const fetchAttendanceLists = async () => {
@@ -75,7 +77,14 @@ const AttendanceListScreen = () => {
     return (
         <View style={[globalStyles.mainContainer2]}>
             <View style={[globalStyles.header2,  {paddingTop:insets.top}]}>
-                <Text maxFontSizeMultiplier={1} style={stylesAdmin.title}>Listas de Asistencia</Text>
+                <View style={{borderWidth:0, borderColor:'#fff', width:'100%', height:30, flexDirection: 'row', alignItems: 'center', justifyContent:'center', gap:10}}>
+                    <TouchableOpacity onPress={()=>{navigation.goBack()}}>
+                        <Arrow color='#FFF' />
+                    </TouchableOpacity>
+                    <View style={{width:'85%'}}>
+                        <Text maxFontSizeMultiplier={1} style={stylesAdmin.title}>Listas de Asistencia</Text>
+                    </View>
+                </View>
             </View>
             {loading ? (
                 <Text maxFontSizeMultiplier={1} style={stylesAdmin.loadingText}>Cargando...</Text>

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Alert, Image, TouchableOpacity, TextInput, Text, StyleSheet, KeyboardAvoidingView, Platform, View, ActivityIndicator, PermissionsAndroid, Dimensions} from 'react-native';
+import { Alert, Image, TouchableOpacity, TextInput, Text, StyleSheet, KeyboardAvoidingView, Platform, View, ActivityIndicator, PermissionsAndroid, Dimensions, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { HOST_URL } from '../../../../utils/envconfig';
-import { getMessaging } from '@react-native-firebase/messaging';
+import messaging from '@react-native-firebase/messaging';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Logo from '../../assets/logo.svg';
 
@@ -20,7 +20,7 @@ export const Inicio = () => {
 
 async function subscribeUserTopics() {
   try {
-    await getMessaging().subscribeToTopic('general');
+    await messaging().subscribeToTopic('general');
   } catch (error) {
     console.error("Error subscribing to topic", error);
   }
@@ -107,7 +107,7 @@ const requestUserPermission = async () => {
       await AsyncStorage.setItem('role', role);
       if (role === "user") {
       try {
-        const fcmToken = await getMessaging().getToken();
+        const fcmToken = await messaging().getToken();
         const response =await axios.post(`${HOST_URL}/api/users/save-fcm-token`, {
           userId: user._id,
           fcmToken,
@@ -154,53 +154,55 @@ const requestUserPermission = async () => {
   
 
   return (
-    <View style={style.containerMain}>
-      <Logo width={300} height={200}/>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={style.containerMain}>
+        <Logo width={300} height={200}/>
 
-      <View style={{width:'100%', justifyContent:'flex-start',alignItems:'center', borderWidth: 0, padding:10}}>  
-      <TextInput
-        maxFontSizeMultiplier={1}
-        value={email}
-        onChangeText={(text) => setEmail(text.toLowerCase())}
-        style={style.input}
-        placeholder='Correo Electrónico'
-        keyboardType='email-address'
-        autoCapitalize='none'
-        placeholderTextColor={'#5A215E'}
-      />
-
-      {/* Contenedor de contraseña con botón de mostrar */}
-      <View style={style.passwordContainer}>
+        <View style={{width:'100%', justifyContent:'flex-start',alignItems:'center', borderWidth: 0, padding:10}}>  
         <TextInput
           maxFontSizeMultiplier={1}
-
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry={!showPassword}
-          style={style.inputPassword}
-          placeholder='Contraseña'
+          value={email}
+          onChangeText={(text) => setEmail(text.toLowerCase())}
+          style={style.input}
+          placeholder='Correo Electrónico'
+          keyboardType='email-address'
+          autoCapitalize='none'
           placeholderTextColor={'#5A215E'}
         />
-        <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={style.showPasswordButton}>
-          <Text maxFontSizeMultiplier={1} style={{ color: '#5A215E', fontWeight: 'bold' }}>
-            {showPassword ? '👁️' : '👁️‍🗨️'}
-          </Text>
-        </TouchableOpacity>
-      </View>
-      </View>
-      <View style={style.recoverPass}>
-        <TouchableOpacity onPress={() => navigation.navigate('RecuperarContrasena')}>
-          <Text maxFontSizeMultiplier={1} style={style.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
-        </TouchableOpacity>
-      </View>
 
-    <View style={{width:'100%', justifyContent:'center',alignItems:'center'}}>
-      <TouchableOpacity style={style.button2} onPress={handleLogin}>
-        <Text maxFontSizeMultiplier={1} style={style.buttonText}>Entrar</Text>
-      </TouchableOpacity>
-    </View>
-    {isLoading && <ActivityIndicator size="large" color="#5A215E" style={{ flex:1, position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />}
-    </View>
+        {/* Contenedor de contraseña con botón de mostrar */}
+        <View style={style.passwordContainer}>
+          <TextInput
+            maxFontSizeMultiplier={1}
+
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+            style={style.inputPassword}
+            placeholder='Contraseña'
+            placeholderTextColor={'#5A215E'}
+          />
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={style.showPasswordButton}>
+            <Text maxFontSizeMultiplier={1} style={{ color: '#5A215E', fontWeight: 'bold' }}>
+              {showPassword ? '👁️' : '👁️‍🗨️'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        </View>
+        <View style={style.recoverPass}>
+          <TouchableOpacity onPress={() => navigation.navigate('RecuperarContrasena')}>
+            <Text maxFontSizeMultiplier={1} style={style.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
+          </TouchableOpacity>
+        </View>
+
+      <View style={{width:'100%', justifyContent:'center',alignItems:'center'}}>
+        <TouchableOpacity style={style.button2} onPress={handleLogin}>
+          <Text maxFontSizeMultiplier={1} style={style.buttonText}>Entrar</Text>
+        </TouchableOpacity>
+      </View>
+      {isLoading && <ActivityIndicator size="large" color="#5A215E" style={{ flex:1, position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />}
+      </View>
+    </TouchableWithoutFeedback>
 
   );
 };

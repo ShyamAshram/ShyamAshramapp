@@ -40,14 +40,14 @@ function Landing(): React.JSX.Element {
                
             </View>
              <View style={[style.containerFoot, { marginBottom: insets.bottom }]}>
-                    <TouchableOpacity style={{ marginRight: 5 }} onPress={handlePress}>
-                        <Facebook />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ marginRight: 5 }} onPress={handlePress2}>
-                        <Instagram />
-                    </TouchableOpacity>
-                    <Text maxFontSizeMultiplier={1.1} style={style.text}>Copyright 2024 | Desarrollado por Andromeda</Text>
-                </View>
+                <TouchableOpacity style={{ marginRight: 5 }} onPress={handlePress}>
+                    <Facebook />
+                </TouchableOpacity>
+                <TouchableOpacity style={{ marginRight: 5 }} onPress={handlePress2}>
+                    <Instagram />
+                </TouchableOpacity>
+                <Text maxFontSizeMultiplier={1.1} style={style.text}>Copyright 2024 | Desarrollado por Andromeda</Text>
+            </View>
 
         </View>
     )

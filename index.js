@@ -2,10 +2,10 @@
  * @format
  */
 
-import {AppRegistry} from 'react-native';
+import { AppRegistry } from 'react-native';
 import { App } from './src/App';
-import {name as appName} from './app.json';
-import  { getMessaging } from '@react-native-firebase/messaging';
+import { name as appName } from './app.json';
+import messaging from '@react-native-firebase/messaging';
 import notifee, { EventType } from '@notifee/react-native';
 
 notifee.onForegroundEvent(({ type, detail }) => {
@@ -16,7 +16,7 @@ notifee.onForegroundEvent(({ type, detail }) => {
   }
 });
 
-getMessaging().setBackgroundMessageHandler(async remoteMessage => {
+messaging().setBackgroundMessageHandler(async remoteMessage => {
   console.log('📩 Notificación recibida en background:', remoteMessage);
 
   await notifee.displayNotification({
@@ -33,6 +33,5 @@ notifee.onBackgroundEvent(async ({ type, detail }) => {
     console.log('Acción presionada', detail.notification);
   }
 });
-
 
 AppRegistry.registerComponent(appName, () => App);

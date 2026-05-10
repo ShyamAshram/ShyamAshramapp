@@ -15,13 +15,13 @@ const stylesAdmin = StyleSheet.create({
   },
   searchInput: {
     height: 40,
+    width:'90%',
     padding:10,
     borderColor: 'gray',
     fontFamily:'Quicksand-Bold',
     borderWidth: 1,
     borderRadius: 25,
     paddingHorizontal: 10,
-    marginBottom: 10,
     backgroundColor: '#FFF',
     color: '#000'
   },

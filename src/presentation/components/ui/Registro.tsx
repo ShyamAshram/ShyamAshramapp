@@ -5,9 +5,9 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { HOST_URL } from '../../../../utils/envconfig';
-const{width, height} = Dimensions.get('window');
 import Logo from '../../assets/logo.svg';
 
+const{width, height} = Dimensions.get('window');
 
 export const Registro = () => {
   const navigation = useNavigation<any>();

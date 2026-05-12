@@ -285,7 +285,8 @@ const stylesAdmin = StyleSheet.create({
 			borderRadius:10, 
 			backgroundColor:'#f9f9f9'
 		},
-		badgeDias:{ 
+		badgeDias:{
+      height:50,
 			flexDirection:'row', 
 			gap:15, width:'auto', 
 			maxWidth:'100%', 

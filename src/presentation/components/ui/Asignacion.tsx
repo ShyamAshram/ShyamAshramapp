@@ -1,14 +1,19 @@
 import React, { useState, useEffect, SetStateAction } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator, TextInput } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator, TextInput, Modal, Platform, Dimensions } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Picker} from '@react-native-picker/picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { HOST_URL } from '../../../../utils/envconfig';
 import stylesAdmin from './styles/stylesAdmin';
-import { Clock, Email, Form, Person } from '../../icons/Icons';
+import { Arrow, Clock, Email, Form, Person } from '../../icons/Icons';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { globalStyles } from '../../../config/theme/Theme';
+import { useNavigation } from '@react-navigation/native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { set } from 'date-fns';
+
+const{width, height} = Dimensions.get('window');
 
 interface User {
   _id: string;
@@ -16,6 +21,7 @@ interface User {
   email: string;
   plan: string;
   planDuration: number;
+  planStartDate: string;
   role: string; 
 }
 
@@ -27,7 +33,10 @@ const Asignacion = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [openDropdowns, setOpenDropdowns] = useState<{ [key: string]: boolean }>({});
   const [selectedPlan, setSelectedPlan] = useState<{ [key: string]: string }>({});
+  const [date, setDate] = useState<{ [key: string]: Date }>({});
+  const [activeUserId, setActiveUserId] = useState<string | null>(null);
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation<any>();
 
 const planes = [
   { label: 'Seleccionar plan...', value: '' },
@@ -64,6 +73,13 @@ const planesConDuracion: Record<PlanNombre, number> = {
 
         // Filtrar usuarios con rol 'user' en el frontend (opcional)
         const usersWithRoleUser = response.data.filter((user: { role: string; }) => user.role === 'user');
+        const date = usersWithRoleUser.map((user: any) => ({
+          ...user,
+          formattedPlanStartDate: user.planStartDate
+            ? new Date(user.planStartDate).toLocaleDateString('es-CO')
+            : 'Sin fecha',
+        }));
+
 
         setUsers(usersWithRoleUser);
         setFilteredUsers(usersWithRoleUser);
@@ -80,7 +96,7 @@ const planesConDuracion: Record<PlanNombre, number> = {
     };
 
     fetchUsers();
-  }, []);
+  }, [date]);
 
   useEffect(() => {
     const filtered = users.filter(user =>
@@ -98,13 +114,53 @@ const planesConDuracion: Record<PlanNombre, number> = {
       </Text>
       </View>)
   }
+  const updatePlanStartDate = async (
+    userId: string,
+    newStartDate: Date
+  ) => {
+    try {
+      const token = await AsyncStorage.getItem('token');
 
+      const response = await axios.put(
+        `${HOST_URL}/api/users/${userId}`,
+        {
+          planStartDate: newStartDate.toISOString()
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + token
+          }
+        }
+      );
+
+      setDate(prev => ({
+        ...prev,
+        [userId]: newStartDate
+      }));
+
+      setUsers(prev =>
+        prev.map(user =>
+          user._id === userId
+            ? {
+                ...user,
+                planStartDate: newStartDate.toISOString()
+              }
+            : user
+        )
+      );
+
+      console.log(response.data);
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const updateUserPlan = async (userId: string, newPlan: string, newDuration: number) => {
     try {
       const token = await AsyncStorage.getItem('token');
       const response = await axios.put(`${HOST_URL}/api/users/${userId}`, {
         plan: newPlan,
-        planDuration: newDuration
+        planDuration: newDuration,
       }, {
         headers: { 'Authorization': 'Bearer ' + token }
       });
@@ -115,7 +171,7 @@ const planesConDuracion: Record<PlanNombre, number> = {
             return {
               ...user,
               plan: newPlan,
-              planDuration: newDuration
+              planDuration: newDuration, 
             };
           }
           return user;
@@ -144,6 +200,10 @@ const planesConDuracion: Record<PlanNombre, number> = {
   return (
     <View style={[globalStyles.mainContainer, {paddingTop:insets.top}]} >
       <View style={stylesAdmin.containerAsignacion}>
+        <View style={{flexDirection: 'row', alignItems: 'center', borderWidth:0, justifyContent:'center',}}>
+        <TouchableOpacity onPress={()=>{navigation.goBack()}} >
+          <Arrow />
+        </TouchableOpacity>
         <TextInput
           maxFontSizeMultiplier={1}
           style={stylesAdmin.searchInput}
@@ -151,6 +211,7 @@ const planesConDuracion: Record<PlanNombre, number> = {
           value={searchQuery}
           onChangeText={setSearchQuery}
         />
+        </View>
         <View style={{ flex: 1, position: 'relative', zIndex: 0 }}>
           <FlatList
             data={filteredUsers}
@@ -178,8 +239,15 @@ const planesConDuracion: Record<PlanNombre, number> = {
                   </View>
                 {item.plan !== 'No tienes un plan' && 
                   <View style={stylesAdmin.badgeDias}>
-                    <Clock/>
-                    <Text maxFontSizeMultiplier={1} style={stylesAdmin.userTextDias}>{item.planDuration} días</Text>
+                    <View style={{borderWidth:1, justifyContent:'center', alignItems:'center', height:"100%", padding:5, borderRadius:10, backgroundColor:'#f9f9f9', flexDirection:'row', gap:5, borderColor:'#D9A404'}}>
+                      <TouchableOpacity onPress={() => setActiveUserId(item._id)}>
+                        <Text style={{fontFamily:"Quicksand-Bold"}}>{item.planStartDate ? new Date(item.planStartDate).toLocaleDateString('es-CO') : 'Sin fecha'}</Text>
+                      </TouchableOpacity>
+                    </View>
+                    <View style={{borderWidth:0, justifyContent:'center', alignItems:'center', flexDirection:'row', gap:5, width:'60%', height:"100%"}}>
+                      <Clock/>
+                      <Text maxFontSizeMultiplier={1} style={stylesAdmin.userTextDias}>{item.planDuration} días</Text>
+                    </View>                   
                   </View>
                 } 
                   <DropDownPicker
@@ -207,6 +275,42 @@ const planesConDuracion: Record<PlanNombre, number> = {
                     containerStyle={{ marginBottom: openDropdowns[item._id] ? 320 : 20, position: 'relative', zIndex: 3000,}}
                     textStyle={{fontSize:10, fontFamily:'Quicksand-Bold'}}
                   />
+                    <Modal  visible={activeUserId === item._id} transparent animationType="slide">
+                      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.8)' }}>
+                        <DateTimePicker
+                          value={date[item._id] || new Date()}
+                          mode="date"
+                          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                          onChange={(event, selectedDate) => {
+                            if (selectedDate) {
+                              setDate(prev => ({
+                                ...prev,
+                                [item._id]: selectedDate
+                              }));
+
+                              const currentPlan =
+                                selectedPlan[item._id] || item.plan;
+
+                              const duration =
+                                planesConDuracion[currentPlan as PlanNombre];
+
+                                updatePlanStartDate(
+                                  item._id,
+                                  selectedDate
+                                )
+                            }
+
+                            setActiveUserId(null);
+                          }}
+                          style={{ backgroundColor: Platform.OS === 'ios' ? 'white' :'#5A215E', borderRadius: 10, width: Platform.OS === 'ios' ? width * 0.8 : width, alignSelf: 'center' }}
+                        />
+                        <TouchableOpacity style={{ marginTop: 20,borderWidth:1,  borderColor: '#5A215E', paddingHorizontal: 30, paddingVertical: 20, borderRadius: 10 }} onPress={() => setActiveUserId(null)}>
+                          <Text style={{ color: 'white', fontSize:17,  fontFamily:'Quicksand-Semibold'}}>Done</Text>
+                        </TouchableOpacity>
+                        
+                      </View>
+                    </Modal>
+                
               </View>
             )}
           />

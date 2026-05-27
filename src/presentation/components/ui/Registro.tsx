@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ActivityIndicator, Alert, Dimensions } from 'react-native';
+import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ActivityIndicator, Alert, Dimensions, TouchableWithoutFeedback, Keyboard, Modal } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { HOST_URL } from '../../../../utils/envconfig';
-const{width, height} = Dimensions.get('window');
 import Logo from '../../assets/logo.svg';
 
+const{width, height} = Dimensions.get('window');
 
 export const Registro = () => {
   const navigation = useNavigation<any>();
@@ -19,6 +19,7 @@ export const Registro = () => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [loading, setLoading] = useState(false);
   const [role] = useState('');
+  const isIos = Platform.OS === 'ios';
 
   const handleRegister = async () => {
     const phoneNumberParsed = parsePhoneNumberFromString(phonenumber, 'CO');
@@ -58,19 +59,23 @@ export const Registro = () => {
     }
   };
 
-  const handleDateChange = (event: any, selectedDate?: Date) => {
+ const handleDateChange = (event:any, selectedDate:any) => {
+  if (Platform.OS !== 'ios') {
     setShowDatePicker(false);
-    if (selectedDate) {
-      setBirthDate(selectedDate);
-    }
-  };
+  }
+
+  if (selectedDate) {
+    setBirthDate(selectedDate);
+  }
+};
 
   return (
-    <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'white' }}>
-      <View style={{borderWidth:0, height: height * 0.25, width: width, justifyContent: 'center', alignItems: 'center', marginTop: 80}}>
-        <Logo width={300} height={200}/>
-      </View>
-      <View style={{borderWidth:0, gap:10,    width: width, justifyContent: 'center', alignItems: 'center' }}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: 'white' }}>
+        <View style={{borderWidth:0, height: height * 0.25, width: width, justifyContent: 'center', alignItems: 'center', marginTop: 80}}>
+          <Logo width={300} height={200}/>
+        </View>
+        <View style={{borderWidth:0, gap:10,    width: width, justifyContent: 'center', alignItems: 'center' }}>
       <TextInput maxFontSizeMultiplier={1} value={name} onChangeText={setName} style={style.input} placeholder="Nombre completo" placeholderTextColor={'#5A215E'} />
       <TextInput maxFontSizeMultiplier={1} value={email} onChangeText={setEmail} style={style.input} placeholder="Correo Electrónico" placeholderTextColor={'#5A215E'} />
       <TextInput maxFontSizeMultiplier={1} value={password} onChangeText={setPassword} secureTextEntry style={style.input} placeholder="Contraseña" placeholderTextColor={'#5A215E'} />
@@ -93,22 +98,31 @@ export const Registro = () => {
 
 
       {showDatePicker && (
-        <DateTimePicker
-          
-          value={birthDate || new Date()}
-          mode="date"
-          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-          onChange={handleDateChange}
-          style={{ backgroundColor: '#5A215E', }}
-          
-        />
+        <Modal visible={showDatePicker} transparent animationType="slide">
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.8)' }}>
+            <DateTimePicker
+              
+              value={birthDate || new Date()}
+              mode="date"
+              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+              onChange={handleDateChange}
+              style={{ backgroundColor: isIos? 'white' :'#5A215E', borderRadius: 10, width: isIos? width * 0.8 : width, alignSelf: 'center' }}
+              
+            />
+          <TouchableOpacity style={{ marginTop: 20,borderWidth:1,  borderColor: '#5A215E', paddingHorizontal: 30, paddingVertical: 20, borderRadius: 10 }} onPress={() => setShowDatePicker(false)}>
+            <Text style={{ color: 'white', fontSize:17,  fontFamily:'Quicksand-Semibold'}}>Done</Text>
+          </TouchableOpacity>
+
+          </View>
+        </Modal>
       )}
       </View>
       <TouchableOpacity  disabled={loading} style={style.button2} onPress={handleRegister}>
         <Text maxFontSizeMultiplier={1} style={style.buttonText}>Registrar</Text>
       </TouchableOpacity>
       {loading && <ActivityIndicator size="large" color="#5A215E" />}
-    </View>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 

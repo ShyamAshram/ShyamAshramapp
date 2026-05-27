@@ -6,9 +6,10 @@ import {Picker} from '@react-native-picker/picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { HOST_URL } from '../../../../utils/envconfig';
 import stylesAdmin from './styles/stylesAdmin';
-import { Clock, Email, Form, Person } from '../../icons/Icons';
+import { Arrow, Clock, Email, Form, Person } from '../../icons/Icons';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { globalStyles } from '../../../config/theme/Theme';
+import { useNavigation } from '@react-navigation/native';
 
 interface User {
   _id: string;
@@ -35,7 +36,7 @@ const Role = () => {
   const [openDropdowns, setOpenDropdowns] = useState<{ [key: string]: boolean }>({});
   const [selectedRole, setSelectedRole] = useState<{ [key: string]: string }>({});
   const insets = useSafeAreaInsets();
-
+  const navigation = useNavigation<any>();
 
 
   useEffect(() => {
@@ -125,6 +126,10 @@ const Role = () => {
   return (
     <View style={[globalStyles.mainContainer, {paddingTop:insets.top}]} >
       <View style={stylesAdmin.containerAsignacion}>
+        <View style={{flexDirection: 'row', alignItems: 'center', borderWidth:0, justifyContent:'center',}}>
+        <TouchableOpacity onPress={()=>{navigation.goBack()}} >
+          <Arrow />
+        </TouchableOpacity>
         <TextInput
           maxFontSizeMultiplier={1}
           style={stylesAdmin.searchInput}
@@ -132,6 +137,7 @@ const Role = () => {
           value={searchQuery}
           onChangeText={setSearchQuery}
         />
+        </View>
         <View style={{ flex: 1, position: 'relative', zIndex: 0 }}>
           <FlatList
             data={filteredUsers}

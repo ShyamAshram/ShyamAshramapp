@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Landing from "../screens/landing/Landing";
 
 import { HomeScreen } from "../screens/home/Home";
@@ -34,7 +34,7 @@ import { Signin } from "../screens/signin/Signin";
 import CheckoutScreen from "../screens/checkout/CheckoutScreen";
 import Role from "../components/ui/Role";
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 function Navigator() {
     return (
@@ -72,7 +72,7 @@ function Navigator() {
             <Stack.Screen name="AttendanceListScreen" component={AttendanceListScreen} />
             <Stack.Screen name="Excel" component={Excel} />
             <Stack.Screen name="Profesores" component={Profesores} />
-            <Stack.Screen name="CheckoutScreen" component={CheckoutScreen} />
+            {/* <Stack.Screen name="CheckoutScreen" component={CheckoutScreen} /> */}
 
         </Stack.Navigator>
     )

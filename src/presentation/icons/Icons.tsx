@@ -27,4 +27,5 @@ export const Card =() => <MateriaCommunityIcons name='credit-card' color={'#D9A4
 export const Cash = () => <MateriaCommunityIcons name='cash' color={'#00a653'} size={25} />
 export const Check = () => <MateriaCommunityIcons name='check' color={'#00a653'} size={30} />
 export const Close = () => <MateriaCommunityIcons name='close' color={'#cc1818'} size={30} />
+export const Arrow = ({color = '#11688C'}) => <Ionicons name='arrow-back' color={color} size={30} />
 

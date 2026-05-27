@@ -3,13 +3,14 @@ import { View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator, 
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Importa íconos
-import { Clock, Form, WhatsApp } from '../../icons/Icons';
+import { Arrow, Clock, Form, WhatsApp } from '../../icons/Icons';
 import { Email } from '../../icons/Icons';
 import { HOST_URL } from '../../../../utils/envconfig';
 import stylesAdmin from './styles/stylesAdmin';
 import { style } from '../../screens/landing/style';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { globalStyles } from '../../../config/theme/Theme';
+import { useNavigation } from '@react-navigation/native';
 interface User {
   _id: string;
   name: string;
@@ -27,6 +28,7 @@ const ActiveU = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation<any>();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -104,6 +106,10 @@ const ActiveU = () => {
   return (
     <View style={[[globalStyles.mainContainer, {paddingTop: insets.top} ]]}>
     <View style={stylesAdmin.container}>
+      <View style={{flexDirection: 'row', alignItems: 'center', borderWidth:0, justifyContent:'center',}}>
+        <TouchableOpacity onPress={()=>{navigation.goBack()}} >
+          <Arrow />
+        </TouchableOpacity>
       <TextInput
         maxFontSizeMultiplier={1}
         style={stylesAdmin.searchInput}
@@ -111,6 +117,7 @@ const ActiveU = () => {
         value={searchQuery}
         onChangeText={setSearchQuery}
       />
+      </View>
       <FlatList
         data={filteredUsers}
         contentContainerStyle={{paddingBottom:100}}

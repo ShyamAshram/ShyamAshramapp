@@ -56,6 +56,9 @@
 		<string>Quicksand-Medium.ttf</string>
 		<string>Quicksand-Regular.ttf</string>
 		<string>Quicksand-SemiBold.ttf</string>
+		<string>Ionicons.ttf</string>
+    	<string>FontAwesome.ttf</string>
+    	<string>MaterialCommunityIcons.ttf</string>
 	</array>
 </dict>
 </plist>

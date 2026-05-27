@@ -7,6 +7,8 @@ import { HOST_URL } from '../../../../utils/envconfig';
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { globalStyles } from "../../../config/theme/Theme";
 import stylesAdmin from "./styles/stylesAdmin";
+import { Arrow } from "../../icons/Icons";
+import { useNavigation } from "@react-navigation/native";
 
 interface User {
   _id: string;
@@ -36,6 +38,7 @@ export const Profesores = () => {
   const [openDropdowns, setOpenDropdowns] = useState<{ [key: string]: boolean }>({});
   const [selectedClasses, setSelectedClasses] = useState<{ [key: string]: string[] }>({});
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation<any>();
 
 
   useEffect(() => {
@@ -113,7 +116,14 @@ const sortedSchedules = [...schedules].sort((a, b) => {
   return (
     <View style={globalStyles.mainContainer} >
       <View style={[globalStyles.header2,  {paddingTop:insets.top}]}>
-        <Text maxFontSizeMultiplier={1} style={stylesAdmin.title}>Profesores</Text>
+        <View style={{borderWidth:0, borderColor:'#fff', width:'100%', height:30, flexDirection: 'row', alignItems: 'center', justifyContent:'center', gap:10}}>
+          <TouchableOpacity onPress={()=>{navigation.goBack()}}>
+              <Arrow color='#FFF' />
+          </TouchableOpacity>
+          <View style={{width:'85%'}}>
+            <Text maxFontSizeMultiplier={1} style={stylesAdmin.title}>Profesores</Text>
+          </View>
+        </View>
     </View>
     {users.length === 0 ? (
         <Text maxFontSizeMultiplier={1} style={stylesAdmin.loadingText}>No hay profesores inscritos aún</Text>

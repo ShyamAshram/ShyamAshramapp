@@ -76,10 +76,6 @@ const StudentRegistrationModal: React.FC<Props> = ({data,  visible, onClose }) =
         ];
     const uniquePlanes = Array.from(new Map(planes.map(p => [p.value, p])).values());
 
-
-  useEffect(() => {
-    fetchClassSchedules();
-  }, []);
     
   useEffect(() => {
     fetchClassSchedules();

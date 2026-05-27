@@ -89,7 +89,7 @@ return (
           </View>
         </View>
 
-        <FloatingActionButton onPress={() => setModalVisible(true)} />
+        <FloatingActionButton onPress={() => setModalVisible(true)} top={90}/>
 
         <StudentRegistrationModal
           visible={modalVisible}

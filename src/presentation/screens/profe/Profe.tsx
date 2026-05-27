@@ -16,12 +16,13 @@ import { Set as Seti } from '../../icons/Icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FloatingActionButton from '../../components/ui/FloatingButton';
 import StudentRegistrationModal from '../../components/ui/AddU';
-import { globalStyles } from '../../../config/theme/Theme';
+import { colors, globalStyles } from '../../../config/theme/Theme';
 import { useNavigation } from '@react-navigation/native';
 import styles from './style';
 import { HOST_URL } from '../../../../utils/envconfig';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import david from './style';
+import AsignPlaPro from '../../components/ui/AsignPlaPro';
 
 interface Student {
   _id: any;
@@ -43,6 +44,7 @@ const Profe = () => {
   const [userName, setUserName] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalAdd, setModalAdd] = useState(false)
 
   const [savedDays, setSavedDays] = useState<Set<string>>(new Set());
 
@@ -269,8 +271,20 @@ const saveAttendanceList = async () => {
       )}
       <FloatingActionButton 
       onPress={() => {
+        setModalAdd(true)
+        }}
+        top={200}
+        bg={'#11688C'}
+      />
+      <FloatingActionButton 
+      onPress={() => {
         setModalVisible(true)
         }}
+      />
+      <AsignPlaPro 
+        visible={modalAdd}
+        data={students}
+        onClose={()=>{ setModalAdd(false)}}
       />
       <StudentRegistrationModal
         visible={modalVisible}

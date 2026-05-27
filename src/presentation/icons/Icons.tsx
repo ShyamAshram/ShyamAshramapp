@@ -4,7 +4,7 @@ import MateriaCommunityIcons from 'react-native-vector-icons/MaterialCommunityIc
 
 export const Book = () => <Ionicons name="book" color={'#FFF'} size={15} />;
 export const Notification = ({color='#FFF'}) => <Ionicons name='notifications' color={color} size={15} />;
-export const Calendario = () => <Ionicons name='calendar' color={'#544444'} size={15} />;
+export const Calendario = ({color = '#544444 '}) => <Ionicons name='calendar' color={color} size={15} />;
 export const Setting = () => <Ionicons name='settings' color={'#544444'} size={15} />;
 export const List = () => <Ionicons name='list' color={'#544444'} size={15} />;
 export const Add = () => <Ionicons name='add-circle' color={'#D9A404'} size={30} style={{ padding: 10 }} />;

@@ -273,6 +273,17 @@ const stylesAdmin = StyleSheet.create({
 			borderRadius:10, 
 			backgroundColor:'#f9f9f9'
 		},
+    badgePlanprofe:{
+			borderWidth:0,
+			borderColor:'#5a215e', 
+			width:'100%', 
+			maxWidth:'100%', 
+			justifyContent:'center', 
+			alignItems:'center', 
+			padding:5, 
+			borderRadius:10, 
+			backgroundColor:'#f9f9f9'
+		},
 		badgePlanActiveU:{
 			flexDirection:'row', 
 			gap:5,

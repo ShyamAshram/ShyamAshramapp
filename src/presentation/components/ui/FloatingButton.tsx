@@ -1,15 +1,21 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
-import { Add2 } from '../../icons/Icons';
+import { Add2, Calendario } from '../../icons/Icons';
 
 interface Props {
     onPress: () => void;
+    top?: any;
+    bg?:any;
 }
 
-const FloatingActionButton: React.FC<Props> = ({ onPress }) => {
+const FloatingActionButton: React.FC<Props> = ({ onPress, top, bg }) => {
     return (
-        <TouchableOpacity style={styles.fab} onPress={onPress}>
+        <TouchableOpacity style={[styles.fab, {bottom: top ? top :140, backgroundColor: bg ? bg : '#5A215E' }]} onPress={onPress}>
+            {!bg ? ( 
             <Add2 />
+            ) : (
+            <Calendario color='#FFF'/>
+            )}
         </TouchableOpacity>
     );
 };

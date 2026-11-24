@@ -25,7 +25,7 @@ function Landing(): React.JSX.Element {
             <View style={style.margin}>
 
                 <View style={style.wave}>
-                    <Logo width={300} height={200}/>
+                    <Logo width={400} height={300}/>
                 </View>
 
                 <View style={style.container}>

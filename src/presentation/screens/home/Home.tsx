@@ -10,18 +10,11 @@ import ImageSlider from "../../components/ui/Slide";
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Progress from 'react-native-progress';
-import { differenceInDays, set } from 'date-fns';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import Plans from "../plans/Plans";
-import Plan2 from "../plans/Plan2"
-import Plan3 from "../plans/Plan3";
 import { Class } from "../class/Class";
 import { Alerts } from "../notifications/Notification";
 import Footer from "../../components/ui/Foot";
-import Plan4 from "../plans/Plan4";
-import Plan5 from "../plans/Plan5";
-import Plan6 from "../plans/Plan6";
 import { HOST_URL } from "../../../../utils/envconfig";
 
 export const HomeScreen = () => {

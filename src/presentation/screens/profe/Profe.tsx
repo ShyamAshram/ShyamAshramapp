@@ -273,7 +273,7 @@ const saveAttendanceList = async () => {
       onPress={() => {
         setModalAdd(true)
         }}
-        top={200}
+        top={210}
         bg={'#11688C'}
       />
       <FloatingActionButton 

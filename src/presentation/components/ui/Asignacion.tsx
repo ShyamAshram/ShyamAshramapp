@@ -207,6 +207,7 @@ const planesConDuracion: Record<PlanNombre, number> = {
         <TextInput
           maxFontSizeMultiplier={1}
           style={stylesAdmin.searchInput}
+          placeholderTextColor={"#999"}
           placeholder="Buscar usuarios..."
           value={searchQuery}
           onChangeText={setSearchQuery}

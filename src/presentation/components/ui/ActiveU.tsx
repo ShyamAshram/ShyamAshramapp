@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Importa íconos
 import { Arrow, Clock, Form, WhatsApp } from '../../icons/Icons';
 import { Email } from '../../icons/Icons';
-import { HOST_URL } from '../../../../utils/envconfig';
+import { HOST_URL } from '../../../../web/env.web';
 import stylesAdmin from './styles/stylesAdmin';
 import { style } from '../../screens/landing/style';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -111,6 +111,7 @@ const ActiveU = () => {
           <Arrow />
         </TouchableOpacity>
       <TextInput
+        placeholderTextColor={"#999"}
         maxFontSizeMultiplier={1}
         style={stylesAdmin.searchInput}
         placeholder="Buscar usuarios..."

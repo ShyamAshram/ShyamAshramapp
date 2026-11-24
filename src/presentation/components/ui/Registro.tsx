@@ -106,7 +106,7 @@ export const Registro = () => {
               mode="date"
               display={Platform.OS === 'ios' ? 'spinner' : 'default'}
               onChange={handleDateChange}
-              style={{ backgroundColor: isIos? 'white' :'#5A215E', borderRadius: 10, width: isIos? width * 0.8 : width, alignSelf: 'center' }}
+              style={{ backgroundColor: isIos? '#5A215E' :'#5A215E', borderRadius: 10, width: isIos? width * 0.8 : width, alignSelf: 'center' }}
               
             />
           <TouchableOpacity style={{ marginTop: 20,borderWidth:1,  borderColor: '#5A215E', paddingHorizontal: 30, paddingVertical: 20, borderRadius: 10 }} onPress={() => setShowDatePicker(false)}>

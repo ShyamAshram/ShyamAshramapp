@@ -1,3 +1,4 @@
-import {URL_DOMAIN_HOST} from '@env'
+import {URL_DOMAIN_HOST, VITE_STRIPE_PUBLISHABLE_KEY} from '@env'
 
 export const HOST_URL = URL_DOMAIN_HOST;
+export const secretKey = VITE_STRIPE_PUBLISHABLE_KEY;

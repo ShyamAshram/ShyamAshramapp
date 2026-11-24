@@ -5,7 +5,7 @@ const{width, height} = Dimensions.get('window');
 
 export const style = StyleSheet.create({
     containerMain: {
-        flex: 1,
+        height: height,
         width: '100%',
         color: 'white',
         justifyContent: 'center',
@@ -25,10 +25,10 @@ export const style = StyleSheet.create({
     wave: {
         marginTop:60,
         overflow: 'hidden',
-        width: '90%',
+        width: width * 0.9,
         justifyContent: 'center',
         alignItems: 'center',
-        height: 150,
+        height: height * 0.4,
     },
     logo: {
         width: width * 0.7,
@@ -55,22 +55,22 @@ export const style = StyleSheet.create({
         marginTop: 20,
         backgroundColor: '#5A215E',
         width: '90%',
-        height: 40,
+        height: 50,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
     },
     buttonText: {
         color: 'white',
-        fontSize: 14,
+        fontSize: 17,
         fontFamily:'Quicksand-Bold'
     },
     container: {
         width:width * 0.9,
-        height: height * 0.3,
-        justifyContent: 'flex-start',
+        height: height * 0.24,
+        justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
     },
     containerFoot: {
         flexDirection: 'row',

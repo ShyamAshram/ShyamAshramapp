@@ -16,10 +16,10 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as XLSX from 'xlsx';
 import RNFS from 'react-native-fs';
-import { HOST_URL } from '../../../../utils/envconfig';
+import { HOST_URL } from '../../../../web/env.web';
 import Share from "react-native-share";
 import stylesAdmin from './styles/stylesAdmin';
-
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 interface User {
     _id: string;
     name: string;
@@ -36,6 +36,7 @@ const Excel = () => {
     const [loading, setLoading] = useState(true);
     const [isAdmin, setIsAdmin] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const insets = useSafeAreaInsets();
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -119,11 +120,12 @@ const Excel = () => {
 
 
     return (
-        <View style={stylesAdmin.container}>
+        <View style={[stylesAdmin.containerExcel, {paddingTop:insets.top}]}>
             <TextInput
                 style={stylesAdmin.searchInput}
                 placeholder="Buscar usuarios..."
                 value={searchQuery}
+                placeholderTextColor={"#999"}
                 onChangeText={setSearchQuery}
             />
             <TouchableOpacity style={stylesAdmin.exportButton} onPress={handleExportAllUsers}>

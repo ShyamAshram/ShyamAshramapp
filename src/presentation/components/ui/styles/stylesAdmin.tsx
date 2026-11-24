@@ -13,6 +13,14 @@ const stylesAdmin = StyleSheet.create({
     padding: 20,
     backgroundColor: '#FFF',
   },
+  containerExcel:{
+    height:'100%',
+    width:'100%',
+    justifyContent:'center',
+    alignItems:'center',
+    marginBottom:20,
+    backgroundColor: '#ffffffff',
+  },
   searchInput: {
     height: 40,
     width:'90%',
@@ -21,7 +29,6 @@ const stylesAdmin = StyleSheet.create({
     fontFamily:'Quicksand-Bold',
     borderWidth: 1,
     borderRadius: 25,
-    paddingHorizontal: 10,
     backgroundColor: '#FFF',
     color: '#000'
   },
@@ -214,7 +221,8 @@ const stylesAdmin = StyleSheet.create({
         fontSize: 16,
         color: '#333'
     },
-		    exportButton: {
+		exportButton: {
+        marginTop: 10,
         backgroundColor: '#007bff',
         paddingVertical: 12,
         paddingHorizontal: 20,

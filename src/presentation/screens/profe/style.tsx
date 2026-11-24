@@ -1,9 +1,9 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
     height:'100%',
-    borderWidth:1,
     marginLeft:1,
     width:'100%',
     padding: 20,
@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
   ButtonClear: {
     backgroundColor: '#ee4444',
     width: '50%',
+    height: '50%',
     marginRight: 15,
     borderRadius: 25,
     alignContent: 'center',
@@ -35,6 +36,7 @@ const styles = StyleSheet.create({
   ButtonSave: {
     backgroundColor: '#31b673',
     width: '50%',
+    height: '50%',
     marginRight: 15,
     borderRadius: 25,
     justifyContent:'center',
@@ -42,12 +44,11 @@ const styles = StyleSheet.create({
 
   },
   ContainerBtnFoot: {
-    borderWidth:0, 
     flexDirection: 'row',
     justifyContent: 'center',
-    height: 40,
-    marginTop: 10,
-    marginHorizontal: 10,
+    alignItems: 'center',
+    height: height * 0.09,
+    width: width * 0.9,
     paddingHorizontal: 20
   },
   header: {

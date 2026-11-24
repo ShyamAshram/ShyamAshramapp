@@ -83,11 +83,11 @@ export const globalStyles = StyleSheet.create({
   },
   header2: {
     flexDirection: 'row',
-    borderWidth: 1,
     justifyContent:'center',
     alignItems: 'flex-end',
     height: isIphone ? height * 0.1 : 75,
-    borderRadius: 10,
+    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 20,
     backgroundColor: '#5a215e'
   },
   profileImageContainer: {
@@ -346,8 +346,7 @@ export const globalStyles = StyleSheet.create({
   imageBoton: {
     width: '100%',
     height: '100%',
-    borderRadius: 20,
-    opacity: 0.9,
+    backgroundColor: 'white',
 
   },
   buttonsPlans: {
@@ -382,6 +381,7 @@ export const globalStyles = StyleSheet.create({
 
   menu: {
     flexDirection: 'row',
+    gap:10,
     justifyContent:'center',
     alignItems:'center',
     height:100,

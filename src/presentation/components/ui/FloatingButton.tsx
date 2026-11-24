@@ -1,6 +1,8 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { Add2, Calendario } from '../../icons/Icons';
+
+const isIos = Platform.OS === 'ios';
 
 interface Props {
     onPress: () => void;
@@ -9,6 +11,7 @@ interface Props {
 }
 
 const FloatingActionButton: React.FC<Props> = ({ onPress, top, bg }) => {
+
     return (
         <TouchableOpacity style={[styles.fab, {bottom: top ? top :140, backgroundColor: bg ? bg : '#5A215E' }]} onPress={onPress}>
             {!bg ? ( 
@@ -23,11 +26,14 @@ const FloatingActionButton: React.FC<Props> = ({ onPress, top, bg }) => {
 const styles = StyleSheet.create({
     fab: {
         position: 'absolute',
-        right: 20,
-        bottom: 60,
+        right: isIos ? 10 : 20,
+        bottom: isIos ? 40 : 60,
         backgroundColor: '#5A215E',
-        width: 40,
-        height: 40,
+        width: isIos ? 60 : 40,
+        height: isIos ? 60 : 40,
+        marginTop: 10,
+        marginBottom: 10,
+        gap: 10,
         borderRadius: 30,
         justifyContent: 'center',
         alignItems: 'center',

@@ -10,7 +10,8 @@
     "test": "jest",
     "postinstall": "node scripts/postinstall.js",
     "web": "vite --config vite.config.ts",
-    "build:web": "vite build --config vite.config.ts"
+    "build:web": "vite build --config vite.config.ts",
+    "build": "vite build --config vite.config.ts"
   },
   "dependencies": {
     "@notifee/react-native": "^9.1.8",

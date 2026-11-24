@@ -36,7 +36,7 @@ export default function Navigator() {
   return (
     <Stack.Navigator
       initialRouteName="Landing"
-      screenOptions={{ animation: 'none', gestureEnabled: true }}
+      screenOptions={{ animation: 'none', gestureEnabled: false, headerShown: false }}
     >
       <Stack.Screen name="Landing" component={Landing} />
       <Stack.Screen name="CheckLogin" component={CheckLogin} />

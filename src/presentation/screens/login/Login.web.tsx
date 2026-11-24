@@ -14,7 +14,7 @@ import Footer from '../../components/ui/Foot';
 import { Arrow } from '../../icons/Icons';
 
 export const Login = () => {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const { height } = useWindowDimensions();
 
